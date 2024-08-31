@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="10sp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/company_logo"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_gravity="center"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginTop="20sp"
+        android:layout_margin="10sp"
+        android:background="@drawable/icon_rounded_corner"
+        android:padding="10sp"
+        android:src="@drawable/google_ic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:text="The employer has just viewed your application information." />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data science recruitment, Google corporation just viewed your recruitment information." />
+    </LinearLayout>
+</LinearLayout>
