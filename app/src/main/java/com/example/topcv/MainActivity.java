@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment(new NewsFeedFragment());
         navigation_view_main.getMenu().findItem(R.id.home).setChecked(true);
+
     }
 
     @Override

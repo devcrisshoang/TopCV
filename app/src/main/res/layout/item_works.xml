@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10sp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="5sp"
+        android:layout_marginRight="5sp"
+        android:background="@drawable/card_background">
 
         <LinearLayout
             android:layout_width="match_parent"
