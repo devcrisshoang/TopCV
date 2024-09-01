@@ -3,8 +3,11 @@ package com.example.topcv;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,9 +20,11 @@ import com.example.topcv.fragment.NewsFeedFragment;
 import com.example.topcv.fragment.NotificationFragment;
 import com.example.topcv.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation_view_main;
+    private LinearLayout layout_header;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_NOTIFICATION = 2;
@@ -36,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         navigation_view_main = findViewById(R.id.navigation_view_main);
+        layout_header = findViewById(R.id.layout_header);
+        navigation_view_main.setOnNavigationItemSelectedListener(item -> {
+            onOptionsItemSelected(item);
+            return true;
+        });
+
         replaceFragment(new NewsFeedFragment());
         navigation_view_main.getMenu().findItem(R.id.home).setChecked(true);
     }
@@ -54,21 +65,25 @@ public class MainActivity extends AppCompatActivity {
             if(currentFragment != FRAGMENT_HOME){
                 replaceFragment(new NewsFeedFragment());
                 currentFragment = FRAGMENT_HOME;
+                layout_header.setVisibility(View.VISIBLE);
             }
         } else if (id == R.id.profile) {
             if(currentFragment != FRAGMENT_PROFILE){
                 replaceFragment(new ProfileFragment());
                 currentFragment = FRAGMENT_PROFILE;
+                layout_header.setVisibility(View.GONE);
             }
         } else if (id == R.id.notification) {
             if(currentFragment != FRAGMENT_NOTIFICATION){
                 replaceFragment(new NotificationFragment());
                 currentFragment = FRAGMENT_NOTIFICATION;
+                layout_header.setVisibility(View.GONE);
             }
         } else if (id == R.id.account){
             if(currentFragment != FRAGMENT_ACCOUNT){
                 replaceFragment(new AccountFragment());
                 currentFragment = FRAGMENT_ACCOUNT;
+                layout_header.setVisibility(View.GONE);
             }
         }
         return true;

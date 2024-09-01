@@ -56,7 +56,6 @@ public class NewsFeedFragment extends Fragment {
         categories.add(new Category("Suggest jobs2",jobs));
         categories.add(new Category("Suggest jobs3",jobs));
         categories.add(new Category("Suggest jobs4",jobs));
-
         return categories;
     }
 

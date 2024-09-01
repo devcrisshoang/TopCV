@@ -1,10 +1,12 @@
 package com.example.topcv.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.R;
+import com.example.topcv.SeeAllActivity;
 import com.example.topcv.model.Category;
+import com.example.topcv.model.Jobs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
@@ -24,7 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.mContext = context;
     }
 
-    public void setData(List<Category> listCategory){
+    public void setData(List<Category> listCategory) {
         this.category_list = listCategory;
         notifyDataSetChanged();
     }
@@ -50,22 +55,34 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         jobsAdapter.setData(category.getJobs_list());
 
         holder.recyclerview_jobs.setAdapter(jobsAdapter);
+        holder.see_all.setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, SeeAllActivity.class);
+            intent.putExtra("CATEGORY_NAME", category.getCategory_name());
+            intent.putParcelableArrayListExtra("JOBS_LIST", new ArrayList<>(category.getJobs_list()));
+            mContext.startActivity(intent);
+        });
+
     }
+
 
     @Override
     public int getItemCount() {
-        if (category_list != null)
+        if (category_list != null) {
             return category_list.size();
+        }
         return 0;
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView category_name;
         private RecyclerView recyclerview_jobs;
+        private Button see_all;
+
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             category_name = itemView.findViewById(R.id.category_name);
             recyclerview_jobs = itemView.findViewById(R.id.recyclerview_jobs);
+            see_all = itemView.findViewById(R.id.see_all);
         }
     }
 }
