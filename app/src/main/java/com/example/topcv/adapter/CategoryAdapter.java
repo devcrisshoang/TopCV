@@ -48,21 +48,26 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             return;
         }
         holder.category_name.setText(category.getCategory_name());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+
+        // Xác định hướng của RecyclerView
+        int orientation = position == 0 ? RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, orientation, false);
         holder.recyclerview_jobs.setLayoutManager(linearLayoutManager);
 
         JobsAdapter jobsAdapter = new JobsAdapter();
         jobsAdapter.setData(category.getJobs_list());
 
         holder.recyclerview_jobs.setAdapter(jobsAdapter);
+
         holder.see_all.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, SeeAllActivity.class);
             intent.putExtra("CATEGORY_NAME", category.getCategory_name());
             intent.putParcelableArrayListExtra("JOBS_LIST", new ArrayList<>(category.getJobs_list()));
             mContext.startActivity(intent);
         });
-
     }
+
 
 
     @Override

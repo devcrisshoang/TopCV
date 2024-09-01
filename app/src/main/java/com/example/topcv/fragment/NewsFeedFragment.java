@@ -22,40 +22,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsFeedFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewCategoryMix;
     private CategoryAdapter categoryAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
-        recyclerView = view.findViewById(R.id.recyclerViewCategory);
+        recyclerViewCategoryMix = view.findViewById(R.id.recyclerViewCategoryMix);
         // Initialize your category list here
 
         categoryAdapter = new CategoryAdapter(requireContext()); // Use requireContext() here
         categoryAdapter.setData(getListCategory());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(categoryAdapter);
+        recyclerViewCategoryMix.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewCategoryMix.setAdapter(categoryAdapter);
 
         return view;
     }
     private List<Category> getListCategory(){
         List<Category> categories = new ArrayList<>();
 
-        List<Jobs> jobs = new ArrayList<>();
-        jobs.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
-        jobs.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
-        jobs.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,false));
-        jobs.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
-        jobs.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,false));
-        jobs.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,true));
-        jobs.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
-        jobs.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,true));
-        categories.add(new Category("Suggest jobs",jobs));
-        categories.add(new Category("Suggest jobs1",jobs));
-        categories.add(new Category("Suggest jobs2",jobs));
-        categories.add(new Category("Suggest jobs3",jobs));
-        categories.add(new Category("Suggest jobs4",jobs));
+        List<Jobs> jobs1 = new ArrayList<>();
+        List<Jobs> jobs2 = new ArrayList<>();
+        jobs1.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
+        jobs1.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
+        jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
+        jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
+        jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,false));
+        jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
+        jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,false));
+        jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,true));
+        jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
+        jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,true));
+        categories.add(new Category("Suggest jobs",jobs1));
+        categories.add(new Category("Suggest jobs1",jobs2));
+        categories.add(new Category("Suggest jobs2",jobs2));
+        categories.add(new Category("Suggest jobs3",jobs2));
+        categories.add(new Category("Suggest jobs4",jobs2));
         return categories;
     }
 

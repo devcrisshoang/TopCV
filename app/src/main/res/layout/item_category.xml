@@ -38,7 +38,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_jobs"
-        android:layout_marginTop="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -5,8 +5,9 @@
     android:id="@+id/main"
     android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewCategory"
+            android:id="@+id/recyclerViewCategoryMix"
             android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:padding="20sp">
