@@ -27,7 +27,6 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private static final int VIEW_TYPE_COMPANY = 0;
     private static final int VIEW_TYPE_CATEGORY = 1;
-    int orientation;
     private List<Object> mixedList;
     private OnItemClickListener onItemClickListener;
 
@@ -65,7 +64,6 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CompanyViewHolder) {
             Company company = (Company) mixedList.get(position);
-            orientation = position == 0 ? RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;
             ((CompanyViewHolder) holder).bind(company);
         } else if (holder instanceof CategoryViewHolder) {
             Category category = (Category) mixedList.get(position);
@@ -113,48 +111,13 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void bind(Category category) {
             categoryName.setText(category.getCategory_name());
 
-            // Check the position to determine orientation
-            int position = getAdapterPosition(); // Get the current position
-
-            // Determine if we are on the first item or not
-            boolean isFirstItem = position == 0;
-
-            LinearLayoutManager layoutManager;
-            JobsAdapter jobsAdapter = new JobsAdapter(itemView.getContext());
-
-            if (isFirstItem) {
                 // Set up RecyclerView cho job đầu tiên theo chiều dọc
-                layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
-                if (category.getJobs_list().size() > 0) {
-                    jobsAdapter.setData(category.getJobs_list().subList(0, Math.min(2, category.getJobs_list().size()))); // Hiển thị hai job đầu tiên
                 }
-            } else {
                 // Set up RecyclerView cho các job còn lại theo chiều ngang
-                layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-                if (category.getJobs_list().size() > 2) {
-                    jobsAdapter.setData(category.getJobs_list().subList(2, category.getJobs_list().size())); // Hiển thị các job còn lại
-                }
             }
-
-            recyclerViewJobs.setLayoutManager(layoutManager);
             recyclerViewJobs.setAdapter(jobsAdapter);
-
-            itemView.findViewById(R.id.see_all).setOnClickListener(view -> {
-                Intent intent = new Intent(itemView.getContext(), SeeAllActivity.class);
-                intent.putExtra("CATEGORY_NAME", category.getCategory_name());
-                intent.putParcelableArrayListExtra("JOBS_LIST", new ArrayList<>(category.getJobs_list()));
-                itemView.getContext().startActivity(intent);
-            });
-
-            // Set onClickListener for job items
-            jobsAdapter.setOnItemClickListener(job -> {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(job);
                 }
-            });
         }
-    }
-
 
     public interface OnItemClickListener {
         void onItemClick(Jobs job);
