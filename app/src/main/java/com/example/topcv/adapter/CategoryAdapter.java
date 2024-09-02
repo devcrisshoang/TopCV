@@ -1,3 +1,4 @@
+// CategoryAdapter.java
 package com.example.topcv.adapter;
 
 import android.content.Context;
@@ -13,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.topcv.CompanyInformationsActivity;
 import com.example.topcv.R;
+
 import com.example.topcv.SeeAllActivity;
 import com.example.topcv.model.Category;
 import com.example.topcv.model.Jobs;
@@ -25,8 +28,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private Context mContext;
     private List<Category> category_list;
 
-    public CategoryAdapter(Context context) {
+    private OnItemClickListener onItemClickListener;
+
+    public CategoryAdapter(Context context, OnItemClickListener listener) {
         this.mContext = context;
+        this.onItemClickListener = listener;
     }
 
     public void setData(List<Category> listCategory) {
@@ -55,7 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, orientation, false);
         holder.recyclerview_jobs.setLayoutManager(linearLayoutManager);
 
-        JobsAdapter jobsAdapter = new JobsAdapter();
+        JobsAdapter jobsAdapter = new JobsAdapter(mContext);
         jobsAdapter.setData(category.getJobs_list());
 
         holder.recyclerview_jobs.setAdapter(jobsAdapter);
@@ -66,9 +72,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             intent.putParcelableArrayListExtra("JOBS_LIST", new ArrayList<>(category.getJobs_list()));
             mContext.startActivity(intent);
         });
+
+        // Set onClickListener for job items
+        jobsAdapter.setOnItemClickListener(job -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(job);
+            }
+        });
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -89,5 +100,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             recyclerview_jobs = itemView.findViewById(R.id.recyclerview_jobs);
             see_all = itemView.findViewById(R.id.see_all);
         }
+    }
+
+    // Define the interface for the item click listener
+    public interface OnItemClickListener {
+        void onItemClick(Jobs job);
     }
 }

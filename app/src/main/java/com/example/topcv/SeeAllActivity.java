@@ -39,7 +39,7 @@ public class SeeAllActivity extends AppCompatActivity {
 
         // Thiết lập RecyclerView
         recycler_view_see_all = findViewById(R.id.recycler_view_see_all);
-        jobsAdapter = new JobsAdapter();
+        jobsAdapter = new JobsAdapter(getApplicationContext());
 
         // Nhận dữ liệu từ Intent
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
