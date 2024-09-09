@@ -29,6 +29,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -42,4 +45,6 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation (libs.circleimageview)
     implementation(kotlin("script-runtime"))
+    implementation ("com.google.android.gms:play-services-maps:18.0.0")
+
 }

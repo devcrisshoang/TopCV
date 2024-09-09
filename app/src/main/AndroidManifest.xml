@@ -13,6 +13,12 @@
         android:theme="@style/Theme.TopCV"
         tools:targetApi="31">
         <activity
+            android:name=".CvActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_cv"
+            android:theme="@style/Theme.TopCV.Fullscreen" />
+        <activity
             android:name=".CreateCvActivity"
             android:exported="false" />
         <activity

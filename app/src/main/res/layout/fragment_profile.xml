@@ -45,6 +45,7 @@
         android:layout_weight="1">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
+            android:background="@drawable/profile_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

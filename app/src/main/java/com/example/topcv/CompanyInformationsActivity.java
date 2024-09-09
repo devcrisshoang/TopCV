@@ -27,6 +27,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private ImageButton information_back_button;
     private LinearLayout header_title;
     private ImageView company_logo;
+    private ImageButton back_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
 
         // Khởi tạo các view với ID chính xác
         informationBackButton = findViewById(R.id.information_back_button);
+        back_button = findViewById(R.id.back_button);
         scrollView = findViewById(R.id.scrollView);
         company_logo = findViewById(R.id.company_logo); // Đảm bảo ID chính xác
         header_title = findViewById(R.id.header_title);
@@ -78,6 +80,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
 
         // Xử lý sự kiện nhấp vào nút quay lại
         informationBackButton.setOnClickListener(v -> finish());
+        back_button.setOnClickListener(v -> finish());
     }
 
     private boolean isViewVisible(View view) {

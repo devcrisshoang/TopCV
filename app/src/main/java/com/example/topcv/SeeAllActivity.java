@@ -1,5 +1,6 @@
 package com.example.topcv;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -62,6 +63,13 @@ public class SeeAllActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No jobs available", Toast.LENGTH_SHORT).show();
         }
+        jobsAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Jobs job) {
+                Intent intent = new Intent(SeeAllActivity.this, CompanyInformationsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
