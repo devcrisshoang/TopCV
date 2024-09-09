@@ -4,6 +4,31 @@ public class Company {
     private String industry;
     private String badge;
     private int logo;
+    private boolean isChecked;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    public void setBadge(String badge) {
+        this.badge = badge;
+    }
+
+    public void setLogo(int logo) {
+        this.logo = logo;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
     public Company(String name, String industry, String badge, int logo) {
         this.name = name;

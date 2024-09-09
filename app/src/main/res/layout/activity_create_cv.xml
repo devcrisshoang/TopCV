@@ -1,0 +1,187 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <ImageButton
+            android:id="@+id/information_back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/icon_rounded_corner"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/back_ic" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Create your CV">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your full name:">
+
+        </TextView>
+
+        <!-- Thông tin cá nhân -->
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Full name" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your email:">
+
+        </TextView>
+
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Email" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your education:">
+
+        </TextView>
+
+        <!-- Học vấn -->
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_education"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Education" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your experience:">
+
+        </TextView>
+
+        <!-- Kinh nghiệm làm việc -->
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_experience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Experience" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your skills:">
+
+        </TextView>
+
+        <!-- Kỹ năng -->
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Skill" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your certification:">
+
+        </TextView>
+
+        <!-- Chứng chỉ -->
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_certifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Certification" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your position application:">
+
+        </TextView>
+
+        <EditText
+            android:layout_marginTop="5sp"
+            android:id="@+id/et_objectives"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:hint="Position" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Your avatar:">
+
+        </TextView>
+
+        <ImageView
+            android:id="@+id/company_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/icon_rounded_corner"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:src="@drawable/google_ic" />
+
+        <!-- Nút lưu -->
+        <Button
+            android:layout_marginTop="10sp"
+            android:id="@+id/btn_save_cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp"
+            android:backgroundTint="@color/green_color"
+            android:text="Create CV" />
+
+
+    </LinearLayout>
+</ScrollView>

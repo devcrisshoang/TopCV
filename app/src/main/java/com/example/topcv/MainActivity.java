@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -20,7 +19,6 @@ import com.example.topcv.fragment.NewsFeedFragment;
 import com.example.topcv.fragment.NotificationFragment;
 import com.example.topcv.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation_view_main;
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new ProfileFragment());
                 currentFragment = FRAGMENT_PROFILE;
                 layout_header.setVisibility(View.GONE);
+
             }
         } else if (id == R.id.notification) {
             if(currentFragment != FRAGMENT_NOTIFICATION){

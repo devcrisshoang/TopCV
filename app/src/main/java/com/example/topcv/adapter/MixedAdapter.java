@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.topcv.CompanyInformationsActivity;
 import com.example.topcv.R;
 import com.example.topcv.SeeAllActivity;
 import com.example.topcv.model.Category;
@@ -81,6 +80,7 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         private TextView companyName;
         private TextView companyIndustry;
         private TextView companyRank;
+        private RecyclerView recyclerViewCompanies;
 
         public CompanyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -88,6 +88,7 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             companyName = itemView.findViewById(R.id.companyName);
             companyIndustry = itemView.findViewById(R.id.companyIndustry);
             companyRank = itemView.findViewById(R.id.companyBadge);
+            recyclerViewCompanies = itemView.findViewById(R.id.recyclerview_jobs);
         }
 
         public void bind(Company company) {
@@ -95,6 +96,11 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             companyName.setText(company.getName());
             companyIndustry.setText(company.getIndustry());
             companyRank.setText(company.getBadge());
+
+            if (recyclerViewCompanies != null) {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(itemView.getContext(), 2);
+                recyclerViewCompanies.setLayoutManager(gridLayoutManager);
+            }
         }
     }
 
@@ -111,13 +117,44 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void bind(Category category) {
             categoryName.setText(category.getCategory_name());
 
+            // Check the position to determine orientation
+            int position = getAdapterPosition();
+            boolean isFirstItem = position == 0;
+
+            RecyclerView.LayoutManager layoutManager;
+            JobsAdapter jobsAdapter = new JobsAdapter(itemView.getContext());
+
+            if (isFirstItem) {
                 // Set up RecyclerView cho job đầu tiên theo chiều dọc
+                layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+                if (category.getJobs_list().size() > 0) {
+                    jobsAdapter.setData(category.getJobs_list().subList(0, Math.min(2, category.getJobs_list().size()))); // Hiển thị hai job đầu tiên
                 }
+            } else {
                 // Set up RecyclerView cho các job còn lại theo chiều ngang
-            }
-            recyclerViewJobs.setAdapter(jobsAdapter);
+                layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+                if (category.getJobs_list().size() > 2) {
+                    jobsAdapter.setData(category.getJobs_list().subList(2, category.getJobs_list().size())); // Hiển thị các job còn lại
                 }
+            }
+
+            recyclerViewJobs.setLayoutManager(layoutManager);
+            recyclerViewJobs.setAdapter(jobsAdapter);
+
+            itemView.findViewById(R.id.see_all).setOnClickListener(view -> {
+                Intent intent = new Intent(itemView.getContext(), SeeAllActivity.class);
+                intent.putExtra("CATEGORY_NAME", category.getCategory_name());
+                intent.putParcelableArrayListExtra("JOBS_LIST", new ArrayList<>(category.getJobs_list()));
+                itemView.getContext().startActivity(intent);
+            });
+
+            jobsAdapter.setOnItemClickListener(job -> {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(job);
+                }
+            });
         }
+    }
 
     public interface OnItemClickListener {
         void onItemClick(Jobs job);

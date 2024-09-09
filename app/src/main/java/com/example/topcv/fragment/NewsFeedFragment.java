@@ -1,4 +1,3 @@
-// NewsFeedFragment.java
 package com.example.topcv.fragment;
 
 import android.content.Intent;
@@ -9,15 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.R;
 import com.example.topcv.CompanyInformationsActivity;
-import com.example.topcv.adapter.CategoryAdapter;
 import com.example.topcv.adapter.MixedAdapter;
 import com.example.topcv.model.Category;
-import com.example.topcv.model.Company;
 import com.example.topcv.model.Jobs;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +30,6 @@ public class NewsFeedFragment extends Fragment {
 
         List<Object> mixedList = new ArrayList<>();
         mixedList.addAll(getListCategory());
-        mixedList.addAll(getListCompany());
 
         // Tạo OnItemClickListener
         MixedAdapter.OnItemClickListener onItemClickListener = job -> {
@@ -60,6 +55,7 @@ public class NewsFeedFragment extends Fragment {
         List<Jobs> jobs2 = new ArrayList<>();
         jobs1.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
         jobs1.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
+        jobs1.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
         jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
         jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,false));
         jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,false));
@@ -69,22 +65,11 @@ public class NewsFeedFragment extends Fragment {
         jobs2.add(new Jobs(R.drawable.fpt_ic,"Mobile Intern","FPT","Hanoi","No experience","$300",60,true));
         jobs2.add(new Jobs(R.drawable.viettel_ic,"Mobile Intern","Viettel","Hanoi","No experience","$300",60,true));
 
-        categories.add(new Category("Suggest jobs", jobs1));
-        categories.add(new Category("Suggest jobs1", jobs2));
-        categories.add(new Category("Suggest jobs2", jobs2));
-        categories.add(new Category("Suggest jobs3", jobs2));
-        categories.add(new Category("Suggest jobs4", jobs2));
+        categories.add(new Category("The most suitable jobs", jobs1));
+        categories.add(new Category("The best jobs", jobs2));
+        categories.add(new Category("Attractive jobs", jobs2));
+        categories.add(new Category("Top company", jobs2));
+        categories.add(new Category("Article", jobs2));
         return categories;
-    }
-
-    private List<Company> getListCompany() {
-        List<Company> companies = new ArrayList<>();
-
-        companies.add(new Company("Công ty Cổ phần MISA", "IT - Phần mềm", "PROFIT500", R.drawable.viettel_ic));
-        companies.add(new Company("Công ty Cổ phần CMC", "Sản xuất", "V1000", R.drawable.fpt_ic));
-        companies.add(new Company("Công Ty Cổ Phần Đầu Tư Công Nghệ Hacom", "IT - Phần cứng", "FAST500", R.drawable.fpt_ic));
-        companies.add(new Company("CÔNG TY CỔ PHẦN DƯỢC PHẨM OPC", "Dược phẩm / Y tế / Công nghệ sinh học", "PROFIT500", R.drawable.viettel_ic));
-
-        return companies;
     }
 }
