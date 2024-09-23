@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">My Account</string>
+    <string-array name="JOB_EXP">
+        <item>Chưa có kinh nghiệm</item>
+        <item>1 năm kinh nghiệm</item>
+        <item>2 năm kinh nghiệm</item>
+        <item>3 năm kinh nghiệm</item>
+        <item>4 năm kinh nghiệm</item>
+        <item>5 năm kinh nghiệm</item>
+        <item>Trên 5 năm kinh nghiệm</item>
+    </string-array>
+    <string-array name="JOB_PREFER">
+        <item>Kế toán</item>
+        <item>Thư ký</item>
+        <item>Giám sát thi công</item>
+        <item>Nhân viên thí nghiệm</item>
+        <item>Giáo viên</item>
+        <item>Giao hàng</item>
+        <item>Tài xế</item>
+    </string-array>
+    <string-array name="JOB_LOCA">
+        <item>Hà Nội</item>
+        <item>Thanh Hoá</item>
+        <item>Nam Định</item>
+        <item>Nghệ An</item>
+        <item>Đà Nẵng</item>
+        <item>TP.Hồ Chí Minh</item>
+        <item>An Giang</item>
+    </string-array>
+</resources>
