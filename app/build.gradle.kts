@@ -32,6 +32,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -46,5 +47,10 @@ dependencies {
     implementation (libs.circleimageview)
     implementation(kotlin("script-runtime"))
     implementation ("com.google.android.gms:play-services-maps:18.0.0")
+    // Thêm vào build.gradle
+    implementation (libs.glide)
+
+// Sử dụng Glide để tải ảnh
+
 
 }
