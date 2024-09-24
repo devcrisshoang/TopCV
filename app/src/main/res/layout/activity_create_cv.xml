@@ -1,201 +1,234 @@
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <!-- ScrollView chứa nội dung chính của form -->
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageButton
-                android:id="@+id/information_back_button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:background="@drawable/icon_rounded_corner"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/back_ic" />
-
-            <TextView
-                android:layout_width="277dp"
+            <!-- Thanh điều hướng bên trên cùng -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Create your CV"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:textStyle="bold">
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/information_back_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/icon_rounded_corner"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/back_ic" />
 
-            </TextView>
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:visibility="invisible"
-                android:background="@drawable/icon_rounded_corner"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/back_ic" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Create your CV"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="invisible"
+                    android:background="@drawable/icon_rounded_corner"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/back_ic" />
+            </LinearLayout>
+
+            <!-- Form thông tin người dùng -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center">
+
+                    <!-- Biểu tượng người dùng -->
+                    <ImageView
+                        android:id="@+id/user_avatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/account_ic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Biểu tượng máy ảnh góc dưới -->
+                    <ImageView
+                        android:id="@+id/camera_imageview"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="4dp"
+                        android:padding="5dp"
+                        android:src="@drawable/camera_ic"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/circle_background_dark_blue"
+                        app:tint="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Các trường nhập thông tin -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full name:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Full name"
+                    android:padding="10sp"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Email"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Education:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_education"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Education"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Experience:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_experience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Experience"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skills:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_skills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Skill"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Certification:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_certifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Certification"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Position application:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_objectives"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Position"
+                    android:padding="10sp" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
+    </ScrollView>
+
+    <!-- BottomNavigationView nằm ở dưới cùng của màn hình -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/add_new_cv_button"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/selected_imageview"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:textAlignment="center"
-                android:src="@drawable/google_ic" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your full name:">
+            android:text="Add new CV" />
 
-            </TextView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-            <!-- Thông tin cá nhân -->
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Full name" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your email:">
-
-            </TextView>
-
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Email" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your education:">
-
-            </TextView>
-
-            <!-- Học vấn -->
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_education"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Education" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your experience:">
-
-            </TextView>
-
-            <!-- Kinh nghiệm làm việc -->
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_experience"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Experience" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your skills:">
-
-            </TextView>
-
-            <!-- Kỹ năng -->
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_skills"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Skill" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your certification:">
-
-            </TextView>
-
-            <!-- Chứng chỉ -->
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_certifications"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Certification" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:textStyle="bold"
-                android:text="Your position application:">
-
-            </TextView>
-
-            <EditText
-                android:layout_marginTop="5sp"
-                android:id="@+id/et_objectives"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:background="@drawable/edit_text_rounded_corner"
-                android:hint="Position" />
-        </LinearLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Add new CV">
-
-            </Button>
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
