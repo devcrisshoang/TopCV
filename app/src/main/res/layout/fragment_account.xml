@@ -29,7 +29,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="#02AB54" />
+                    android:background="@color/emerald_green" />
 
                 <FrameLayout
                     android:id="@+id/frameLayout"
@@ -119,10 +119,10 @@
                                 android:id="@+id/textView2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
+                                android:backgroundTint="@color/soft_pink_white"
                                 android:clickable="true"
                                 android:text="Sửa"
-                                android:textColor="#31DB06"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
                         </LinearLayout>
 
@@ -162,9 +162,9 @@
                                 android:id="@+id/textView4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
+                                android:backgroundTint="@color/soft_pink_white"
                                 android:text="Sửa"
-                                android:textColor="#31DB06"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
 
                         </LinearLayout>
@@ -205,9 +205,9 @@
                                 android:id="@+id/textView9"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
+                                android:backgroundTint="@color/soft_pink_white"
                                 android:text="Sửa"
-                                android:textColor="#31DB06"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
 
                         </LinearLayout>
@@ -246,7 +246,7 @@
                         android:id="@+id/btn_ChgnPass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="#31DB06"
+                        android:backgroundTint="@color/neon_green"
                         android:drawableLeft="@drawable/baseline_key_24"
                         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
                         android:text="Đổi mật khẩu"
@@ -279,7 +279,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10px"
-                        android:backgroundTint="#31DB06"
+                        android:backgroundTint="@color/neon_green"
                         android:drawableLeft="@drawable/baseline_mic_24"
                         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
                         android:text="Về App"
@@ -290,7 +290,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10px"
-                        android:backgroundTint="#31DB06"
+                        android:backgroundTint="@color/neon_green"
                         android:drawableLeft="@drawable/baseline_checklist_24"
                         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
                         android:text="Điều khoản dịch vụ"
@@ -301,7 +301,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10px"
-                        android:backgroundTint="#31DB06"
+                        android:backgroundTint="@color/neon_green"
                         android:drawableLeft="@drawable/baseline_shield_24"
                         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
                         android:text="Chính sách bảo mật"
@@ -312,7 +312,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10px"
-                        android:backgroundTint="#31DB06"
+                        android:backgroundTint="@color/neon_green"
                         android:drawableLeft="@drawable/baseline_phone_in_talk_24"
                         android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
                         android:text="Trợ giúp"
@@ -327,7 +327,7 @@
                     android:layout_marginTop="24dp"
                     android:drawableRight="@drawable/baseline_logout_24"
                     android:text="Đăng xuất"
-                    android:backgroundTint="#28BA04"
+                    android:backgroundTint="@color/lime_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
                     app:layout_constraintHorizontal_bias="0.511"
