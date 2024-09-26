@@ -29,7 +29,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:background="@color/green_color" />
+                    android:background="@color/emerald_green" />
 
                 <FrameLayout
                     android:id="@+id/frameLayout"
@@ -53,19 +53,18 @@
                             android:layout_height="85dp"
                             android:layout_marginStart="4dp"
                             android:background="@drawable/rounded_image"
-                            android:scaleType="fitCenter"
+                            android:scaleType="centerCrop"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:src="@drawable/account_ic" />
+                            tools:srcCompat="@tools:sample/avatars" />
 
                         <TextView
                             android:id="@+id/textView25"
                             android:layout_width="146dp"
                             android:layout_height="31dp"
                             android:layout_marginTop="20dp"
-                            android:text="Hoang Criss"
-                            android:textStyle="bold"
+                            android:text="Hoàng Criss"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.506"
                             app:layout_constraintStart_toEndOf="@+id/imageView6"
@@ -75,7 +74,7 @@
                             android:id="@+id/textView11"
                             android:layout_width="146dp"
                             android:layout_height="31dp"
-                            android:text="Software engineer"
+                            android:text="Mã ứng viên: 8296816"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/textView25"
                             app:layout_constraintHorizontal_bias="1.0"
@@ -112,7 +111,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Working experience"
+                                android:text="Kinh nghiệm làm việc"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
@@ -120,10 +119,10 @@
                                 android:id="@+id/textView2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
+                                android:backgroundTint="@color/soft_pink_white"
                                 android:clickable="true"
-                                android:text="Edit"
-                                android:textColor="#31DB06"
+                                android:text="Sửa"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
                         </LinearLayout>
 
@@ -134,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Not updated yet"
+                            android:text="Chưa cập nhật"
                             android:textSize="17sp" />
                     </LinearLayout>
 
@@ -155,7 +154,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Working desire"
+                                android:text="Công việc mong muốn"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
@@ -163,9 +162,9 @@
                                 android:id="@+id/textView4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
-                                android:text="Edit"
-                                android:textColor="#31DB06"
+                                android:backgroundTint="@color/soft_pink_white"
+                                android:text="Sửa"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
 
                         </LinearLayout>
@@ -177,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Not updated yet"
+                            android:text="Chưa cập nhật"
                             android:textSize="17sp" />
 
                     </LinearLayout>
@@ -198,7 +197,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Working place desire"
+                                android:text="Địa điểm làm việc mong muốn"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
@@ -206,9 +205,9 @@
                                 android:id="@+id/textView9"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:backgroundTint="#FEF7FF"
-                                android:text="Edit"
-                                android:textColor="#31DB06"
+                                android:backgroundTint="@color/soft_pink_white"
+                                android:text="Sửa"
+                                android:textColor="@color/neon_green"
                                 android:textSize="17sp" />
 
                         </LinearLayout>
@@ -219,7 +218,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="Not updated yet"
+                            android:text="Chưa cập nhật"
                             android:textSize="17sp" />
                     </LinearLayout>
 
@@ -228,7 +227,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="380dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="93dp"
                     android:layout_marginTop="12dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -239,69 +238,19 @@
                         android:id="@+id/textView13"
                         android:layout_width="match_parent"
                         android:layout_height="100px"
-                        android:text="Setting"
+                        android:text="Cài đặt tài khoản"
                         android:textSize="17sp"
                         android:textStyle="bold" />
-                    <LinearLayout
+
+                    <Button
+                        android:id="@+id/btn_ChgnPass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/password_ic">
-
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Change password"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/background_ic">
-
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Change background"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
+                        android:backgroundTint="@color/neon_green"
+                        android:drawableLeft="@drawable/baseline_key_24"
+                        android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
+                        android:text="Đổi mật khẩu"
+                        android:textAlignment="textStart" />
 
 
                 </LinearLayout>
@@ -321,158 +270,73 @@
                         android:id="@+id/textView14"
                         android:layout_width="match_parent"
                         android:layout_height="100px"
-                        android:text="Policy and support"
+                        android:text="Chính sách và hỗ trợ"
                         android:textSize="17sp"
                         android:textStyle="bold" />
-                    <LinearLayout
+
+                    <Button
+                        android:id="@+id/btn_About"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/information_ic">
+                        android:layout_margin="10px"
+                        android:backgroundTint="@color/neon_green"
+                        android:drawableLeft="@drawable/baseline_mic_24"
+                        android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
+                        android:text="Về App"
+                        android:textAlignment="textStart" />
 
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="About application"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/btn_Rules"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/terms_of_services_ic">
+                        android:layout_margin="10px"
+                        android:backgroundTint="@color/neon_green"
+                        android:drawableLeft="@drawable/baseline_checklist_24"
+                        android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
+                        android:text="Điều khoản dịch vụ"
+                        android:textAlignment="textStart" />
 
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Terms of services"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/btn_Policy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/privacy_ic">
+                        android:layout_margin="10px"
+                        android:backgroundTint="@color/neon_green"
+                        android:drawableLeft="@drawable/baseline_shield_24"
+                        android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
+                        android:text="Chính sách bảo mật"
+                        android:textAlignment="textStart" />
 
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Privacy policy"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
-                    <LinearLayout
+                    <Button
+                        android:id="@+id/btn_help"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/support_ic">
-
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Support"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
+                        android:layout_margin="10px"
+                        android:backgroundTint="@color/neon_green"
+                        android:drawableLeft="@drawable/baseline_phone_in_talk_24"
+                        android:drawableRight="@drawable/baseline_arrow_forward_ios_24"
+                        android:text="Trợ giúp"
+                        android:textAlignment="textStart" />
 
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/btn_Logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:drawableRight="@drawable/baseline_logout_24"
+                    android:text="Đăng xuất"
+                    android:backgroundTint="@color/lime_green"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+                    app:layout_constraintHorizontal_bias="0.511"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                    app:layout_constraintVertical_bias="1.0" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_gravity="center"
-                android:background="@drawable/green_button_rounded_corner"
-                android:orientation="horizontal">
 
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/green_color"
-                    android:text="Sign out"
-                    android:textAlignment="center" />
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/logout_ic">
-
-                </ImageView>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
