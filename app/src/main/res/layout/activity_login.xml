@@ -117,6 +117,33 @@
             android:textSize="20sp"
             android:textStyle="bold">
         </Button>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/btnImage2"
+                android:layout_width="61dp"
+                android:layout_height="48dp"
+                android:background=""
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <Button
+                android:id="@+id/btnImage3"
+                android:layout_width="61dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/pngwing_com"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </LinearLayout>
+
+
+
         <TextView
             android:id="@+id/txtSignup"
             android:layout_width="wrap_content"
