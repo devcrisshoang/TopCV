@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="23dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200sp"
+            android:layout_height="150sp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/topcv_icon" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome to TopCV"
+            android:textAlignment="center"
+            android:textSize="20sp">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:text="Sign Up here"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold">
+
+        </TextView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnLog"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="216dp"
+        android:backgroundTint="#009688"
+        android:text="ĐĂNG KÝ"
+        app:layout_constraintEnd_toEndOf="@+id/txtDangkymail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtDangkymail"
+        app:layout_constraintTop_toBottomOf="@+id/txtDangkymail" />
+
+    <EditText
+        android:id="@+id/txtHovaten"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="268dp"
+        android:ems="10"
+        android:hint="Họ và tên"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtDangkymail"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Tài khoản"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/txtHovaten"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtHovaten"
+        app:layout_constraintTop_toBottomOf="@+id/txtHovaten" />
+
+    <EditText
+        android:id="@+id/txtNhaplaimk"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Nhập lại mật khẩu"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/txtDangkymatkhau"
+        app:layout_constraintStart_toStartOf="@+id/txtDangkymatkhau"
+        app:layout_constraintTop_toBottomOf="@+id/txtDangkymatkhau" />
+
+    <EditText
+        android:id="@+id/txtDangkymatkhau"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/txtDangkymail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtDangkymail"
+        app:layout_constraintTop_toBottomOf="@+id/txtDangkymail" />
+
+    <TextView
+        android:id="@+id/txtDangnhapngay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Đăng nhập"
+        android:textColor="#009688"
+        app:layout_constraintEnd_toEndOf="@+id/btnLog"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/btnLog"
+        app:layout_constraintTop_toBottomOf="@+id/btnLog" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
