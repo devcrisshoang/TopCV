@@ -63,7 +63,7 @@
             </ImageView>
 
             <EditText
-                android:id="@+id/txtHovaten"
+                android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
                 android:layout_marginTop="10sp"
@@ -93,7 +93,7 @@
             </ImageView>
 
             <EditText
-                android:id="@+id/txtDangkymail"
+                android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
                 android:padding="10dp"
@@ -106,7 +106,7 @@
             </EditText>
         </LinearLayout>
         <Button
-            android:id="@+id/btnLog"
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20sp"
