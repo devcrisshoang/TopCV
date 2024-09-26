@@ -10,6 +10,6 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="blue">#0000FF</color>
-    <color name="dark_blue">#003366</color> <!-- Example of a darker blue -->
+    <color name="dark_blue">#003366</color>
 
 </resources>
