@@ -38,13 +38,17 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/share_ic" />
     </LinearLayout>
+
+    <!-- Main content with weight -->
     <LinearLayout
         android:id="@+id/information_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
-        <LinearLayout
 
+        <!-- Content code remains the same -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -104,7 +108,7 @@
         <LinearLayout
             android:id="@+id/cv_experience_list"
             android:layout_width="match_parent"
-            android:layout_height="456dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="10dp"
@@ -152,8 +156,6 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <!-- Name and Contact Info -->
-
 
     <!-- Button Export PDF -->
     <Button
@@ -165,5 +167,4 @@
         android:layout_marginRight="10dp"
         android:backgroundTint="@color/green_color"
         android:text="Export PDF" />
-
 </LinearLayout>
