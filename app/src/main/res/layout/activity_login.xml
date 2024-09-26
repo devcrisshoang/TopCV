@@ -63,14 +63,14 @@
             </ImageView>
 
             <EditText
-                android:id="@+id/email_input"
+                android:id="@+id/txtHovaten"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
                 android:layout_marginTop="10sp"
                 android:layout_marginEnd="10sp"
                 android:layout_marginBottom="10sp"
                 android:background="@color/white"
-                android:hint="Email"
+                android:hint="Username"
                 android:padding="10dp">
 
             </EditText>
@@ -93,7 +93,7 @@
             </ImageView>
 
             <EditText
-                android:id="@+id/password_input"
+                android:id="@+id/txtDangkymail"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
                 android:padding="10dp"
@@ -106,7 +106,7 @@
             </EditText>
         </LinearLayout>
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/btnLog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20sp"
@@ -118,10 +118,45 @@
             android:textStyle="bold">
         </Button>
 
-        <Button
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register now"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnImage2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/facebook_ic"
+                android:scaleType="fitCenter"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textStyle="bold"
+                android:text="OR">
+
+            </TextView>
+
+            <ImageButton
+                android:id="@+id/btnImage3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/google_ic"
+                android:background="@color/white" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/txtSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign up here"
             android:textAlignment="center"
             android:textColor="@color/green_color"
             android:backgroundTint="@color/white"
