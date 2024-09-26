@@ -19,33 +19,15 @@
         tools:targetApi="31">
         <activity
             android:name=".CvActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_cv"
-            android:theme="@style/Theme.TopCV.Fullscreen" />
-        <activity
-            android:name=".CreateCvActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateCVActivity"
+            android:name=".CreateCvActivity"
             android:exported="false" />
         <activity
             android:name=".CompanyInformationsActivity"
             android:exported="false" />
         <activity
             android:name=".SeeAllActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AccountActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NotificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NewsFeedActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

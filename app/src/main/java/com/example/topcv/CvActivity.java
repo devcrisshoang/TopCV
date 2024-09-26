@@ -7,7 +7,6 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
