@@ -65,7 +65,7 @@
             <EditText
                 android:id="@+id/email_input"
                 android:layout_width="match_parent"
-                android:layout_height="40sp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10sp"
                 android:layout_marginEnd="10sp"
                 android:layout_marginBottom="10sp"
@@ -153,7 +153,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/txtSignup"
+            android:id="@+id/Register_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign up here"

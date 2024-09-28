@@ -1,124 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="23dp">
+    android:orientation="vertical"
+    tools:context=".SignUpActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="200sp"
-            android:layout_height="150sp"
-            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:scaleType="fitCenter"
             android:src="@drawable/topcv_icon" />
 
         <TextView
+            android:id="@+id/textViewWelcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome to TopCV"
             android:textAlignment="center"
-            android:textSize="20sp">
-
-        </TextView>
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/textViewSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp"
-            android:text="Sign Up here"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Sign up here"
             android:textAlignment="center"
             android:textSize="30sp"
-            android:textStyle="bold">
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:layout_margin="10dp"
+                android:src="@drawable/number_1_ic">
 
-        </TextView>
+            </ImageView>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:layout_margin="10dp"
+                android:src="@drawable/number_2_ic">
+
+            </ImageView>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Input your username:"></TextView>
+        <LinearLayout
+            android:id="@+id/linearLayoutEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/txtDangkymail"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="Username"
+                android:backgroundTint="@color/white"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Input your password:"></TextView>
+        <LinearLayout
+            android:id="@+id/linearLayoutPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/txtDangkymatkhau"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="Password"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/white"
+                android:inputType="textPassword" />
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/see_password_ic"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/white"
+                android:layout_marginRight="10dp">
+
+            </ImageButton>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:text="Input your password again:"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:hint="Password"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:inputType="textPassword" />
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/see_password_ic"
+                android:scaleType="fitCenter"
+                android:backgroundTint="@color/white"
+                android:layout_marginRight="10dp">
+
+            </ImageButton>
+        </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnLog"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="216dp"
-        android:backgroundTint="#009688"
-        android:text="ĐĂNG KÝ"
-        app:layout_constraintEnd_toEndOf="@+id/txtDangkymail"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtDangkymail"
-        app:layout_constraintTop_toBottomOf="@+id/txtDangkymail" />
 
-    <EditText
-        android:id="@+id/txtHovaten"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="268dp"
-        android:ems="10"
-        android:hint="Họ và tên"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/txtDangkymail"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Tài khoản"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="@+id/txtHovaten"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtHovaten"
-        app:layout_constraintTop_toBottomOf="@+id/txtHovaten" />
-
-    <EditText
-        android:id="@+id/txtNhaplaimk"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Nhập lại mật khẩu"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/txtDangkymatkhau"
-        app:layout_constraintStart_toStartOf="@+id/txtDangkymatkhau"
-        app:layout_constraintTop_toBottomOf="@+id/txtDangkymatkhau" />
-
-    <EditText
-        android:id="@+id/txtDangkymatkhau"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/txtDangkymail"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/txtDangkymail"
-        app:layout_constraintTop_toBottomOf="@+id/txtDangkymail" />
-
-    <TextView
-        android:id="@+id/txtDangnhapngay"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayoutButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="Đăng nhập"
-        android:textColor="#009688"
-        app:layout_constraintEnd_toEndOf="@+id/btnLog"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="@+id/btnLog"
-        app:layout_constraintTop_toBottomOf="@+id/btnLog" />
+        android:gravity="center_horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/Next_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:background="@drawable/button_rounded_corner"
+            app:backgroundTint="@null"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold">
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>

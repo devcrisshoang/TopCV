@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email_input;
     private EditText password_input;
     private Button login_button;
+    private Button Register_Button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Register_Button = findViewById(R.id.Register_Button);
         email_input = findViewById(R.id.email_input);
         password_input = findViewById(R.id.password_input);
         login_button = findViewById(R.id.login_button);
@@ -37,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
             }
+        });
+        Register_Button.setOnClickListener(view -> {
+            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            finish();
         });
     }
 }
