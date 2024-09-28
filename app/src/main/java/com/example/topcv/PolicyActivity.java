@@ -11,21 +11,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SignUpActivity extends AppCompatActivity {
-    private Button Next_Button;
+public class PolicyActivity extends AppCompatActivity {
+    private Button Register_Button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_policy);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Next_Button = findViewById(R.id.Next_Button);
-        Next_Button.setOnClickListener(view -> {
-            startActivity(new Intent(SignUpActivity.this, PolicyActivity.class));
+        Register_Button = findViewById(R.id.Register_Button);
+        Register_Button.setOnClickListener(view -> {
+            startActivity(new Intent(PolicyActivity.this, LoginActivity.class));
             finish();
         });
     }
