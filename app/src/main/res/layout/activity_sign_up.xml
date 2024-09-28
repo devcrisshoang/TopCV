@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
-
     <LinearLayout
         android:id="@+id/linearLayoutHeader"
         android:layout_width="match_parent"
@@ -139,4 +138,4 @@
             app:backgroundTint="@null" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout

@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:id="@+id/main"
-    android:layout_margin="5sp"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/main">
+
+    <!-- Header section with back button and title -->
     <LinearLayout
         android:id="@+id/header_title"
         android:layout_width="match_parent"
@@ -26,40 +27,49 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginLeft="10sp"
-            android:text="Intern Google">
-
-        </TextView>
+            android:text="Intern Google" />
+        <ImageButton
+            android:id="@+id/share_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/icon_rounded_corner"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/share_ic" />
     </LinearLayout>
 
-    <!-- Header Section -->
+    <!-- Main content with weight -->
     <LinearLayout
+        android:id="@+id/information_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Logo -->
-
-        <!-- Name and Contact Info -->
-        <ImageView
-            android:id="@+id/cv_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/fpt_ic" />
-
+        <!-- Content code remains the same -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/cv_logo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/fpt_ic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"> <!-- Căn giữa nội dung theo cả chiều ngang và chiều dọc -->
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/cv_name"
@@ -68,9 +78,8 @@
                     android:textColor="@color/black"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:layout_gravity="start"
                     android:layout_marginLeft="5dp"
-                    android:text="Applicant name"/>
+                    android:text="Applicant name" />
 
                 <TextView
                     android:id="@+id/cv_contact"
@@ -78,74 +87,84 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:layout_gravity="start"
                     android:layout_marginLeft="5dp"
-                    android:text="Postion application"/>
+                    android:text="Position application" />
             </LinearLayout>
-
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Experience Section -->
-    <TextView
-        android:id="@+id/cv_experience_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="16dp"
-        android:text="Informations:" />
+        <!-- Experience Section -->
+        <TextView
+            android:id="@+id/cv_experience_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:text="Informations:" />
 
-    <LinearLayout
-        android:id="@+id/cv_experience_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical">
-
-        <!-- Example experience item -->
         <LinearLayout
+            android:id="@+id/cv_experience_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/cv_experience_job_title"
-                android:layout_width="wrap_content"
+            <!-- Experience Item -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="email"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/cv_experience_company"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="education"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/cv_experience_job_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/cv_experience_period"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="skills"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/cv_experience_company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Education"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/cv_experience_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="certifiaction"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/cv_experience_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skills"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cv_experience_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Certification"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
-
-        <!-- More experience items can be added here -->
     </LinearLayout>
 
+    <!-- Button Export PDF -->
+    <Button
+        android:id="@+id/export_pdf_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:backgroundTint="@color/green_color"
+        android:text="Export PDF" />
 </LinearLayout>
