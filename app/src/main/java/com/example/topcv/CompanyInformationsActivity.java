@@ -1,10 +1,12 @@
 package com.example.topcv;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +19,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.topcv.adapter.ListInformationlAdapter;
+import com.example.topcv.model.CV;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CompanyInformationsActivity extends AppCompatActivity {
@@ -28,6 +34,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private LinearLayout header_title;
     private ImageView company_logo;
     private ImageButton back_button;
+    private Button Apply_Button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +47,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         company_logo = findViewById(R.id.company_logo); // Đảm bảo ID chính xác
         header_title = findViewById(R.id.header_title);
+        Apply_Button = findViewById(R.id.Apply_Button);
 
         // Đảm bảo các view không phải là null trước khi sử dụng
         if (informationBackButton == null || scrollView == null || company_logo == null || header_title == null) {
@@ -81,6 +89,9 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         // Xử lý sự kiện nhấp vào nút quay lại
         informationBackButton.setOnClickListener(v -> finish());
         back_button.setOnClickListener(v -> finish());
+        Apply_Button.setOnClickListener(view -> {
+            startActivity(new Intent(this, SelectCvToApplyJobActivity.class));
+        });
     }
 
     private boolean isViewVisible(View view) {

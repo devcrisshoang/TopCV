@@ -582,6 +582,7 @@
         app:itemHorizontalTranslationEnabled="false">
 
         <Button
+            android:id="@+id/Apply_Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -589,5 +590,6 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:text="Apply now" />
+
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </LinearLayout>
