@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".CompanyInformationsActivity">
+    <LinearLayout
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="50sp">
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/icon_rounded_corner"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/back_ic" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10sp"
+            android:text="Intern Google">
+
+        </TextView>
+    </LinearLayout>
+    <!-- ScrollView to enable scrolling -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Body Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Select CV Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="CV to apply:"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/my_cv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Your Curriculum Vitae"
+                        android:checked="true"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/upload_from_device"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Upload from my device"
+                        android:textStyle="bold" />
+                </RadioGroup>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/select_cv_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="10dp">
+                </androidx.recyclerview.widget.RecyclerView>
+                <!-- Khung chứa icon và hướng dẫn -->
+                <LinearLayout
+                    android:id="@+id/upload_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:padding="16dp"
+                    android:background="@drawable/dashed_border">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tải CV lên từ điện thoại"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/green_color"
+                        android:layout_gravity="center" />
+                    <!-- Icon tải lên -->
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/upload_ic"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="Upload Icon" />
+
+                    <!-- Hướng dẫn tải lên -->
+                    <Button
+                        android:id="@+id/button_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Click to upload"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/black" />
+
+                    <!-- Mô tả -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hỗ trợ định dạng .doc, .docx, pdf có kích thước dưới 5MB"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textAlignment="center"/>
+                    <!-- Khung chứa thông tin file -->
+                    <LinearLayout
+                        android:id="@+id/file_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageButton
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/file_ic"
+                                android:scaleType="fitCenter"
+                                android:background="@color/white"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/file_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:textStyle="bold"
+                                    android:text="file_name"/>
+
+                                <TextView
+                                    android:id="@+id/size_of_file"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:text="size of file"/>
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/close_ic"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/close_ic"
+                                android:scaleType="fitCenter"
+                                android:background="@color/white"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/warning"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="This file is invalid"
+                            android:textColor="@color/red"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Letter of Recommendation Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Letter of recommendation:"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/circle_with_grey_border"
+                    android:hint="Write a brief introduction about yourself (strengths, weaknesses) and clearly state your desire and reason for working at this company."
+                    android:padding="10dp" />
+
+                <!-- Note Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Note:"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:text="TopCV advises all of you to always be cautious during the job search process and proactively research information about the company and the job position before applying. Applicants should take responsibility for their application behavior. If you encounter suspicious job postings or receive unexpected communication from recruiters, report it immediately to TopCV via email at hotro@topcv.vn for timely support."
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- BottomNavigationView stays at the bottom of the screen -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        app:itemIconSize="24dp"
+        app:labelVisibilityMode="labeled"
+        app:itemHorizontalTranslationEnabled="false">
+
+        <Button
+            android:id="@+id/Apply_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/green_color"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Apply now" />
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+</LinearLayout>
