@@ -11,5 +11,6 @@
     <color name="black_overlay">#66000000</color>
     <color name="blue">#0000FF</color>
     <color name="dark_blue">#003366</color>
+    <color name="red">#F44336</color>
 
 </resources>
