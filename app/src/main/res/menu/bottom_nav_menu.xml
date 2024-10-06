@@ -12,6 +12,11 @@
         android:title="Profile"
         android:icon="@drawable/cv_ic"
         />
+    <item
+        android:id="@+id/messenger"
+        android:title="Messenger"
+        android:icon="@drawable/messengera_ic"
+        />
 
     <item
         android:id="@+id/notification"

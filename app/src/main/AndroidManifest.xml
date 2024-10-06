@@ -23,6 +23,15 @@
             android:name=".SelectCvToApplyJobActivity"
             android:exported="false" />
         <activity
+            android:name=".AboutActicity"
+            android:exported="false" />
+        <activity
+            android:name=".PrivatePolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TermOfServiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".PolicyActivity"
             android:exported="false" />
         <activity
