@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.topcv.fragment.AccountFragment;
+import com.example.topcv.fragment.MessengerFragment;
 import com.example.topcv.fragment.NewsFeedFragment;
 import com.example.topcv.fragment.NotificationFragment;
 import com.example.topcv.fragment.ProfileFragment;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_NOTIFICATION = 2;
     private static final int FRAGMENT_ACCOUNT = 3;
+    private static final int FRAGMENT_MESSENGER = 4;
     private int currentFragment = FRAGMENT_HOME;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
             if(currentFragment != FRAGMENT_PROFILE){
                 replaceFragment(new ProfileFragment());
                 currentFragment = FRAGMENT_PROFILE;
+                layout_header.setVisibility(View.GONE);
+
+            }
+        } else if (id == R.id.messenger) {
+            if(currentFragment != FRAGMENT_MESSENGER){
+                replaceFragment(new MessengerFragment());
+                currentFragment = FRAGMENT_MESSENGER;
                 layout_header.setVisibility(View.GONE);
 
             }

@@ -21,7 +21,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/background"
                     android:layout_width="match_parent"
                     android:layout_height="169dp"
                     android:scaleType="fitXY"
@@ -38,26 +38,40 @@
                     android:layout_marginTop="116dp"
 
                     android:background="@drawable/rounded_corner"
+                    app:layout_constraintBottom_toBottomOf="@+id/background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.492"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/avatar"
                             android:layout_width="111dp"
                             android:layout_height="85dp"
                             android:layout_marginStart="4dp"
                             android:background="@drawable/rounded_image"
                             android:scaleType="fitCenter"
+                            android:src="@drawable/account_ic"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:src="@drawable/account_ic" />
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/change_avatar"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="48dp"
+                            android:background="@drawable/circle_background_dark_blue"
+                            android:padding="5dp"
+                            android:src="@drawable/camera_ic"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/avatar"
+                            app:tint="@android:color/black" />
 
                         <TextView
                             android:id="@+id/textView25"
@@ -257,6 +271,7 @@
 
                         </ImageView>
                         <Button
+                            android:id="@+id/change_password_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -287,6 +302,7 @@
 
                         </ImageView>
                         <Button
+                            android:id="@+id/change_background_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -339,6 +355,7 @@
 
                         </ImageView>
                         <Button
+                            android:id="@+id/about_application_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -369,6 +386,7 @@
 
                         </ImageView>
                         <Button
+                            android:id="@+id/term_of_services_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -399,41 +417,12 @@
 
                         </ImageView>
                         <Button
+                            android:id="@+id/privacy_policy_button"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:backgroundTint="@color/green_color"
                             android:text="Privacy policy"
-                            android:textAlignment="center" />
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/right_arrow_ic">
-
-                        </ImageView>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/green_button_rounded_corner"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="20dp"
-                            android:src="@drawable/support_ic">
-
-                        </ImageView>
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/green_color"
-                            android:text="Support"
                             android:textAlignment="center" />
                         <ImageView
                             android:layout_width="24dp"
@@ -458,6 +447,7 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/sign_out_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
