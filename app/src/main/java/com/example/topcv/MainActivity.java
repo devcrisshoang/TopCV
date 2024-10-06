@@ -1,9 +1,11 @@
 package com.example.topcv;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -24,6 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView navigation_view_main;
     private LinearLayout layout_header;
+    private EditText search_edit_text;
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_NOTIFICATION = 2;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
         navigation_view_main = findViewById(R.id.navigation_view_main);
         layout_header = findViewById(R.id.layout_header);
+        search_edit_text = findViewById(R.id.search_edit_text);
         navigation_view_main.setOnNavigationItemSelectedListener(item -> {
             onOptionsItemSelected(item);
             return true;
@@ -49,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment(new NewsFeedFragment());
         navigation_view_main.getMenu().findItem(R.id.home).setChecked(true);
-
+        search_edit_text.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
