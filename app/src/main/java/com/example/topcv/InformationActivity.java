@@ -31,7 +31,6 @@ public class InformationActivity extends AppCompatActivity {
         // Khởi tạo các view
         editTextName = findViewById(R.id.editTextName);
         editTextPhone = findViewById(R.id.editTextPhone);
-        radioGroupRole = findViewById(R.id.radioGroupRole);
         submitButton = findViewById(R.id.Submit);
 
         // Nút submit
