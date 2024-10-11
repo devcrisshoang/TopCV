@@ -132,6 +132,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
+                android:id="@+id/see_password1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"
@@ -174,6 +175,7 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <ImageButton
+                android:id="@+id/see_password2"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="10dp"

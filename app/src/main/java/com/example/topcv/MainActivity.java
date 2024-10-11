@@ -162,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SearchActivity.class);
             startActivity(intent);
         });
-        // Set listener cho các nút
-//        setButtonListeners();
-//        selectMenuItem(homeButton);
     }
     public static void setImageButtonColor(Context context, ImageButton button, int colorResId) {
         int color = ContextCompat.getColor(context, colorResId); // Lấy màu từ resources
@@ -172,81 +169,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void setButtonListeners() {
-//        homeButton.setOnClickListener(v -> {
-//            selectMenuItem(homeButton);
-//            if(currentFragment != FRAGMENT_HOME){
-//                replaceFragment(new NewsFeedFragment());
-//                currentFragment = FRAGMENT_HOME;
-//                layout_header.setVisibility(View.VISIBLE);
-//            }
-//        });
-//
-//        profileButton.setOnClickListener(v -> {
-//            selectMenuItem(profileButton);
-//            if(currentFragment != FRAGMENT_PROFILE){
-//                replaceFragment(new ProfileFragment());
-//                currentFragment = FRAGMENT_PROFILE;
-//                layout_header.setVisibility(View.GONE);
-//
-//            }
-//        });
-//
-//        messengerButton.setOnClickListener(v -> {
-//            selectMenuItem(messengerButton);
-//            if(currentFragment != FRAGMENT_MESSENGER){
-//                replaceFragment(new MessengerFragment());
-//                currentFragment = FRAGMENT_MESSENGER;
-//                layout_header.setVisibility(View.GONE);
-//
-//            }
-//        });
-//
-//        notificationButton.setOnClickListener(v -> {
-//            selectMenuItem(notificationButton);
-//            if(currentFragment != FRAGMENT_NOTIFICATION){
-//                replaceFragment(new NotificationFragment());
-//                currentFragment = FRAGMENT_NOTIFICATION;
-//                layout_header.setVisibility(View.GONE);
-//            }
-//        });
-//
-//        accountButton.setOnClickListener(v -> {
-//            selectMenuItem(accountButton);
-//            if(currentFragment != FRAGMENT_ACCOUNT){
-//                replaceFragment(new AccountFragment());
-//                currentFragment = FRAGMENT_ACCOUNT;
-//                layout_header.setVisibility(View.GONE);
-//            }
-//        });
-//    }
-
-//    private void selectMenuItem(LinearLayout selectedButton) {
-//        // Đặt lại màu mặc định cho tất cả các nút
-//        resetMenuColors();
-//
-//        // Đặt màu xanh cho nút được chọn
-//        selectedButton.getChildAt(0).setBackgroundResource(R.color.green_color); // ImageButton
-//        ((TextView) selectedButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.green_color)); // TextView
-//    }
-
-//    private void resetMenuColors() {
-//        // Đặt lại màu nền cho tất cả các nút về mặc định
-//        homeButton.getChildAt(0).setBackgroundResource(R.color.white);
-//        ((TextView) homeButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
-//
-//        profileButton.getChildAt(0).setBackgroundResource(R.color.white);
-//        ((TextView) profileButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
-//
-//        messengerButton.getChildAt(0).setBackgroundResource(R.color.white);
-//        ((TextView) messengerButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
-//
-//        notificationButton.getChildAt(0).setBackgroundResource(R.color.white);
-//        ((TextView) notificationButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
-//
-//        accountButton.getChildAt(0).setBackgroundResource(R.color.white);
-//        ((TextView) accountButton.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
-//    }
     private void replaceFragment(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.news,fragment);

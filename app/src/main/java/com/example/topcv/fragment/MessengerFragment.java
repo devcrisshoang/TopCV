@@ -1,66 +1,46 @@
 package com.example.topcv.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.topcv.R;
+import com.example.topcv.adapter.MessengerAdapter;
+import com.example.topcv.model.Message;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MessengerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 public class MessengerFragment extends Fragment {
+    private RecyclerView messageRecyclerView;
+    private MessengerAdapter messageAdapter;
+    private List<Message> messageList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public MessengerFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MessengerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MessengerFragment newInstance(String param1, String param2) {
-        MessengerFragment fragment = new MessengerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_messenger, container, false);
+        messageRecyclerView = view.findViewById(R.id.MessageRecyclerView);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_messenger, container, false);
+        // Dữ liệu mẫu cho danh sách tin nhắn
+        messageList = new ArrayList<>();
+        messageList.add(new Message(1, 101, 202, "Hello!", "Sent", "10:10 PM", 0));
+        messageList.add(new Message(2, 102, 202, "How are you?", "Sent", "10:10 PM", 0));
+        messageList.add(new Message(3, 103, 202, "Good morning!", "Sent", "10:10 PM", 0));
+
+        // Thiết lập RecyclerView
+        messageAdapter = new MessengerAdapter(messageList, getContext());
+        messageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        messageRecyclerView.setAdapter(messageAdapter);
+
+        return view;
     }
 }
