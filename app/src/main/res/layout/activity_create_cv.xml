@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="15dp">
 
             <!-- Thanh điều hướng bên trên cùng -->
             <LinearLayout
@@ -111,13 +111,12 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_rounded_corner"
                     android:hint="Full name"
-                    android:padding="10sp"
-                    android:textSize="20sp" />
+                    android:padding="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email:"
+                    android:text="Working_Experience_Require:"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -227,6 +226,7 @@
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/green_color"
             android:text="Add new CV" />
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

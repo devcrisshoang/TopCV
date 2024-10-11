@@ -63,4 +63,13 @@ dependencies {
 
     // Facebook SDK
     implementation("com.facebook.android:facebook-android-sdk:latest.release")
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
+    implementation (libs.okhttp)
+    implementation (libs.adapter.rxjava3)
+    implementation (libs.rxandroid)
+    implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
 }
