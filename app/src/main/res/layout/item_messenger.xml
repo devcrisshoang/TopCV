@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_margin="10sp"
     android:layout_height="wrap_content"
+    android:background="@drawable/edit_text_rounded_corner"
     android:orientation="horizontal">
 
     <ImageView
@@ -26,6 +27,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/sender_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -36,6 +38,7 @@
             android:text="Gia Khanh" />
 
         <TextView
+            android:id="@+id/message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,9 +49,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/TimeOfNotification"
+        android:id="@+id/send_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="10:10 PM"/>
+        android:layout_marginRight="5dp"
+        android:text="10:10 PM" />
 </LinearLayout>

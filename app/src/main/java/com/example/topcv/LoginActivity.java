@@ -35,6 +35,13 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.example.topcv.API.ApiUserService;
+import com.example.topcv.model.User;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -110,28 +117,30 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Kiểm tra thông tin đăng nhập với SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        String savedPassword = sharedPreferences.getString(username + "_password", null); // Sử dụng username để lấy mật khẩu
-        int loginCount = sharedPreferences.getInt(username + "_login_count", 0); // Lấy số lần đăng nhập cho tài khoản này
+        // Gọi API để lấy tất cả người dùng
+        ApiUserService.apiUserService.getAllUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(users -> {
+                    boolean isValidUser = false;
 
-        if (savedPassword != null && savedPassword.equals(password)) {
-            // Thông tin đăng nhập đúng, tăng số lần đăng nhập
-            loginCount++; // Tăng số lần đăng nhập
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(username + "_login_count", loginCount); // Lưu số lần đăng nhập mới cho username
-            editor.apply();
+                    for (User user : users) {
+                        // Kiểm tra tên đăng nhập và mật khẩu
+                        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                            isValidUser = true;
+                            // Chuyển đến MainActivity
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                            break;
+                        }
+                    }
 
-            // Hiển thị thông báo số lần đăng nhập
-            Toast.makeText(LoginActivity.this, "Bạn đã đăng nhập " + loginCount + " lần", Toast.LENGTH_SHORT).show();
-
-            // Chuyển đến MainActivity
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        } else {
-            // Thông tin đăng nhập sai
-            Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
-        }
+                    if (!isValidUser) {
+                        Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                    }
+                }, throwable -> {
+                    Toast.makeText(LoginActivity.this, "Lỗi kết nối đến server: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void loginWithFacebook() {

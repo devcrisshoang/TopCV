@@ -47,11 +47,7 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_COMPANY) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_company, parent, false);
-            return new CompanyViewHolder(view);
-        } else if (viewType == VIEW_TYPE_CATEGORY) {
+        if (viewType == VIEW_TYPE_CATEGORY) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_category, parent, false);
             return new CategoryViewHolder(view);
@@ -61,10 +57,7 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof CompanyViewHolder) {
-            Company company = (Company) mixedList.get(position);
-            ((CompanyViewHolder) holder).bind(company);
-        } else if (holder instanceof CategoryViewHolder) {
+        if (holder instanceof CategoryViewHolder) {
             Category category = (Category) mixedList.get(position);
             ((CategoryViewHolder) holder).bind(category);
         }
@@ -73,35 +66,6 @@ public class MixedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemCount() {
         return mixedList.size();
-    }
-
-    class CompanyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView companyLogo;
-        private TextView companyName;
-        private TextView companyIndustry;
-        private TextView companyRank;
-        private RecyclerView recyclerViewCompanies;
-
-        public CompanyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            companyLogo = itemView.findViewById(R.id.companyLogo);
-            companyName = itemView.findViewById(R.id.companyName);
-            companyIndustry = itemView.findViewById(R.id.companyIndustry);
-            companyRank = itemView.findViewById(R.id.companyBadge);
-            recyclerViewCompanies = itemView.findViewById(R.id.recyclerview_jobs);
-        }
-
-        public void bind(Company company) {
-            companyLogo.setImageResource(company.getLogo());
-            companyName.setText(company.getName());
-            companyIndustry.setText(company.getIndustry());
-            companyRank.setText(company.getBadge());
-
-            if (recyclerViewCompanies != null) {
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(itemView.getContext(), 2);
-                recyclerViewCompanies.setLayoutManager(gridLayoutManager);
-            }
-        }
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
