@@ -27,6 +27,12 @@
             android:name=".MessageActivity"
             android:exported="false" />
         <activity
+            android:name=".VerifyPhoneActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InformationActivity"
+            android:exported="false" />
+        <activity
             android:name=".SelectCvToApplyJobActivity"
             android:exported="false" />
         <activity

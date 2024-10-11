@@ -43,11 +43,12 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.cast.framework)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation (libs.circleimageview)
-    implementation(kotlin("script-runtime"))
+    //implementation(kotlin("script-runtime"))
     implementation ("com.google.android.gms:play-services-maps:18.0.0")
     // Thêm vào build.gradle
     implementation (libs.glide)
@@ -71,4 +72,5 @@ dependencies {
     implementation (libs.rxandroid)
     implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
+
 }

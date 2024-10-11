@@ -45,12 +45,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 9001; // Mã yêu cầu cho Google Sign-In
+    private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
 
-    private EditText usernameInput, passwordInput; // Sử dụng username thay vì email
+    private EditText usernameInput, passwordInput;
     private Button loginButton, Register_Button;
     private ImageButton facebookButton, googleButton;
 
@@ -71,10 +71,10 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Khởi tạo các thành phần UI
-        usernameInput = findViewById(R.id.email_input); // Sử dụng username thay vì email
+        usernameInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.login_button);
-        Register_Button = findViewById(R.id.Register_Button); // Khởi tạo nút đăng ký
+        Register_Button = findViewById(R.id.Register_Button);
         facebookButton = findViewById(R.id.btnImage2);
         googleButton = findViewById(R.id.btnImage3);
 
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         // Xử lý nút đăng ký
         Register_Button.setOnClickListener(view -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-            intent.putExtra("isSignUpButtonClicked", true); // Gửi thông tin để thay đổi màu sắc
+            intent.putExtra("isSignUpButtonClicked", true);
             startActivity(intent);
             finish();
         });
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
-        String username = usernameInput.getText().toString().trim(); // Lấy tên đăng nhập
+        String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
         // Kiểm tra thông tin nhập vào
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this, null); // Thêm các quyền cần thiết ở đây
+        LoginManager.getInstance().logInWithReadPermissions(this, null);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -169,9 +169,21 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Facebook login successful", Toast.LENGTH_SHORT).show();
-                        // Chuyển đến MainActivity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Facebook login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -206,9 +218,21 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Google login successful", Toast.LENGTH_SHORT).show();
-                        // Chuyển đến MainActivity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Google login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
