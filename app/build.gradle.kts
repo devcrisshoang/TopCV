@@ -72,4 +72,5 @@ dependencies {
     implementation (libs.rxandroid)
     implementation("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0")
+
 }
