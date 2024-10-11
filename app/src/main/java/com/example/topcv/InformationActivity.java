@@ -56,7 +56,7 @@ public class InformationActivity extends AppCompatActivity {
             }
 
             // Điều hướng sang VerifyPhoneActivity
-            Intent intent = new Intent(InformationActivity.this, VerifyPhoneActivity.class);
+            Intent intent = new Intent(InformationActivity.this, MainActivity.class);
             intent.putExtra("phone", formattedPhone); // Truyền số điện thoại đã định dạng
             startActivity(intent);
             finish(); // Đóng Activity hiện tại

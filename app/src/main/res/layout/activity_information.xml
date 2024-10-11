@@ -33,17 +33,6 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textViewSignup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Sign up here"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,17 +43,20 @@
             android:layout_marginBottom="30dp" />
     </LinearLayout>
 
+
+    <!-- Submit Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="1"
         android:padding="16dp">
 
         <!-- Name Label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:text="Enter your name:"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -95,11 +87,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
             android:text="Enter your phone number:"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp" />
+            android:textStyle="bold" />
 
         <!-- Phone Input Section -->
         <LinearLayout
@@ -125,24 +117,17 @@
 
     </LinearLayout>
 
-
-
-    <!-- Submit Button -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
         <Button
             android:id="@+id/Submit"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20sp"
-            android:background="@drawable/button_rounded_corner"
-            app:backgroundTint="@null"
-            android:text="Next"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:backgroundTint="@color/green_color"
+            android:text="Finish" />
     </LinearLayout>
 
 </LinearLayout>

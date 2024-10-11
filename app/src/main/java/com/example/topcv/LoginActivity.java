@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                             isValidUser = true;
                             // Chuyển đến MainActivity
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
                             finish();
                             break;
                         }
