@@ -38,12 +38,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 9001; // Mã yêu cầu cho Google Sign-In
+    private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
     private CallbackManager callbackManager;
 
-    private EditText usernameInput, passwordInput; // Sử dụng username thay vì email
+    private EditText usernameInput, passwordInput;
     private Button loginButton, Register_Button;
     private ImageButton facebookButton, googleButton;
 
@@ -64,10 +64,10 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Khởi tạo các thành phần UI
-        usernameInput = findViewById(R.id.email_input); // Sử dụng username thay vì email
+        usernameInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.login_button);
-        Register_Button = findViewById(R.id.Register_Button); // Khởi tạo nút đăng ký
+        Register_Button = findViewById(R.id.Register_Button);
         facebookButton = findViewById(R.id.btnImage2);
         googleButton = findViewById(R.id.btnImage3);
 
@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Đặt listener cho WindowInsets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            // Sử dụng WindowInsetsCompat để lấy các giá trị Insets
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -88,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         // Xử lý nút đăng ký
         Register_Button.setOnClickListener(view -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-            intent.putExtra("isSignUpButtonClicked", true); // Gửi thông tin để thay đổi màu sắc
+            intent.putExtra("isSignUpButtonClicked", true);
             startActivity(intent);
             finish();
         });
@@ -101,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
-        String username = usernameInput.getText().toString().trim(); // Lấy tên đăng nhập
+        String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
         // Kiểm tra thông tin nhập vào
@@ -112,30 +111,31 @@ public class LoginActivity extends AppCompatActivity {
 
         // Kiểm tra thông tin đăng nhập với SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        String savedPassword = sharedPreferences.getString(username + "_password", null); // Sử dụng username để lấy mật khẩu
-        int loginCount = sharedPreferences.getInt(username + "_login_count", 0); // Lấy số lần đăng nhập cho tài khoản này
+        String savedPassword = sharedPreferences.getString(username + "_password", null);
+        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
 
         if (savedPassword != null && savedPassword.equals(password)) {
-            // Thông tin đăng nhập đúng, tăng số lần đăng nhập
-            loginCount++; // Tăng số lần đăng nhập
+            // Tăng số lần đăng nhập và lưu
+            loginCount++;
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(username + "_login_count", loginCount); // Lưu số lần đăng nhập mới cho username
+            editor.putInt(username + "_login_count", loginCount);
             editor.apply();
 
-            // Hiển thị thông báo số lần đăng nhập
-            Toast.makeText(LoginActivity.this, "Bạn đã đăng nhập " + loginCount + " lần", Toast.LENGTH_SHORT).show();
-
-            // Chuyển đến MainActivity
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            if (loginCount == 1) {
+                // Chuyển đến InformationActivity nếu là lần đầu đăng nhập
+                startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+            } else {
+                Toast.makeText(LoginActivity.this, "Bạn đã đăng nhập " + loginCount + " lần", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
             finish();
         } else {
-            // Thông tin đăng nhập sai
             Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loginWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this, null); // Thêm các quyền cần thiết ở đây
+        LoginManager.getInstance().logInWithReadPermissions(this, null);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -160,9 +160,21 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Facebook login successful", Toast.LENGTH_SHORT).show();
-                        // Chuyển đến MainActivity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Facebook login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -197,9 +209,21 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Google login successful", Toast.LENGTH_SHORT).show();
-                        // Chuyển đến MainActivity
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }
                         finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Google login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
