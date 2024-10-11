@@ -37,7 +37,6 @@ public class InformationActivity extends AppCompatActivity {
         submitButton.setOnClickListener(v -> {
             String name = editTextName.getText().toString().trim();
             String phone = editTextPhone.getText().toString().trim();
-            int selectedRoleId = radioGroupRole.getCheckedRadioButtonId();
 
             if (TextUtils.isEmpty(name)) {
                 Toast.makeText(InformationActivity.this, "Vui lòng nhập tên của bạn", Toast.LENGTH_SHORT).show();
@@ -46,11 +45,6 @@ public class InformationActivity extends AppCompatActivity {
 
             if (TextUtils.isEmpty(phone)) {
                 Toast.makeText(InformationActivity.this, "Vui lòng nhập số điện thoại", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (selectedRoleId == -1) {
-                Toast.makeText(InformationActivity.this, "Vui lòng chọn vai trò của bạn", Toast.LENGTH_SHORT).show();
                 return;
             }
 
