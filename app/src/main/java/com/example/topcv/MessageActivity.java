@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.topcv.API.ApiMessageService;
+import com.example.topcv.api.ApiMessageService;
 import com.example.topcv.adapter.MessengerShowAdapter;
 import com.example.topcv.model.Message;
 
