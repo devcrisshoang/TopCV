@@ -39,19 +39,19 @@ public class InformationActivity extends AppCompatActivity {
             String phone = editTextPhone.getText().toString().trim();
 
             if (TextUtils.isEmpty(name)) {
-                Toast.makeText(InformationActivity.this, "Vui lòng nhập tên của bạn", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InformationActivity.this, "Please enter your name", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (TextUtils.isEmpty(phone)) {
-                Toast.makeText(InformationActivity.this, "Vui lòng nhập số điện thoại", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InformationActivity.this, "Please enter phone number", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Định dạng số điện thoại
             String formattedPhone = formatPhoneNumber(phone);
             if (formattedPhone == null) {
-                Toast.makeText(InformationActivity.this, "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InformationActivity.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
                 return;
             }
 

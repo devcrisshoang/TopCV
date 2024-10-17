@@ -3,15 +3,12 @@ package com.example.topcv;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -37,8 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.example.topcv.API.ApiUserService;
 import com.example.topcv.model.User;
-
-import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -113,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Kiểm tra thông tin nhập vào
         if (username.isEmpty() || password.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Vui lòng nhập tên đăng nhập và mật khẩu", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -136,10 +131,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     if (!isValidUser) {
-                        Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
-                    Toast.makeText(LoginActivity.this, "Lỗi kết nối đến server: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Error connecting to server:" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
