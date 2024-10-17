@@ -27,6 +27,7 @@ import com.example.topcv.fragment.MessengerFragment;
 import com.example.topcv.fragment.NewsFeedFragment;
 import com.example.topcv.fragment.NotificationFragment;
 import com.example.topcv.fragment.ProfileFragment;
+import com.example.topcv.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {

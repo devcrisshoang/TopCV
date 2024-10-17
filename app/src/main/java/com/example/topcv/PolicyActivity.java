@@ -54,6 +54,10 @@ public class PolicyActivity extends AppCompatActivity {
         String username = intent.getStringExtra("username");
         String password = intent.getStringExtra("password");
 
+        if (intent.getBooleanExtra("isSignUpButtonClicked", false)) {
+            iconNumber2.setColorFilter(getResources().getColor(R.color.green_color), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
         // Tạo đối tượng User mới
         User newUser = new User(username, password, 0, 0, 0); // Giả định các giá trị khác
 
