@@ -1,13 +1,16 @@
 package com.example.topcv.API;
 
+import com.example.topcv.model.Applicant;
 import com.example.topcv.model.User;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -38,13 +41,22 @@ public interface ApiUserService {
             .build()
             .create(ApiUserService.class);
 
-    @POST("api/User")
+    // Phương thức để thêm một User
+    @POST("api/User") // Đường dẫn đến API để thêm người dùng
     Observable<User> createUser(@Body User user);
 
-    // Thêm phương thức GET để lấy tất cả tên đăng nhập
-    @GET("api/User/usernames") // Địa chỉ cần sửa lại cho phù hợp với endpoint trên server
+    // Thêm phương thức POST để thêm Applicant
+    @POST("api/Applicant") // This should match your controller's create action
+    Single<Response<Applicant>> addApplicant(@Body Applicant applicant);
+
+    // Phương thức lấy tất cả tên đăng nhập
+    @GET("api/User/usernames")
     Observable<List<String>> getAllUsernames();
-    // Thêm phương thức GET để lấy tất cả user
+
+    // Phương thức lấy tất cả người dùng
     @GET("api/User")
     Observable<List<User>> getAllUser();
+
+    @POST("api/User") // Đường dẫn đến API để thêm người dùng
+    Single<Response<User>> addUser(@Body User user);
 }

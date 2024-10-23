@@ -58,8 +58,8 @@ public class PolicyActivity extends AppCompatActivity {
             iconNumber2.setColorFilter(getResources().getColor(R.color.green_color), android.graphics.PorterDuff.Mode.SRC_IN);
         }
 
-        // Tạo đối tượng User mới
-        User newUser = new User(username, password, 0, 0, 0); // Giả định các giá trị khác
+        // Tạo đối tượng User mới mà không có uid
+        User newUser = new User(username, password, 0, 0, 0, null); // uid set to null
 
         // Gọi API POST để tạo người dùng
         apiUserService = ApiUserService.apiUserService;
@@ -74,11 +74,8 @@ public class PolicyActivity extends AppCompatActivity {
                     Toast.makeText(PolicyActivity.this, "Failed to create user: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
-        // Kiểm tra và hiển thị debug thông tin username và password
-        Toast.makeText(this, "Username: " + username + ", Password: " + password, Toast.LENGTH_SHORT).show();
-
         Register_Button.setOnClickListener(view -> {
-            if (!agreeCheckBox.isChecked()){
+            if (!agreeCheckBox.isChecked()) {
                 Toast.makeText(PolicyActivity.this, "You have not agreed to our policy.", Toast.LENGTH_SHORT).show();
                 return;
             }
