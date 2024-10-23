@@ -7,16 +7,13 @@ public class User {
     private int iD_SortOfUser;
     private int image_Background;
     private int avatar;
-    private String uid; // Thêm uid
 
-
-    public User(String username, String password, int iD_SortOfUser, int image_Background, int avatar, String uid) {
+    public User(String username, String password, int iD_SortOfUser, int image_Background, int avatar) {
         this.username = username;
         this.password = password;
         this.iD_SortOfUser = iD_SortOfUser;
         this.image_Background = image_Background;
         this.avatar = avatar;
-        this.uid = uid;
     }
 
     // Getters và setters
@@ -66,12 +63,5 @@ public class User {
 
     public void setAvatar(int avatar) {
         this.avatar = avatar;
-    }
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 }

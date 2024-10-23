@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.topcv.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,6 +38,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.example.topcv.API.ApiUserService;
 import com.example.topcv.model.User;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -126,18 +129,8 @@ public class LoginActivity extends AppCompatActivity {
                         // Kiểm tra tên đăng nhập và mật khẩu
                         if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                             isValidUser = true;
-
-                            // Kiểm tra trạng thái đã hoàn thành nhập thông tin
-                            SharedPreferences sharedPreferences = getSharedPreferences("TopCVPrefs", MODE_PRIVATE);
-                            boolean isInfoCompleted = sharedPreferences.getBoolean(user.getUsername() + "_isInfoCompleted", false);
-
-                            if (isInfoCompleted) {
-                                // Nếu đã hoàn thành nhập thông tin, chuyển đến MainActivity
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            } else {
-                                // Nếu chưa hoàn thành, chuyển đến InformationActivity
-                                startActivity(new Intent(LoginActivity.this, InformationActivity.class));
-                            }
+                            // Chuyển đến MainActivity
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
                             break;
                         }
@@ -150,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Lỗi kết nối đến server: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
 
     private void loginWithFacebook() {
         LoginManager.getInstance().logInWithReadPermissions(this, null);
@@ -178,9 +170,22 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            saveUserData(user); // Gọi phương thức để lưu thông tin người dùng
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Facebook login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -214,36 +219,25 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            saveUserData(user); // Gọi phương thức để lưu thông tin người dùng
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        String username = user.getEmail();
+                        int loginCount = sharedPreferences.getInt(username + "_login_count", 0);
+                        loginCount++;
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt(username + "_login_count", loginCount);
+                        editor.apply();
+
+                        if (loginCount == 1) {
+                            startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                        } else {
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
+                        finish();
                     } else {
                         Toast.makeText(LoginActivity.this, "Google login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
-    }
-
-    private void saveUserData(FirebaseUser user) {
-        String email = user.getEmail();
-        String uid = user.getUid();
-
-        // Tạo một đối tượng User
-        User newUser = new User(email, "", 0, 0, 0, uid);
-        newUser.setUsername(email); // Sử dụng email làm tên đăng nhập
-        newUser.setPassword(""); // Không cần lưu mật khẩu
-        newUser.setImage_Background(0); // Hoặc một giá trị mặc định
-        newUser.setAvatar(0); // Hoặc một giá trị mặc định
-
-        // Gọi API để lưu thông tin người dùng
-        ApiUserService.apiUserService.addUser(newUser)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    // Xử lý phản hồi từ server nếu cần
-                    startActivity(new Intent(LoginActivity.this, InformationActivity.class)); // Chuyển đến MainActivity
-                    finish();
-                }, throwable -> {
-                    Toast.makeText(LoginActivity.this, "Lỗi khi lưu thông tin người dùng: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 }
