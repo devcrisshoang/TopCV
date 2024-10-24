@@ -51,8 +51,8 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
 
         // Đặt thời gian và nội dung cho TextView
         holder.message.setText(message.getContent());
-        holder.send_time.setText(String.valueOf(Calendar.getInstance()).toString());
-        holder.sender_name.setText(String.valueOf(message.getSender_ID()));
+        holder.send_time.setText("10:00 PM");
+        holder.sender_name.setText("Khanh");
     }
 
     @Override
