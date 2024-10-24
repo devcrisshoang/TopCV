@@ -1,30 +1,21 @@
 package com.example.topcv;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.topcv.adapter.JobsAdapter;
-import com.example.topcv.model.Category;
-import com.example.topcv.model.Jobs;
+import com.example.topcv.model.Job;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SeeAllActivity extends AppCompatActivity {
     private RecyclerView recycler_view_see_all;
-    private JobsAdapter jobsAdapter;
+    //private JobsAdapter jobsAdapter;
     private ImageButton back_button;
     private TextView content_list;
 
@@ -40,11 +31,11 @@ public class SeeAllActivity extends AppCompatActivity {
 
         // Thiết lập RecyclerView
         recycler_view_see_all = findViewById(R.id.recycler_view_see_all);
-        jobsAdapter = new JobsAdapter(getApplicationContext());
+        //jobsAdapter = new JobsAdapter(getApplicationContext());
 
         // Nhận dữ liệu từ Intent
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
-        ArrayList<Jobs> jobsList = getIntent().getParcelableArrayListExtra("JOBS_LIST");
+        ArrayList<Job> jobsList = getIntent().getParcelableArrayListExtra("JOBS_LIST");
 
         // Kiểm tra xem danh sách công việc có null không
         if (jobsList == null) {
@@ -52,9 +43,9 @@ public class SeeAllActivity extends AppCompatActivity {
         }
 
         // Hiển thị dữ liệu trong RecyclerView
-        jobsAdapter.setData(jobsList);
+        //jobsAdapter.setData(jobsList);
         recycler_view_see_all.setLayoutManager(new LinearLayoutManager(this));
-        recycler_view_see_all.setAdapter(jobsAdapter);
+        //recycler_view_see_all.setAdapter(jobsAdapter);
         content_list.setText(categoryName);
 
         // Hiển thị thông báo hoặc tên danh mục (tuỳ chọn)
@@ -63,13 +54,13 @@ public class SeeAllActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No jobs available", Toast.LENGTH_SHORT).show();
         }
-        jobsAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Jobs job) {
-                Intent intent = new Intent(SeeAllActivity.this, CompanyInformationsActivity.class);
-                startActivity(intent);
-            }
-        });
+//        jobsAdapter.setOnItemClickListener(new JobsAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(Jobs job) {
+//                Intent intent = new Intent(SeeAllActivity.this, CompanyInformationsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
 }

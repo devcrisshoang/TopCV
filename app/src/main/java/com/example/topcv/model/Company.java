@@ -1,25 +1,74 @@
 package com.example.topcv.model;
 public class Company {
+    private int id;
     private String name;
-    private String industry;
-    private String badge;
-    private int logo;
+    private String address;
+    private String hotline;
+    private String field;
+    private int image;
     private boolean isChecked;
+
+    public Company(String name, String address, String hotline, String field, int image, boolean isChecked) {
+        this.name = name;
+        this.address = address;
+        this.hotline = hotline;
+        this.field = field;
+        this.image = image;
+        this.isChecked = isChecked;
+    }
+
+    public Company(String name, int image, String field) {
+        this.name = name;
+        this.image = image;
+        this.field = field;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBadge(String badge) {
-        this.badge = badge;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setLogo(int logo) {
-        this.logo = logo;
+    public String getHotline() {
+        return hotline;
+    }
+
+    public void setHotline(String hotline) {
+        this.hotline = hotline;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public boolean isChecked() {
@@ -28,29 +77,6 @@ public class Company {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
-    }
-
-    public Company(String name, String industry, String badge, int logo) {
-        this.name = name;
-        this.industry = industry;
-        this.badge = badge;
-        this.logo = logo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public String getBadge() {
-        return badge;
-    }
-
-    public int getLogo() {
-        return logo;
     }
 }
 
