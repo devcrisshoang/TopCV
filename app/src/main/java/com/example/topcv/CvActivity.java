@@ -7,9 +7,12 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,11 +25,19 @@ import androidx.core.view.WindowInsetsCompat;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Resume;
+
 public class CvActivity extends AppCompatActivity {
     private ImageButton back_button, shareButton;
     private Button exportPdfButton;
     private ActivityResultLauncher<Intent> createPdfLauncher;
-    private Uri savedPdfUri;  // Để lưu URI của PDF sau khi lưu
+    private Uri savedPdfUri;
+
+    private ImageView cv_logo;
+    private TextView name, job_applying, introduction, experience, email, phone_number, education, skill, certification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +51,22 @@ public class CvActivity extends AppCompatActivity {
             return insets;
         });
 
+        setWidget();
+
+        // Nhận resume_id từ Intent
+        int resumeId = getIntent().getIntExtra("resume_id", -1); // Giá trị mặc định là -1 nếu không tìm thấy
+
+        if (resumeId != -1) {
+            // Gọi API để lấy dữ liệu Resume theo resumeId
+            fetchResumeData(resumeId);
+        } else {
+            Log.d("CvActivity", "Resume ID not found.");
+        }
+
+        // Gọi API để lấy dữ liệu Resume với ID mặc định là 21
+        fetchResumeData(resumeId);
+
         // Nút quay lại
-        back_button = findViewById(R.id.back_button);
         back_button.setOnClickListener(view -> finish());
 
         // Đăng ký launcher để mở file picker
@@ -56,11 +81,9 @@ public class CvActivity extends AppCompatActivity {
         });
 
         // Nút xuất PDF
-        exportPdfButton = findViewById(R.id.export_pdf_button);
         exportPdfButton.setOnClickListener(v -> openFilePicker());
 
         // Nút chia sẻ
-        shareButton = findViewById(R.id.share_button);
         shareButton.setOnClickListener(v -> {
             if (savedPdfUri != null) {
                 sharePdf(savedPdfUri);  // Chia sẻ PDF đã lưu
@@ -68,6 +91,76 @@ public class CvActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please export the PDF first", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Thiết lập các widget trên layout
+    private void setWidget() {
+        back_button = findViewById(R.id.back_button);
+        exportPdfButton = findViewById(R.id.export_pdf_button);
+        shareButton = findViewById(R.id.share_button);
+        cv_logo = findViewById(R.id.cv_logo);
+        name = findViewById(R.id.name);
+        job_applying = findViewById(R.id.job_applying);
+        introduction = findViewById(R.id.introduction);
+        experience = findViewById(R.id.experience);
+        email = findViewById(R.id.email);
+        phone_number = findViewById(R.id.phone_number);
+        education = findViewById(R.id.education);
+        skill = findViewById(R.id.skill);
+        certification = findViewById(R.id.certification);
+    }
+
+    // Gọi API để lấy dữ liệu Resume theo resumeId
+    private void fetchResumeData(int resumeId) {
+        ApiResumeService.apiResumeService.getResumeById(resumeId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(resume -> {
+                    if (resume != null) {
+                        populateResumeData(resume);  // Gán dữ liệu vào view
+                    } else {
+                        Log.e("CvActivity", "No resume found with this resumeId.");
+                        Toast.makeText(this, "No resume found", Toast.LENGTH_SHORT).show();
+                    }
+                }, throwable -> {
+                    Log.e("CvActivity", "Error fetching resume data: " + throwable.getMessage());
+                    throwable.printStackTrace(); // Để ghi chi tiết lỗi
+                    Toast.makeText(this, "Error fetching resume data", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
+
+    private void populateResumeData(Resume resume) {
+        if (resume != null) {
+            Log.d("CvActivity", "Populating resume data: " + resume.toString());
+
+            if (resume.getApplicant_name() != null) {
+                name.setText(resume.getApplicant_name());
+            } else {
+                Log.w("CvActivity", "Applicant name is null");
+            }
+
+            name.setText(resume.getApplicant_name());
+            job_applying.setText(resume.getJob_applying());
+            introduction.setText(resume.getIntroduction());
+            experience.setText(resume.getExperience());
+            email.setText(resume.getEmail());
+            phone_number.setText(resume.getPhone_number());
+            education.setText(resume.getEducation());
+            skill.setText(resume.getSkills());
+            certification.setText(resume.getCertificate());
+            // Example for ImageView
+            String imageUri = resume.getImage();
+            if (imageUri != null && !imageUri.isEmpty()) {
+                cv_logo.setImageURI(Uri.parse(imageUri));
+            } else {
+                cv_logo.setImageResource(R.drawable.account_ic);
+                Log.w("CvActivity", "No image URL found, using default image");
+            }
+        } else {
+            Log.e("CvActivity", "Resume data is null");
+        }
     }
 
     // Mở bộ chọn file để lưu file PDF

@@ -46,4 +46,12 @@ public interface ApiResumeService {
     // GET method to fetch resumes by applicant ID
     @GET("api/Resume/GetResumeBy/{applicantId}")
     Observable<List<Resume>> getResumesByApplicantId(@Path("applicantId") int applicantId);
+
+    @GET("api/Resume/GetResumeIdBy/{id}")
+    Observable<Resume> getResumeById(@Path("id") int id);
+
+    //test
+    @GET("api/Resume/21")
+    Observable<Resume> getResumeById();
+
 }

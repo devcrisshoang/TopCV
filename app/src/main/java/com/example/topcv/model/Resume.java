@@ -3,6 +3,7 @@ package com.example.topcv.model;
 import com.google.gson.annotations.SerializedName;
 
 public class Resume {
+    @SerializedName("id")
     private int id;
 
     @SerializedName("applicant_Name") // Ánh xạ trường JSON

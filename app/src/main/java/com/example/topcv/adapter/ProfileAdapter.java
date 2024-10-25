@@ -78,10 +78,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         // Đặt sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
+            // Tạo Intent để mở CvActivity
             Intent intent = new Intent(mContext, CvActivity.class);
+            // Truyền resume_id của đối tượng Resume sang CvActivity
+            intent.putExtra("resume_id", resume.getId());
             mContext.startActivity(intent);
         });
     }
+
 
 
     @Override
