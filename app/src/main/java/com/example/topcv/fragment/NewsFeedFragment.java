@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -36,6 +38,12 @@ public class NewsFeedFragment extends Fragment {
     private RecyclerView recyclerview_thetopcompanies;
     private RecyclerView recyclerview_thearticle;
 
+    private Button view_all_suitable_job;
+    private Button view_all_best_job;
+    private Button view_all_interesting_job;
+    private Button view_all_top_company;
+    private Button view_all_article;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +55,25 @@ public class NewsFeedFragment extends Fragment {
         TheTopCompany();
         TheArticle();
         return view;
+    }
+    private void setWidget(View view){
+        //adapter
+        articleAdapter = new ArticleAdapter();
+        companyTopAdapter = new CompanyTopAdapter();
+        theBestJobAdapter = new TheBestJobAdapter();
+        workAdapter = new WorkAdapter();
+        //recyclerview
+        recyclerview_thesuitablejob = view.findViewById(R.id.recyclerview_thesuitablejob);
+        recyclerview_thebestjob = view.findViewById(R.id.recyclerview_thebestjob);
+        recyclerview_theinterestingjob = view.findViewById(R.id.recyclerview_theinterestingjob);
+        recyclerview_thetopcompanies = view.findViewById(R.id.recyclerview_thetopcompanies);
+        recyclerview_thearticle = view.findViewById(R.id.recyclerview_thearticle);
+        //button
+        view_all_suitable_job = view.findViewById(R.id.view_all_suitable_job);
+        view_all_best_job = view.findViewById(R.id.view_all_suitable_job);
+        view_all_interesting_job = view.findViewById(R.id.view_all_suitable_job);
+        view_all_top_company = view.findViewById(R.id.view_all_suitable_job);
+        view_all_article = view.findViewById(R.id.view_all_suitable_job);
     }
     private void TheSuitableJob(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -88,19 +115,6 @@ public class NewsFeedFragment extends Fragment {
         articleAdapter.setData(getListArticle());
         recyclerview_thearticle.setAdapter(articleAdapter);
     }
-    private void setWidget(View view){
-        //adapter
-        articleAdapter = new ArticleAdapter();
-        companyTopAdapter = new CompanyTopAdapter();
-        theBestJobAdapter = new TheBestJobAdapter();
-        workAdapter = new WorkAdapter();
-        //recyclerview
-        recyclerview_thesuitablejob = view.findViewById(R.id.recyclerview_thesuitablejob);
-        recyclerview_thebestjob = view.findViewById(R.id.recyclerview_thebestjob);
-        recyclerview_theinterestingjob = view.findViewById(R.id.recyclerview_theinterestingjob);
-        recyclerview_thetopcompanies = view.findViewById(R.id.recyclerview_thetopcompanies);
-        recyclerview_thearticle = view.findViewById(R.id.recyclerview_thearticle);
-    }
     private List<Job> getListWork(){
         List<Job> list = new ArrayList<>();
         list.add(new Job(R.drawable.fpt_ic,"Mobile","FPT","Hanoi","intern", "$300",30,false));
@@ -139,7 +153,6 @@ public class NewsFeedFragment extends Fragment {
         list.add(new Article("FPT", "Catching up with the latest market trends and emerging technologies, FPT has developed the Made by FPT ecosystem of services, products, solutions, and platforms, which helps bring sustainable",R.drawable.fpt_ic));
         list.add(new Article("FPT", "Catching up with the latest market trends and emerging technologies, FPT has developed the Made by FPT ecosystem of services, products, solutions, and platforms, which helps bring sustainable",R.drawable.fpt_ic));
         list.add(new Article("FPT", "Catching up with the latest market trends and emerging technologies, FPT has developed the Made by FPT ecosystem of services, products, solutions, and platforms, which helps bring sustainable",R.drawable.fpt_ic));
-
         return list;
     }
 }

@@ -10,17 +10,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Suggest the suitable jobs"
-            android:textColor="@color/black"
-            android:textSize="18dp">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Suggest the suitable jobs"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18dp">
 
-        </TextView>
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/view_all_suitable_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="View All"
+                android:textColor="@color/black"
+                android:textSize="18dp">
+
+            </Button>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_thesuitablejob"
@@ -30,16 +53,40 @@
             android:layout_marginBottom="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The best jobs"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:padding="10dp">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The best jobs"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:padding="10dp">
 
-        </TextView>
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/view_all_best_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="View All"
+                android:textColor="@color/black"
+                android:textSize="18dp">
+
+            </Button>
+        </LinearLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_thebestjob"
             android:layout_width="match_parent"
@@ -48,15 +95,39 @@
             android:layout_marginBottom="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The interesting jobs"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:padding="10dp">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The interesting jobs"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:padding="10dp">
 
-        </TextView>
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/view_all_interesting_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="View All"
+                android:textColor="@color/black"
+                android:textSize="18dp">
+
+            </Button>
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_theinterestingjob"
             android:layout_width="match_parent"
@@ -65,15 +136,39 @@
             android:layout_marginBottom="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The top companies"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:padding="10dp">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The top companies"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:padding="10dp">
 
-        </TextView>
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/view_all_top_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="View All"
+                android:textColor="@color/black"
+                android:textSize="18dp">
+
+            </Button>
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_thetopcompanies"
             android:layout_width="match_parent"
@@ -82,15 +177,39 @@
             android:layout_marginBottom="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The article for you"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:padding="10dp">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The article for you"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:padding="10dp">
 
-        </TextView>
+            </TextView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </Space>
+
+            <Button
+                android:id="@+id/view_all_article"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:text="View All"
+                android:textColor="@color/black"
+                android:textSize="18dp">
+
+            </Button>
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_thearticle"
             android:layout_width="match_parent"
