@@ -1,5 +1,6 @@
-package com.example.topcv.API;
+package com.example.topcv.api;
 
+import com.example.topcv.api.UnsafeOkHttpClient;
 import com.example.topcv.model.SortOfUser;
 
 import io.reactivex.rxjava3.core.Single;

@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.topcv.API.ApiSortOfUser; // Thêm import cho ApiSortOfUser
-import com.example.topcv.API.ApiUserService;
+import com.example.topcv.api.ApiSortOfUser; // Thêm import cho ApiSortOfUser
+import com.example.topcv.api.ApiUserService;
 import com.example.topcv.model.SortOfUser; // Thêm import cho SortOfUser
 import com.example.topcv.model.User;
 

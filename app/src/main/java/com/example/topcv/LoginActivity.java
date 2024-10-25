@@ -30,7 +30,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.example.topcv.API.ApiUserService;
+import com.example.topcv.api.ApiUserService;
 import com.example.topcv.model.User;
 
 import java.util.HashMap;
