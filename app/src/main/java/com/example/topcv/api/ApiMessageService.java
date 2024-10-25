@@ -1,7 +1,6 @@
-package com.example.topcv.API;
+package com.example.topcv.api;
 
 import com.example.topcv.model.Message;
-import com.example.topcv.model.User;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

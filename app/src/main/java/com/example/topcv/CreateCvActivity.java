@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -24,16 +25,32 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Resume;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.IOException;
 import java.util.Objects;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class CreateCvActivity extends AppCompatActivity {
     private Button add_new_cv_button;
     private ImageButton information_back_button;
     private ImageView camera_imageview, user_avatar;
-    @SuppressLint("MissingInflatedId")
+    private TextView position;
+    private TextView name;
+    private TextView introduction;
+    private TextView email;
+    private TextView phone_number;
+    private TextView education;
+    private TextView skills;
+    private TextView certification;
+    private TextView experience;
+    private Uri resumeImageUri;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +63,13 @@ public class CreateCvActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        add_new_cv_button = findViewById(R.id.add_new_cv_button);
-        information_back_button = findViewById(R.id.information_back_button);
-        add_new_cv_button.setOnClickListener(v -> showStyleDialog());
+        setWidget();
+
+        add_new_cv_button.setOnClickListener(v -> postResume());
         information_back_button.setOnClickListener(view -> {
             finish();
         });
-        camera_imageview = findViewById(R.id.camera_imageview);
-        user_avatar = findViewById(R.id.user_avatar);
+
         camera_imageview.setOnClickListener(view -> {
             ImagePicker.with(this)
                     .crop()	    			//Crop image(Optional), Check Customization for more option
@@ -62,6 +78,68 @@ public class CreateCvActivity extends AppCompatActivity {
                     .start();
         });
     }
+
+    private void setWidget(){
+        add_new_cv_button = findViewById(R.id.add_new_cv_button);
+        information_back_button = findViewById(R.id.information_back_button);
+        camera_imageview = findViewById(R.id.camera_imageview);
+        user_avatar = findViewById(R.id.user_avatar);
+        position = findViewById(R.id.position);
+        name = findViewById(R.id.name);
+        introduction = findViewById(R.id.introduction);
+        email = findViewById(R.id.email);
+        phone_number = findViewById(R.id.phone_number);
+        education = findViewById(R.id.education);
+        skills = findViewById(R.id.skills);
+        certification = findViewById(R.id.certification);
+        experience = findViewById(R.id.experience);
+    }
+
+    private void postResume() {
+        // Lấy dữ liệu từ các trường nhập liệu
+        String resumeName = name.getText().toString();
+        String resumeEmail = email.getText().toString();
+        String resumePhoneNumber = phone_number.getText().toString();
+        String resumeEducation = education.getText().toString();
+        String resumeSkills = skills.getText().toString();
+        String resumeCertification = certification.getText().toString();
+        String resumeJobApplication = position.getText().toString();
+        String resumeIntroduction = introduction.getText().toString();
+        String resumeExperience = experience.getText().toString();
+        String resumeImage = resumeImageUri != null ? resumeImageUri.toString() : "";
+
+        // Tạo đối tượng Resume
+        Resume resume = new Resume(
+                resumeName,
+                resumeEmail,
+                resumeEducation,
+                resumePhoneNumber,
+                resumeCertification,
+                resumeSkills,
+                resumeJobApplication,
+                resumeIntroduction,
+                resumeImage,
+                resumeExperience,
+                6
+        );
+
+        // Gọi API để đăng dữ liệu hồ sơ
+        ApiResumeService.apiResumeService.createUser(resume)
+                .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
+                .observeOn(AndroidSchedulers.mainThread())  // Quan sát kết quả trên luồng chính
+                .subscribe(
+                        response -> {
+                            // Xử lý khi thành công
+                            Toast.makeText(CreateCvActivity.this, "CV đã được tạo thành công!", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Xử lý khi có lỗi
+                            Toast.makeText(CreateCvActivity.this, "Có lỗi xảy ra: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                );
+        finish();
+    }
+
 
     private void showStyleDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -82,8 +160,8 @@ public class CreateCvActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            user_avatar.setImageURI(uri);
+            resumeImageUri = data.getData();
+            user_avatar.setImageURI(resumeImageUri);
         } else {
             Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
         }

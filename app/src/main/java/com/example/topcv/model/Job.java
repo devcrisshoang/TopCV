@@ -3,7 +3,8 @@ package com.example.topcv.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Jobs implements Parcelable {
+public class Job implements Parcelable {
+    private int id;
     private int imageId;
     private String jobName;
     private String companyName;
@@ -14,7 +15,7 @@ public class Jobs implements Parcelable {
     private boolean isCheck;
 
     // Constructor
-    public Jobs(int imageId, String jobName, String companyName, String location, String experience, String salary, int remainingTime, boolean isCheck) {
+    public Job(int imageId, String jobName, String companyName, String location, String experience, String salary, int remainingTime, boolean isCheck) {
         this.imageId = imageId;
         this.jobName = jobName;
         this.companyName = companyName;
@@ -25,8 +26,16 @@ public class Jobs implements Parcelable {
         this.isCheck = isCheck;
     }
 
+    public Job(int imageId, String jobName, String companyName, String location, String salary) {
+        this.imageId = imageId;
+        this.jobName = jobName;
+        this.companyName = companyName;
+        this.location = location;
+        this.salary = salary;
+    }
+
     // Constructor nhận đối tượng Parcel
-    protected Jobs(Parcel in) {
+    protected Job(Parcel in) {
         imageId = in.readInt();
         jobName = in.readString();
         companyName = in.readString();
@@ -57,17 +66,25 @@ public class Jobs implements Parcelable {
     }
 
     // Đối tượng CREATOR để tạo đối tượng từ Parcel
-    public static final Creator<Jobs> CREATOR = new Creator<Jobs>() {
+    public static final Creator<Job> CREATOR = new Creator<Job>() {
         @Override
-        public Jobs createFromParcel(Parcel in) {
-            return new Jobs(in);
+        public Job createFromParcel(Parcel in) {
+            return new Job(in);
         }
 
         @Override
-        public Jobs[] newArray(int size) {
-            return new Jobs[size];
+        public Job[] newArray(int size) {
+            return new Job[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     // Getter và Setter
     public int getImageId() {

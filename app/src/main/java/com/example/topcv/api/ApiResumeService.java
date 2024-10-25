@@ -1,6 +1,6 @@
-package com.example.topcv.API;
+package com.example.topcv.api;
 
-import com.example.topcv.model.User;
+import com.example.topcv.model.Resume;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,13 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
-public interface ApiUserService {
+public interface ApiResumeService {
 
-    // Logging interceptor để theo dõi request và response
+    // Logging interceptor to track request and response
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    // Sử dụng OkHttpClient an toàn bỏ qua SSL
+    // Using OkHttpClient to safely bypass SSL (if necessary)
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
@@ -29,22 +30,28 @@ public interface ApiUserService {
             .retryOnConnectionFailure(true)
             .build();
 
-    // Sử dụng Retrofit để tạo API service
-    ApiUserService apiUserService = new Retrofit.Builder()
-            .baseUrl("https://10.0.2.2:7200/")  // Địa chỉ máy chủ
+    // Using Retrofit to create API service
+    ApiResumeService apiResumeService = new Retrofit.Builder()
+            .baseUrl("https://10.0.2.2:7200/")  // Server URL
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-            .create(ApiUserService.class);
+            .create(ApiResumeService.class);
 
-    @POST("api/User")
-    Observable<User> createUser(@Body User user);
+    // POST method to create a new user
+    @POST("api/Resume")
+    Observable<Resume> createUser(@Body Resume resume);
 
-    // Thêm phương thức GET để lấy tất cả tên đăng nhập
-    @GET("api/User/usernames") // Địa chỉ cần sửa lại cho phù hợp với endpoint trên server
-    Observable<List<String>> getAllUsernames();
-    // Thêm phương thức GET để lấy tất cả user
-    @GET("api/User")
-    Observable<List<User>> getAllUser();
+    // GET method to fetch resumes by applicant ID
+    @GET("api/Resume/GetResumeBy/{applicantId}")
+    Observable<List<Resume>> getResumesByApplicantId(@Path("applicantId") int applicantId);
+
+    @GET("api/Resume/GetResumeIdBy/{id}")
+    Observable<Resume> getResumeById(@Path("id") int id);
+
+    //test
+    @GET("api/Resume/21")
+    Observable<Resume> getResumeById();
+
 }

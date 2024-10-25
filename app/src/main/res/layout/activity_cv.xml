@@ -21,13 +21,12 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/back_ic" />
-        <TextView
+        <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10sp"
-            android:text="Intern Google" />
+            android:layout_weight="1">
+
+        </Space>
         <ImageButton
             android:id="@+id/share_button"
             android:layout_width="40dp"
@@ -72,7 +71,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/cv_name"
+                    android:id="@+id/job_applying"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -82,7 +81,7 @@
                     android:text="Applicant name" />
 
                 <TextView
-                    android:id="@+id/cv_contact"
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
@@ -120,39 +119,59 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:orientation="vertical">
-
                 <TextView
-                    android:id="@+id/cv_experience_job_title"
+                    android:id="@+id/introduction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Introduction"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/experience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Experience"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/cv_experience_company"
+                    android:id="@+id/education"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Education"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/cv_experience_period"
+                    android:id="@+id/skill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Skills"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/cv_experience_description"
+                    android:id="@+id/certification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Certification"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
