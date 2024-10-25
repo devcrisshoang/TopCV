@@ -32,9 +32,9 @@ public class MessengerFragment extends Fragment {
 
         // Dữ liệu mẫu cho danh sách tin nhắn
         messageList = new ArrayList<>();
-        messageList.add(new Message(1, 101, 202, "Hello!", "Sent", "10:10 PM", 0));
-        messageList.add(new Message(2, 102, 202, "How are you?", "Sent", "10:10 PM", 0));
-        messageList.add(new Message(3, 103, 202, "Good morning!", "Sent", "10:10 PM", 0));
+        messageList.add(new Message(1, 101, 202, "Hello!", false, "10:10 PM"));
+        messageList.add(new Message(2, 102, 202, "How are you?", false, "10:10 PM"));
+        messageList.add(new Message(3, 103, 202, "Good morning!", false, "10:10 PM"));
 
         // Thiết lập RecyclerView
         messageAdapter = new MessengerAdapter(messageList, getContext());

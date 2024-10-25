@@ -1,4 +1,4 @@
-package com.example.topcv.API;
+package com.example.topcv.api;
 
 import com.example.topcv.model.Applicant;
 import com.example.topcv.model.User;

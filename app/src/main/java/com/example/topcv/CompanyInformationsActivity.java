@@ -5,13 +5,11 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.topcv.adapter.ListInformationlAdapter;
-import com.example.topcv.model.CV;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class CompanyInformationsActivity extends AppCompatActivity {

@@ -105,28 +105,58 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_name"
+                    android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_rounded_corner"
                     android:hint="Full name"
                     android:padding="10sp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Working_Experience_Require:"
+                    android:text="Introduction:"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_email"
+                    android:id="@+id/introduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Introduction"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_rounded_corner"
                     android:hint="Email"
+                    android:padding="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone number:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Phone Number"
                     android:padding="10sp" />
 
                 <TextView
@@ -137,30 +167,13 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_education"
+                    android:id="@+id/education"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_rounded_corner"
                     android:hint="Education"
                     android:padding="10sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Experience:"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/et_experience"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/edit_text_rounded_corner"
-                    android:hint="Experience"
-                    android:padding="10sp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,14 +182,13 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_skills"
+                    android:id="@+id/skills"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/edit_text_rounded_corner"
                     android:hint="Skill"
                     android:padding="10sp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,7 +197,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_certifications"
+                    android:id="@+id/certification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -196,12 +208,28 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Experience:"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/experience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_rounded_corner"
+                    android:hint="Experience"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Position application:"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/et_objectives"
+                    android:id="@+id/position"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

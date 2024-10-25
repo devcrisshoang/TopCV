@@ -46,11 +46,11 @@ public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdap
 
         // Các logic cũ của bạn
         // Xử lý hiển thị dựa trên Sender_ID
-        if (message.getSender_ID() == 1) {
+        if (message.getSender_ID() == 9) {
             // Nếu Sender_ID = 1, hiển thị tin nhắn của người dùng
             holder.me.setText(message.getContent());
             holder.other_people.setVisibility(View.GONE); // Ẩn tin nhắn của người khác
-        } else if (message.getSender_ID() == 2) {
+        } else if (message.getSender_ID() == 10) {
             // Nếu Sender_ID = 2, hiển thị tin nhắn của người khác
             holder.other_people.setText(message.getContent());
             holder.me.setVisibility(View.GONE); // Ẩn tin nhắn của mình
