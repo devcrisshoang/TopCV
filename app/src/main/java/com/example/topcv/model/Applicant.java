@@ -19,6 +19,17 @@ public class Applicant {
         this.working_Experience = null; // Set to null by default
     }
 
+    // Constructor with all parameters
+    public Applicant(int id, String applicant_Name, String phone_Number, String email, String job_Desire, String working_Location_Desire, String working_Experience) {
+        this.id = id;
+        this.applicant_Name = applicant_Name;
+        this.phone_Number = phone_Number;
+        this.email = email;
+        this.job_Desire = job_Desire;
+        this.working_Location_Desire = working_Location_Desire;
+        this.working_Experience = working_Experience;
+    }
+
     // Default constructor
     public Applicant() {
     }

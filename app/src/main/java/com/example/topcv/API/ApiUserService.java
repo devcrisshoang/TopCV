@@ -17,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiUserService {
 
@@ -59,4 +60,8 @@ public interface ApiUserService {
 
     @POST("api/User") // Đường dẫn đến API để thêm người dùng
     Single<Response<User>> addUser(@Body User user);
+
+    @GET("applicants/{userId}")
+    Single<Response<Applicant>> getApplicantByUserId(@Path("userId") int userId);
+
 }

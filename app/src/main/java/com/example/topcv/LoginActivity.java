@@ -10,13 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -38,6 +33,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.example.topcv.API.ApiUserService;
 import com.example.topcv.model.User;
 
+import java.util.HashMap;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -52,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, Register_Button;
     private ImageButton facebookButton, googleButton;
 
+    // Sử dụng SharedPreferences để lưu trữ trạng thái đã truy cập InformationActivity
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "LoginPrefs";
+    private static final String HAS_VISITED_INFO_KEY = "hasVisitedInformationActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         // Khởi tạo FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
+
+        // Khởi tạo SharedPreferences
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         // Thiết lập Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -76,26 +81,14 @@ public class LoginActivity extends AppCompatActivity {
         facebookButton = findViewById(R.id.btnImage2);
         googleButton = findViewById(R.id.btnImage3);
 
-        // Kích hoạt Edge-to-Edge
-        EdgeToEdge.enable(this);
-
-        // Đặt listener cho WindowInsets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            // Sử dụng WindowInsetsCompat để lấy các giá trị Insets
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-
         // Xử lý nút đăng nhập
         loginButton.setOnClickListener(view -> loginUser());
 
         // Xử lý nút đăng ký
         Register_Button.setOnClickListener(view -> {
-            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-            intent.putExtra("isSignUpButtonClicked", true);
-            startActivity(intent);
-            finish();
+            Intent intent1 = new Intent(LoginActivity.this, SignUpActivity.class);
+            intent1.putExtra("isSignUpButtonClicked", true);
+            startActivityForResult(intent1, 1); // Thêm mã yêu cầu
         });
 
         // Xử lý nút đăng nhập bằng Facebook
@@ -109,13 +102,11 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
-        // Kiểm tra thông tin nhập vào
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Vui lòng nhập tên đăng nhập và mật khẩu", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Gọi API để lấy tất cả người dùng
         ApiUserService.apiUserService.getAllUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -123,28 +114,36 @@ public class LoginActivity extends AppCompatActivity {
                     boolean isValidUser = false;
 
                     for (User user : users) {
-                        // Kiểm tra tên đăng nhập và mật khẩu
-                        if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                        if (user.getUsername().equals(username)) {
                             isValidUser = true;
 
-                            // Kiểm tra trạng thái đã hoàn thành nhập thông tin
-                            SharedPreferences sharedPreferences = getSharedPreferences("TopCVPrefs", MODE_PRIVATE);
-                            boolean isInfoCompleted = sharedPreferences.getBoolean(user.getUsername() + "_isInfoCompleted", false);
-
-                            if (isInfoCompleted) {
-                                // Nếu đã hoàn thành nhập thông tin, chuyển đến MainActivity
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            } else {
-                                // Nếu chưa hoàn thành, chuyển đến InformationActivity
-                                startActivity(new Intent(LoginActivity.this, InformationActivity.class));
+                            if (!user.getPassword().equals(password)) {
+                                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng.", Toast.LENGTH_SHORT).show();
+                                return;
                             }
-                            finish();
-                            break;
+
+                            Intent intent;
+                            boolean hasVisitedInformationActivity = sharedPreferences.getBoolean(HAS_VISITED_INFO_KEY + "_" + username, false);
+
+                            if (!hasVisitedInformationActivity) {
+                                // Nếu là lần đăng nhập đầu tiên cho tài khoản này, chuyển đến InformationActivity
+                                intent = new Intent(LoginActivity.this, InformationActivity.class);
+                                // Cập nhật SharedPreferences cho tài khoản này
+                                sharedPreferences.edit().putBoolean(HAS_VISITED_INFO_KEY + "_" + username, true).apply();
+                            } else {
+                                // Nếu không, chuyển đến MainActivity
+                                intent = new Intent(LoginActivity.this, MainActivity.class);
+                            }
+
+                            intent.putExtra("user_id", user.getId()); // Truyền ID người dùng
+                            startActivity(intent);
+                            finish(); // Kết thúc Activity hiện tại
+                            return;
                         }
                     }
 
                     if (!isValidUser) {
-                        Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Tên đăng nhập không tồn tại", Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
                     Toast.makeText(LoginActivity.this, "Lỗi kết nối đến server: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
@@ -199,28 +198,28 @@ public class LoginActivity extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                Toast.makeText(this, "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            handleGoogleSignInResult(task);
         }
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user != null) {
-                            saveUserData(user); // Gọi phương thức để lưu thông tin người dùng
+    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                saveUserData(user); // Gọi phương thức để lưu thông tin người dùng
+                            }
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Google login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Google login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    });
+        } catch (ApiException e) {
+            Toast.makeText(LoginActivity.this, "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void saveUserData(FirebaseUser user) {
@@ -239,11 +238,24 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    // Xử lý phản hồi từ server nếu cần
-                    startActivity(new Intent(LoginActivity.this, InformationActivity.class)); // Chuyển đến MainActivity
+                    // Kiểm tra nếu người dùng lần đầu đăng nhập thì chuyển đến InformationActivity
+                    Intent intent;
+                    boolean hasVisitedInformationActivity = sharedPreferences.getBoolean(HAS_VISITED_INFO_KEY, false);
+
+                    if (!hasVisitedInformationActivity) {
+                        // Nếu là lần đăng nhập đầu tiên, chuyển đến InformationActivity
+                        intent = new Intent(LoginActivity.this, InformationActivity.class);
+                        sharedPreferences.edit().putBoolean(HAS_VISITED_INFO_KEY, true).apply();
+                    } else {
+                        // Nếu không, chuyển đến MainActivity
+                        intent = new Intent(LoginActivity.this, MainActivity.class);
+                    }
+
+                    startActivity(intent);
                     finish();
                 }, throwable -> {
                     Toast.makeText(LoginActivity.this, "Lỗi khi lưu thông tin người dùng: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
+
 }

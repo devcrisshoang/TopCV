@@ -1,8 +1,8 @@
 package com.example.topcv;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +21,8 @@ public class InformationActivity extends AppCompatActivity {
     private EditText phoneEditText;
     private Button submitButton;
 
+    private int userId; // Biến lưu ID người dùng
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,71 +32,70 @@ public class InformationActivity extends AppCompatActivity {
         phoneEditText = findViewById(R.id.editTextPhone);
         submitButton = findViewById(R.id.Submit);
 
-        // Lấy tên người dùng từ SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("TopCVPrefs", MODE_PRIVATE);
-        String username = sharedPreferences.getString("currentUser", null);
+        // Nhận dữ liệu từ Intent
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username"); // Tên tài khoản
+        String password = intent.getStringExtra("password"); // Mật khẩu
 
-        // Kiểm tra nếu người dùng đã nhập thông tin trước đó
-        if (isUserInfoCompleted(username)) {
-            // Nếu đã nhập thông tin, chuyển ngay đến MainActivity
-            startActivity(new Intent(InformationActivity.this, MainActivity.class));
-            finish();
+        // Điền dữ liệu vào EditText nếu cần
+        if (username != null) {
+            nameEditText.setText(username); // Có thể muốn sử dụng tên tài khoản
         }
 
-        submitButton.setOnClickListener(v -> submitApplicant(username));
+        // Nhận ID người dùng từ Intent
+        userId = intent.getIntExtra("userId", -1);
+
+        submitButton.setOnClickListener(v -> submitApplicant());
     }
 
-    private void submitApplicant(String username) {
+    private void submitApplicant() {
         String name = nameEditText.getText().toString().trim();
         String phone = phoneEditText.getText().toString().trim();
 
-        // Kiểm tra xem người dùng đã nhập tên và số điện thoại chưa
         if (name.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập cả tên và số điện thoại.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Applicant newApplicant = new Applicant();
-        newApplicant.setApplicant_Name(name); // Tên người nộp đơn
-        newApplicant.setPhone_Number(phone); // Số điện thoại
-        newApplicant.setEmail(null); // Đặt các trường còn lại thành null
-        newApplicant.setJob_Desire(null);
-        newApplicant.setWorking_Location_Desire(null);
-        newApplicant.setWorking_Experience(null);
+        Log.d("Applicant Info", "Name: " + name + ", Phone: " + phone);
 
-        // Gọi API để thêm ứng viên
+        // Ghi lại tên và số điện thoại vào Intent để sử dụng sau này
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("applicantName", name);
+        intent.putExtra("phoneNumber", phone);
+        startActivity(intent);
+        finish(); // Kết thúc Activity hiện tại
+
+        // Gửi thông tin đến server
+        sendApplicantData(name, phone);
+    }
+
+    private void sendApplicantData(String name, String phone) {
+        Applicant newApplicant = new Applicant();
+        newApplicant.setApplicant_Name(name);
+        newApplicant.setPhone_Number(phone);
+
         ApiUserService.apiUserService.addApplicant(newApplicant)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    if (response.isSuccessful()) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(this, "Đã thêm ứng viên thành công!", Toast.LENGTH_SHORT).show();
 
-                        // Lưu trạng thái thông tin người dùng đã được nhập
-                        saveUserInformationStatus(username);
-
-                        // Chuyển đến MainActivity
-                        startActivity(new Intent(InformationActivity.this, MainActivity.class));
+                        // Chuyển sang MainActivity
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.putExtra("applicantName", name);
+                        intent.putExtra("phoneNumber", phone);
+                        startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(this, "Không thể thêm ứng viên: " + response.message(), Toast.LENGTH_SHORT).show();
+                        String errorMessage = response.errorBody() != null ? response.errorBody().string() : response.message();
+                        Log.e("API Error", "Error: " + errorMessage);
+                        Toast.makeText(this, "Không thể thêm ứng viên: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
-                    Toast.makeText(this, "Lỗi: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("API Error", "Error: " + throwable.getMessage());
+                    Toast.makeText(this, "Lỗi kết nối: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-    }
-
-    // Lưu trạng thái đã nhập thông tin của người dùng
-    private void saveUserInformationStatus(String username) {
-        SharedPreferences sharedPreferences = getSharedPreferences("TopCVPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(username + "_isInfoCompleted", true); // Lưu trạng thái đã nhập thông tin
-        editor.apply();
-    }
-
-    // Kiểm tra xem người dùng đã nhập thông tin hay chưa
-    private boolean isUserInfoCompleted(String username) {
-        SharedPreferences sharedPreferences = getSharedPreferences("TopCVPrefs", MODE_PRIVATE);
-        return sharedPreferences.getBoolean(username + "_isInfoCompleted", false); // Mặc định là false nếu chưa nhập
     }
 }
