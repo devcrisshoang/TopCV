@@ -1,5 +1,6 @@
 package com.example.topcv.api;
 
+import com.example.topcv.model.Article;
 import com.example.topcv.model.Job;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface ApiJobService {
     // Logging interceptor để theo dõi request và response
@@ -38,4 +40,6 @@ public interface ApiJobService {
     // API lấy danh sách job
     @GET("api/Job")
     Observable<List<Job>> getAllJobs();
+    @GET("api/Job/{id}")
+    Observable<Job> getJobById(@Path("id") int id);
 }

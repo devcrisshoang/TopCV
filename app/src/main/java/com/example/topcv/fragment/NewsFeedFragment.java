@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.topcv.ArticleActivity;
+import com.example.topcv.CompanyInformationsActivity;
 import com.example.topcv.InformationActivity;
 import com.example.topcv.LoginActivity;
 import com.example.topcv.MessageActivity;
@@ -86,7 +88,6 @@ public class NewsFeedFragment extends Fragment {
     private List<Company> companyList;
     private List<Article> articleList;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -132,6 +133,17 @@ public class NewsFeedFragment extends Fragment {
             intent.putExtra("articleText", text); // Truyền text qua Intent
             startActivity(intent);
         });
+        articleAdapter.setOnItemClickListener(article -> {
+            Intent intent = new Intent(getContext(), ArticleActivity.class);
+            intent.putExtra("article_id", article.getId()); // Truyền ID của bài viết
+            startActivity(intent);
+        });
+        workAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            intent.putExtra("job_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            startActivity(intent);
+        });
+
         return view;
     }
     public void getAPIJobData() {

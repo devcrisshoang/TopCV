@@ -1,8 +1,7 @@
 package com.example.topcv.api;
 
-import com.example.topcv.model.Article;
-import com.example.topcv.model.Company;
-import com.example.topcv.model.Resume;
+import com.example.topcv.model.Job;
+import com.example.topcv.model.JobDetail;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface ApiArticleService {
+public interface ApiJobDetailService {
     // Logging interceptor để theo dõi request và response
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -30,20 +29,15 @@ public interface ApiArticleService {
             .build();
 
     // Sử dụng Retrofit để tạo API service
-    ApiArticleService ApiArticleService = new Retrofit.Builder()
+    ApiJobDetailService ApiJobDetailService = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")  // Thay địa chỉ bằng IP của máy bạn hoặc server thật
             .client(okHttpClient)  // Áp dụng OkHttpClient bỏ qua SSL
             .addConverterFactory(GsonConverterFactory.create())  // Chuyển đổi JSON sang đối tượng Java
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())  // Sử dụng RxJava3
             .build()
-            .create(ApiArticleService.class);
+            .create(ApiJobDetailService.class);
 
-    // API lấy danh sách job
-    @GET("api/Article")
-    Observable<List<Article>> getAllArticle();
-
-    @GET("api/Article/{id}")
-    Observable<Article> getArticleById(@Path("id") int id);
-
+    @GET("api/JobDetails/ByJob/{id}")
+    Observable<List<JobDetail>> getJobDetailById(@Path("id") int id);
 }
 

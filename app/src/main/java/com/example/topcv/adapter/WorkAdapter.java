@@ -12,10 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.R;
 import com.example.topcv.model.Job;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewHolder>{
     private List<Job> mListWork;
+    public interface OnItemClickListener {
+        void onItemClick(Job job);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public void setData(List<Job> list){
         this.mListWork = list;
         notifyDataSetChanged();
@@ -33,6 +46,11 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewHolder
         if(job == null){
             return;
         }
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(job);
+            }
+        });
         String imageId = job.getImageId();
         if (imageId != null && !imageId.isEmpty()) {
             try {
@@ -45,13 +63,31 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewHolder
             // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
             holder.company_logo.setImageResource(R.drawable.fpt_ic);
         }
+        // Chuyển đổi chuỗi ngày
+        String applicationDateStr = job.getApplicationDate(); // Giả sử đây là chuỗi ngày
+        LocalDate applicationDate = LocalDate.parse(applicationDateStr.substring(0, 10)); // Lấy phần ngày từ chuỗi
+        LocalDate deadlineDate = applicationDate.plusDays(30); // Cộng thêm 30 ngày
+
+        // Định dạng để hiển thị
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        holder.time_remaining.setText(formatter.format(deadlineDate)); // Hiển thị ngày hạn nộp
+
+        // Tính số ngày còn lại
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(today, deadlineDate);
+        int daysRemaining = period.getDays();
+        if (daysRemaining < 0) {
+            // Nếu đã quá hạn
+            holder.time_remaining.setText("Đã quá hạn nộp");
+        } else {
+            holder.time_remaining.setText("Còn " + daysRemaining + " ngày để nộp");
+        }
 
         holder.job_name.setText(job.getJobName());
         holder.company_name.setText(job.getCompanyName());
         holder.company_location.setText(job.getLocation());
         holder.salary.setText(job.getSalary());
         holder.job_experience.setText(job.getExperience());
-        holder.time_remaining.setText(job.getApplicationDate());
     }
 
     @Override
