@@ -7,26 +7,35 @@ public class Article {
     private String name;
     private String content;
     private Date time;
-    private int image;
+    private String image;
+    private int idRecruiter;
 
-    public Article(int image, Date time, String content, String name) {
+    public Article(String image, Date time, String content, String name) {
         this.image = image;
         this.time = time;
         this.content = content;
         this.name = name;
     }
 
-    public Article(String name, String content, int image) {
+    public int getIdRecruiter() {
+        return idRecruiter;
+    }
+
+    public void setIdRecruiter(int idRecruiter) {
+        this.idRecruiter = idRecruiter;
+    }
+
+    public Article(String name, String content, String image) {
         this.name = name;
         this.content = content;
         this.image = image;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

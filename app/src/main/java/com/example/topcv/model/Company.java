@@ -5,10 +5,10 @@ public class Company {
     private String address;
     private String hotline;
     private String field;
-    private int image;
+    private String image;
     private boolean isChecked;
 
-    public Company(String name, String address, String hotline, String field, int image, boolean isChecked) {
+    public Company(String name, String address, String hotline, String field, String image, boolean isChecked) {
         this.name = name;
         this.address = address;
         this.hotline = hotline;
@@ -17,7 +17,7 @@ public class Company {
         this.isChecked = isChecked;
     }
 
-    public Company(String name, int image, String field) {
+    public Company(String name, String image, String field) {
         this.name = name;
         this.image = image;
         this.field = field;
@@ -63,11 +63,11 @@ public class Company {
         this.field = field;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

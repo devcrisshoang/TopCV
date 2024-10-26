@@ -3,80 +3,94 @@ package com.example.topcv.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Job implements Parcelable {
+import com.google.gson.annotations.SerializedName;
+
+public class Job{
+    @SerializedName("id")
     private int id;
-    private int imageId;
+
+    @SerializedName("image_Id")
+    private String imageId;
+
+    @SerializedName("job_Name")
     private String jobName;
+
+    @SerializedName("company_Name")
     private String companyName;
-    private String location;
+
+    @SerializedName("working_Experience_Require")
     private String experience;
+
+    @SerializedName("working_Address")
+    private String location;
+
+    @SerializedName("salary")
     private String salary;
-    private int remainingTime;
-    private boolean isCheck;
 
-    // Constructor
-    public Job(int imageId, String jobName, String companyName, String location, String experience, String salary, int remainingTime, boolean isCheck) {
+    @SerializedName("create_Time")
+    private String createTime;
+
+    @SerializedName("application_Date")
+    private String applicationDate;
+
+    @SerializedName("application_Status")
+    private boolean applicationStatus;
+
+    @SerializedName("iD_Recruiter")
+    private int recruiterId;
+
+    public Job(String imageId, String jobName, String companyName, String experience, String location, String salary, String createTime, String applicationDate, boolean applicationStatus, int recruiterId) {
         this.imageId = imageId;
         this.jobName = jobName;
         this.companyName = companyName;
-        this.location = location;
         this.experience = experience;
+        this.location = location;
         this.salary = salary;
-        this.remainingTime = remainingTime;
-        this.isCheck = isCheck;
+        this.createTime = createTime;
+        this.applicationDate = applicationDate;
+        this.applicationStatus = applicationStatus;
+        this.recruiterId = recruiterId;
     }
 
-    public Job(int imageId, String jobName, String companyName, String location, String salary) {
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(String applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
+    public boolean isApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(boolean applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
+
+    public int getRecruiterId() {
+        return recruiterId;
+    }
+
+    public void setRecruiterId(int recruiterId) {
+        this.recruiterId = recruiterId;
+    }
+
+    public Job(String imageId, String jobName, String companyName, String location, String salary) {
         this.imageId = imageId;
         this.jobName = jobName;
         this.companyName = companyName;
         this.location = location;
         this.salary = salary;
     }
-
-    // Constructor nhận đối tượng Parcel
-    protected Job(Parcel in) {
-        imageId = in.readInt();
-        jobName = in.readString();
-        companyName = in.readString();
-        location = in.readString();
-        experience = in.readString();
-        salary = in.readString();
-        remainingTime = in.readInt();
-        isCheck = in.readByte() != 0; // Convert byte to boolean
-    }
-
-    // Ghi dữ liệu vào Parcel
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(imageId);
-        dest.writeString(jobName);
-        dest.writeString(companyName);
-        dest.writeString(location);
-        dest.writeString(experience);
-        dest.writeString(salary);
-        dest.writeInt(remainingTime);
-        dest.writeByte((byte) (isCheck ? 1 : 0)); // Convert boolean to byte
-    }
-
-    // Phương thức mô tả nội dung
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    // Đối tượng CREATOR để tạo đối tượng từ Parcel
-    public static final Creator<Job> CREATOR = new Creator<Job>() {
-        @Override
-        public Job createFromParcel(Parcel in) {
-            return new Job(in);
-        }
-
-        @Override
-        public Job[] newArray(int size) {
-            return new Job[size];
-        }
-    };
 
     public int getId() {
         return id;
@@ -87,11 +101,11 @@ public class Job implements Parcelable {
     }
 
     // Getter và Setter
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public void setImageId(String imageId) {
         this.imageId = imageId;
     }
 
@@ -133,21 +147,5 @@ public class Job implements Parcelable {
 
     public void setSalary(String salary) {
         this.salary = salary;
-    }
-
-    public int getRemainingTime() {
-        return remainingTime;
-    }
-
-    public void setRemainingTime(int remainingTime) {
-        this.remainingTime = remainingTime;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setCheck(boolean check) {
-        isCheck = check;
     }
 }

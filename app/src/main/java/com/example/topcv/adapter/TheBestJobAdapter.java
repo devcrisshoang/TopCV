@@ -33,7 +33,18 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<TheBestJobAdapter.Th
         if(job == null){
             return;
         }
-        holder.company_logo.setImageResource(job.getImageId());
+        String imageId = job.getImageId();
+        if (imageId != null && !imageId.isEmpty()) {
+            try {
+                holder.company_logo.setImageResource(Integer.parseInt(imageId));
+            } catch (NumberFormatException e) {
+                // Xử lý nếu imageId không phải là số nguyên hợp lệ
+                holder.company_logo.setImageResource(R.drawable.fpt_ic); // Gán một ảnh mặc định
+            }
+        } else {
+            // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
+            holder.company_logo.setImageResource(R.drawable.fpt_ic);
+        }
         holder.position_name.setText(job.getJobName());
         holder.company_name.setText(job.getCompanyName());
         holder.working_place.setText(job.getLocation());

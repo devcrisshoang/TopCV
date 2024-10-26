@@ -33,7 +33,18 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         if(article == null){
             return;
         }
-        holder.article_image.setImageResource(article.getImage());
+        String imageId = article.getImage();
+        if (imageId != null && !imageId.isEmpty()) {
+            try {
+                holder.article_image.setImageResource(Integer.parseInt(imageId));
+            } catch (NumberFormatException e) {
+                // Xử lý khi imageId không phải là một số nguyên hợp lệ
+                holder.article_image.setImageResource(R.drawable.fpt_ic); // Gán một ảnh mặc định
+            }
+        } else {
+            // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
+            holder.article_image.setImageResource(R.drawable.fpt_ic);
+        }
         holder.article_content.setText(article.getContent());
         holder.article_name.setText(article.getName());
     }
