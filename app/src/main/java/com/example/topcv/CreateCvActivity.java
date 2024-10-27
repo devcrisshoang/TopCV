@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,15 +40,15 @@ public class CreateCvActivity extends AppCompatActivity {
     private Button add_new_cv_button;
     private ImageButton information_back_button;
     private ImageView camera_imageview, user_avatar;
-    private TextView position;
-    private TextView name;
-    private TextView introduction;
-    private TextView email;
-    private TextView phone_number;
-    private TextView education;
-    private TextView skills;
-    private TextView certification;
-    private TextView experience;
+    private EditText position;
+    private EditText name;
+    private EditText introduction;
+    private EditText email;
+    private EditText phone_number;
+    private EditText education;
+    private EditText skills;
+    private EditText certification;
+    private EditText experience;
     private Uri resumeImageUri;
 
 

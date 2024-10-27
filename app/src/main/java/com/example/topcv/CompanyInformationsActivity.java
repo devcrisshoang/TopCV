@@ -44,6 +44,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private ImageView company_logo;
     private ImageButton back_button;
     private int jobId;
+    private int bestId;
 
     private Button apply_button;
     private TextView working_time;
@@ -71,25 +72,33 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_company_informations);
-
-        // Ánh xạ các view
-        setWidget();
-
         // Thiết lập padding cho View chính
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setWidget();
 
         // Lấy jobId từ Intent
         jobId = getIntent().getIntExtra("job_id", -1);
+        bestId = getIntent().getIntExtra("best_id", -1);
 
-        // Gọi API để lấy job theo ID
-        getJobs(jobId);
+        if (jobId != -1){
+            // Gọi API để lấy job theo ID
+            getJobs(jobId);
 
-        // Gọi API để lấy chi tiết công việc
-        getJobDetails(jobId);
+            // Gọi API để lấy chi tiết công việc
+            getJobDetails(jobId);
+
+        }
+        else if(bestId != -1){
+            // Gọi API để lấy job theo ID
+            getJobs(bestId);
+
+            // Gọi API để lấy chi tiết công việc
+            getJobDetails(bestId);
+        }
 
         // Thêm sự kiện onClick cho nút apply_button để chuyển sang màn hình SelectCvToApplyJobActivity
         apply_button.setOnClickListener(view -> {

@@ -143,6 +143,11 @@ public class NewsFeedFragment extends Fragment {
             intent.putExtra("job_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
             startActivity(intent);
         });
+        theBestJobAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            intent.putExtra("best_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            startActivity(intent);
+        });
 
         return view;
     }
@@ -266,8 +271,6 @@ public class NewsFeedFragment extends Fragment {
                     }
                 });
     }
-
-
     private void setWidget(View view){
         //list
         workList = new ArrayList<>();
@@ -299,7 +302,6 @@ public class NewsFeedFragment extends Fragment {
         top_company_textview = view.findViewById(R.id.top_company_textview);
         article_textview = view.findViewById(R.id.article_textview);
     }
-
     private void TheSuitableJob(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerview_thesuitablejob.setLayoutManager(linearLayoutManager);

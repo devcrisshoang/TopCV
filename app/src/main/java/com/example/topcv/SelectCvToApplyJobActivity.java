@@ -30,12 +30,12 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
     private RecyclerView select_cv_recyclerview;
     private RadioButton my_cv;
     private RadioButton upload_from_device;
-    private RadioGroup radioGroup;
     private LinearLayout upload_layout;
     private LinearLayout file_layout;
     private Button button_upload;
     private TextView file_name, size_of_file, warning;
     private ImageButton close_ic;
+    private ImageButton back_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,6 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
 
         my_cv = findViewById(R.id.my_cv);
         upload_from_device = findViewById(R.id.upload_from_device);
-        radioGroup = findViewById(R.id.radio_group);
         select_cv_recyclerview = findViewById(R.id.select_cv_recyclerview);
         upload_layout = findViewById(R.id.upload_layout);
         file_layout = findViewById(R.id.file_layout);
@@ -61,7 +60,9 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
         size_of_file = findViewById(R.id.size_of_file);
         warning = findViewById(R.id.warning);
         close_ic = findViewById(R.id.close_ic);
+        back_button = findViewById(R.id.back_button);
 
+        back_button.setOnClickListener(view -> finish());
         upload_layout.setVisibility(View.GONE);
         my_cv.setOnClickListener(view -> {
             select_cv_recyclerview.setVisibility(View.VISIBLE);

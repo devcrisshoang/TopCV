@@ -7,13 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.topcv.CompanyInformationsActivity;
 import com.example.topcv.CvActivity;
+import com.example.topcv.EditCvActivity;
 import com.example.topcv.R;
 import com.example.topcv.model.Resume;
 
@@ -38,12 +41,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         public ImageView profile_avatar;
         public TextView position;
         public TextView name;
+        public ImageButton edit_cv;
 
         public ViewHolder(View v) {
             super(v);
             profile_avatar = v.findViewById(R.id.profile_avatar);
             position = v.findViewById(R.id.position);
             name = v.findViewById(R.id.name);
+            edit_cv = v.findViewById(R.id.edit_cv);
         }
     }
 
@@ -82,6 +87,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             Intent intent = new Intent(mContext, CvActivity.class);
             // Truyền resume_id của đối tượng Resume sang CvActivity
             intent.putExtra("resume_id", resume.getId());
+            mContext.startActivity(intent);
+        });
+        holder.edit_cv.setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, EditCvActivity.class);
+            intent.putExtra("resume_edit", resume.getId());
             mContext.startActivity(intent);
         });
     }

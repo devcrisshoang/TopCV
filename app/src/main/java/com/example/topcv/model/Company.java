@@ -1,11 +1,27 @@
 package com.example.topcv.model;
+
+import com.google.gson.annotations.SerializedName;
+
 public class Company {
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("company_Name")
     private String name;
+
+    @SerializedName("company_Address")
     private String address;
+
+    @SerializedName("hotline")
     private String hotline;
+
+    @SerializedName("field")
     private String field;
+
+    @SerializedName("image")
     private String image;
+
+    @SerializedName("green_Badge")
     private boolean isChecked;
 
     public Company(String name, String address, String hotline, String field, String image, boolean isChecked) {

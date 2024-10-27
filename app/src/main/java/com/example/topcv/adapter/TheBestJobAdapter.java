@@ -16,6 +16,15 @@ import java.util.List;
 
 public class TheBestJobAdapter extends RecyclerView.Adapter<TheBestJobAdapter.TheBestJobViewHolder>{
     private List<Job> mListWork;
+    public interface OnItemClickListener {
+        void onItemClick(Job job);
+    }
+
+    private WorkAdapter.OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(WorkAdapter.OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
     public void setData(List<Job> list){
         this.mListWork = list;
         notifyDataSetChanged();
@@ -33,6 +42,11 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<TheBestJobAdapter.Th
         if(job == null){
             return;
         }
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(job);
+            }
+        });
         String imageId = job.getImageId();
         if (imageId != null && !imageId.isEmpty()) {
             try {
