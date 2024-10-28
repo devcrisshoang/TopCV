@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,16 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.R;
 import com.example.topcv.adapter.NotificationAdapter;
+import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.model.Notification;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NotificationFragment extends Fragment {
     private RecyclerView NotificationRecyclerView;
     private NotificationAdapter notificationAdapter;
     private List<Notification> notificationList;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Nullable
     @Override
@@ -32,16 +38,36 @@ public class NotificationFragment extends Fragment {
 
         // Khởi tạo danh sách thông báo
         notificationList = new ArrayList<>();
-        notificationList.add(new Notification(1, "The employer has just viewed your application information.", Calendar.getInstance()));
-        notificationList.add(new Notification(2, "Data science recruitment, Google corporation just viewed your recruitment information.", Calendar.getInstance()));
-        notificationList.add(new Notification(3, "Your profile has been viewed by several recruiters.", Calendar.getInstance()));
-        notificationList.add(new Notification(4, "You have received a new job offer!", Calendar.getInstance()));
 
         // Thiết lập RecyclerView
         NotificationRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         notificationAdapter = new NotificationAdapter(notificationList, getContext());
         NotificationRecyclerView.setAdapter(notificationAdapter);
 
+        // Gọi API để lấy thông báo của userId = 9
+        loadNotifications(9);
+
         return view;
+    }
+
+    private void loadNotifications(int userId) {
+        compositeDisposable.add(ApiNotificationService.ApiNotificationService.getNotificationByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(notifications -> {
+                    // Cập nhật danh sách thông báo và làm mới RecyclerView
+                    notificationList.clear();
+                    notificationList.addAll(notifications);
+                    notificationAdapter.notifyDataSetChanged();
+                }, throwable -> {
+                    // Xử lý lỗi khi gọi API
+                    Toast.makeText(getContext(), "Failed to load notifications: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                }));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear(); // Xóa các request để tránh rò rỉ bộ nhớ
     }
 }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/main"
     android:background="@color/white">
 
     <LinearLayout
@@ -17,28 +18,14 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnBackResult"
+                android:id="@+id/back_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@color/white"
                 android:src="@drawable/back_ic"
                 android:scaleType="fitCenter"
                 />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:src="@drawable/location_ic"
-                android:scaleType="fitCenter"
-                android:layout_marginLeft="20dp"
-                />
-            <Spinner
-                android:id="@+id/spinnerLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-                android:layout_gravity="center"
-                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,6 +47,7 @@
                 android:src="@drawable/search_ic"></ImageView>
 
             <EditText
+                android:id="@+id/search_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
                 android:layout_marginTop="10sp"
@@ -67,38 +55,18 @@
                 android:layout_marginBottom="10sp"
                 android:background="@color/white"
                 android:hint="Search here"
-                android:padding="10dp"></EditText>
+                android:padding="10dp" />
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Kết quả tìm kiếm cho:"
+            android:text="Search Result"
             android:textSize="18sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Spinner
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="10dp"
-                />
-
-            <Spinner
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="30dp"
-                />
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
 
         <LinearLayout
@@ -106,11 +74,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10 "
-                android:textColor="@color/green_color"/>
+
             <TextView
                 android:id="@+id/tvSearchCount"
                 android:layout_width="wrap_content"

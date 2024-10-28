@@ -39,6 +39,9 @@ public class Resume {
     @SerializedName("iD_Applicant") // Ánh xạ trường JSON
     private int id_applicant;
 
+    public Resume() {
+    }
+
     // Constructor
     public Resume(String applicant_name, String email, String phone_number, String education, String skills, String certificate, String job_applying, String introduction, String image, String experience, int id_applicant) {
         this.applicant_name = applicant_name;

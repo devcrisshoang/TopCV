@@ -33,7 +33,18 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<CompanyTopAdapter.Co
         if(company == null){
             return;
         }
-        holder.company_logo.setImageResource(company.getImage());
+        String imageId = company.getImage();
+        if (imageId != null && !imageId.isEmpty()) {
+            try {
+                holder.company_logo.setImageResource(Integer.parseInt(imageId));
+            } catch (NumberFormatException e) {
+                // Xử lý khi imageId không phải là một số nguyên hợp lệ
+                holder.company_logo.setImageResource(R.drawable.fpt_ic); // Gán một ảnh mặc định
+            }
+        } else {
+            // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
+            holder.company_logo.setImageResource(R.drawable.fpt_ic);
+        }
         holder.company_name.setText(company.getName());
         holder.company_field.setText(company.getField());
     }

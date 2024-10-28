@@ -43,12 +43,14 @@
     </LinearLayout>
 
     <!-- ImageView bên phải -->
-    <ImageView
-        android:id="@+id/company_logo_right"
+    <ImageButton
+        android:id="@+id/edit_cv"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
+        android:background="@drawable/icon_rounded_corner"
         android:padding="10dp"
         android:layout_margin="5sp"
-        android:src="@drawable/white_ic" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/edit_cv_ic" />
 </LinearLayout>
