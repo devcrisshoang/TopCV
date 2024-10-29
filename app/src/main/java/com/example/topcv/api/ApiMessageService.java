@@ -1,6 +1,7 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Message;
+import com.example.topcv.model.User;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiMessageService {
 
@@ -38,9 +40,14 @@ public interface ApiMessageService {
             .build()
             .create(ApiMessageService.class);
 
-    // API lấy danh sách tin nhắn
+    // GET
     @GET("api/Message")
     Observable<List<Message>> getAllMessages();
+    @GET("api/Message/GetChatPartners/{id}")
+    Observable<List<User>> getAllChatPartnersByUserId(@Path("id") int id);
+    @GET("api/Message/GetMessagesBetweenUsers/{idUser1}/{idUser2}")
+    Observable<List<Message>> getAllMessageByTwoUserId(@Path("idUser1") int idUser1, @Path("idUser2") int idUser2);
+    // POST
     @POST("api/Message")
     Observable<Message> postMessage(@Body Message message);
 }

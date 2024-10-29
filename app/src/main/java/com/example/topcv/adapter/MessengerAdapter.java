@@ -12,20 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
 import com.example.topcv.model.Message;
+import com.example.topcv.model.User;
+import com.example.topcv.utils.DateTimeUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.MessengerViewHolder> {
 
-    private List<Message> messageList;
+    private List<User> userList;
+    private List<List<Message>> allMessagesList;
     private Context context;
 
-    public MessengerAdapter(List<Message> messageList, Context context) {
-        this.messageList = messageList;
+    public MessengerAdapter(List<User> userList, List<List<Message>> allMessagesList, Context context) {
+        this.userList = userList;
+        this.allMessagesList = allMessagesList;
         this.context = context;
     }
 
@@ -39,25 +39,45 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
 
     @Override
     public void onBindViewHolder(@NonNull MessengerViewHolder holder, int position) {
-        Message message = messageList.get(position);
-        // Các logic cũ của bạn
+        User user = userList.get(position);
+        List<Message> messages = allMessagesList.get(position);
 
-        // Thêm sự kiện click
+        // Hiển thị tên người dùng và tin nhắn mới nhất
+        holder.sender_name.setText(user.getUsername());
+
+        if (!messages.isEmpty()) {
+            holder.message.setText(messages.get(messages.size() - 1).getContent());
+
+            String time = messages.get(messages.size() - 1).getSend_Time();
+            // Kiểm tra xem thời gian có null không
+            if (time != null && !time.isEmpty()) {
+                String formattedTime = DateTimeUtils.formatTimeAgo(time);
+                holder.send_time.setText(formattedTime);
+            } else {
+                holder.send_time.setText("No time available");
+            }
+        } else {
+            holder.message.setText("No messages");
+            holder.send_time.setText("No time available");
+        }
+
+        // Thiết lập sự kiện click cho mỗi item
         holder.itemView.setOnClickListener(v -> {
+            // Tạo Intent để mở MessageActivity
             Intent intent = new Intent(context, MessageActivity.class);
-            intent.putExtra("message_content", message.getContent());
+
+            // Truyền userId của người dùng vào Intent
+            intent.putExtra("userId", user.getId());  // Truyền ID người dùng
+
+            // Bắt đầu MessageActivity
             context.startActivity(intent);
         });
-
-        // Đặt thời gian và nội dung cho TextView
-        holder.message.setText(message.getContent());
-        holder.send_time.setText("10:00 PM");
-        holder.sender_name.setText("Khanh");
     }
+
 
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return userList.size();
     }
 
     // ViewHolder để quản lý từng phần tử trong RecyclerView

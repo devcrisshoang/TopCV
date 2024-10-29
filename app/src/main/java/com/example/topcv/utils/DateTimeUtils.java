@@ -8,6 +8,14 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class DateTimeUtils {
+    public static String getCurrentTime() {
+        // Định dạng thời gian theo chuẩn ISO 8601 (yyyy-MM-dd'T'HH:mm:ss)
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        // Lấy thời gian hiện tại
+        Date now = new Date();
+        // Trả về chuỗi thời gian đã format
+        return sdf.format(now);
+    }
 
     public static String formatTimeAgo(String inputTime) {
         // Kiểm tra inputTime có null không
@@ -15,7 +23,8 @@ public class DateTimeUtils {
             return "Invalid time"; // Trả về thông báo lỗi hoặc giá trị mặc định
         }
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+        // Điều chỉnh định dạng thời gian cho đúng với định dạng có khả năng bạn đang sử dụng
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         Calendar now = Calendar.getInstance(); // Thời gian hiện tại
         Date notificationDate;
 
