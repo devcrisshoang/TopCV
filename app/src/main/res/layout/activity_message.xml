@@ -22,6 +22,7 @@
             android:src="@drawable/back_ic" />
 
         <TextView
+            android:id="@+id/friend_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

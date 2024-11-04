@@ -23,11 +23,11 @@ import java.util.Locale;
 public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdapter.MessengerViewHolder> {
 
     private List<Message> messageList;
-    private Context context;
+    private int ID;
 
-    public MessengerShowAdapter(List<Message> messageList, Context context) {
+    public MessengerShowAdapter(List<Message> messageList, int ID) {
         this.messageList = messageList;
-        this.context = context;
+        this.ID = ID;
     }
 
     @NonNull
@@ -41,21 +41,24 @@ public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdap
     @Override
     public void onBindViewHolder(@NonNull MessengerViewHolder holder, int position) {
         Message message = messageList.get(position);
-        // Thêm log để kiểm tra nội dung của message
         Log.d("MessengerAdapter", "Message content: " + message.getContent() + ", Sender ID: " + message.getSender_ID());
 
-        // Các logic cũ của bạn
+        // Reset visibility trước khi áp dụng logic mới
+        holder.me.setVisibility(View.VISIBLE);
+        holder.other_people.setVisibility(View.VISIBLE);
+
         // Xử lý hiển thị dựa trên Sender_ID
         if (message.getSender_ID() == 9) {
-            // Nếu Sender_ID = 1, hiển thị tin nhắn của người dùng
+            // Nếu Sender_ID = 9, hiển thị tin nhắn của chính người dùng
             holder.me.setText(message.getContent());
-            holder.other_people.setVisibility(View.GONE); // Ẩn tin nhắn của người khác
-        } else if (message.getSender_ID() == 10) {
-            // Nếu Sender_ID = 2, hiển thị tin nhắn của người khác
+            holder.other_people.setVisibility(View.GONE);  // Ẩn tin nhắn của người khác
+        } else if (message.getSender_ID() == ID) {
+            // Nếu Sender_ID là người khác, hiển thị tin nhắn của họ
             holder.other_people.setText(message.getContent());
-            holder.me.setVisibility(View.GONE); // Ẩn tin nhắn của mình
+            holder.me.setVisibility(View.GONE);  // Ẩn tin nhắn của chính mình
         }
     }
+
 
     @Override
     public int getItemCount() {

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
+    android:background="@drawable/edit_text_rounded_corner_green"
     android:layout_margin="5sp">
 
     <ImageView
