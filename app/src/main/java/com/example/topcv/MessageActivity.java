@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiMessageService;
 import com.example.topcv.adapter.MessengerShowAdapter;
 import com.example.topcv.model.Message;
@@ -34,6 +36,7 @@ public class MessageActivity extends AppCompatActivity {
     private ImageButton messenger_send_button;
     private EditText input_message_edittext;
     private int userId;
+    private TextView friend_name; // lay ten applicant
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +48,10 @@ public class MessageActivity extends AppCompatActivity {
         MessageShowRecyclerView = findViewById(R.id.MessageShowRecyclerView);
         messenger_send_button = findViewById(R.id.messenger_send_button);
         input_message_edittext = findViewById(R.id.input_message_edittext);
+        friend_name = findViewById(R.id.friend_name);
 
         userId = getIntent().getIntExtra("userId", -1);  // Nhận giá trị userId
+        getApplicantName(userId);
 
         // Kiểm tra nếu userId hợp lệ
         if (userId != -1) {
@@ -74,6 +79,28 @@ public class MessageActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+    }
+
+    // Method to get applicant name based on the user ID
+    private void getApplicantName(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                friend_name.setText(applicant.getApplicantName());
+                                Log.d("MessengerAdapter", "Fetched applicant name: " + applicant.getApplicantName());
+                            } else {
+                                friend_name.setText("Unknown User"); // Hoặc xử lý lỗi nếu không có dữ liệu
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant name: " + throwable.getMessage());
+                            Toast.makeText(this, "Failed to load applicant name", Toast.LENGTH_SHORT).show();
+                        }
+                );
+
     }
     // Hàm gửi tin nhắn
     private void sendMessage() {
