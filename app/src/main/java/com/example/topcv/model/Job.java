@@ -52,6 +52,10 @@ public class Job{
         this.recruiterId = recruiterId;
     }
 
+    public Job() {
+
+    }
+
     public String getCreateTime() {
         return createTime;
     }

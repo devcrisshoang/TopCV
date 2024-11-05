@@ -74,7 +74,6 @@ public class NewsFeedFragment extends Fragment {
     private Button view_all_interesting_job;
     private Button view_all_top_company;
     private Button view_all_article;
-    private Disposable disposable;
 
     private TextView suggest_job_textview;
     private TextView best_job_textview;
@@ -158,7 +157,7 @@ public class NewsFeedFragment extends Fragment {
                 .subscribe(new Observer<List<Job>>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        disposable = d;
+
                     }
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Job> jobs) {
@@ -188,11 +187,11 @@ public class NewsFeedFragment extends Fragment {
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        Toast.makeText(getContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(requireContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onComplete() {
-                        Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -203,7 +202,7 @@ public class NewsFeedFragment extends Fragment {
                 .subscribe(new Observer<List<Company>>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        disposable = d;
+
                     }
 
                     @Override
@@ -225,12 +224,12 @@ public class NewsFeedFragment extends Fragment {
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        Toast.makeText(getContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(requireContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -241,7 +240,7 @@ public class NewsFeedFragment extends Fragment {
                 .subscribe(new Observer<List<Article>>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        disposable = d;
+
                     }
 
                     @Override
@@ -262,12 +261,12 @@ public class NewsFeedFragment extends Fragment {
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        Toast.makeText(getContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(requireContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Thông báo", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
