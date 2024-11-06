@@ -121,8 +121,8 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class WorkViewHolder extends RecyclerView.ViewHolder {
-        private ImageView company_logo;
-        private TextView job_name, company_name, company_location, salary, job_experience, time_remaining;
+        public ImageView company_logo;
+        public TextView job_name, company_name, company_location, salary, job_experience, time_remaining;
 
         public WorkViewHolder(@NonNull View itemView) {
             super(itemView);
