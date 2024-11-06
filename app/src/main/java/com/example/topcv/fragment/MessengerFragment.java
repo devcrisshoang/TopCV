@@ -1,10 +1,13 @@
 package com.example.topcv.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,7 +34,7 @@ public class MessengerFragment extends Fragment {
 
     private RecyclerView messageRecyclerView;
     private MessengerAdapter messageAdapter;
-    private List<User> userList = new ArrayList<>(); // Danh sách người dùng đã nhắn tin
+    private List<User> userList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -47,10 +50,8 @@ public class MessengerFragment extends Fragment {
         // Fetch data để hiển thị trong RecyclerView
         int userId = 9; // Giả sử đây là ID của người dùng đã đăng nhập
         getChatPartners(userId);
-
         return view;
     }
-
     private void getChatPartners(int userId) {
         ApiMessageService.apiMessageService.getAllChatPartnersByUserId(userId)
                 .subscribeOn(Schedulers.io()) // Thực hiện trên thread background

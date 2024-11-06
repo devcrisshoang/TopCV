@@ -39,10 +39,6 @@ public interface ApiMessageService {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())  // Sử dụng RxJava3
             .build()
             .create(ApiMessageService.class);
-
-    // GET
-    @GET("api/Message")
-    Observable<List<Message>> getAllMessages();
     //
     @GET("api/Message/GetChatPartners/{id}")
     Observable<List<User>> getAllChatPartnersByUserId(@Path("id") int id);

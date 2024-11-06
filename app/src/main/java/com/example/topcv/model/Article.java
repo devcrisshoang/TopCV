@@ -33,6 +33,13 @@ public class Article {
         this.idRecruiter = idRecruiter;
     }
 
+    public Article(String name, String content, String time, String image) {
+        this.name = name;
+        this.content = content;
+        this.time = time;
+        this.image = image;
+    }
+
     // Getter và Setter
     public int getId() {
         return id;

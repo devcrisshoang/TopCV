@@ -154,10 +154,10 @@ public class MessageActivity extends AppCompatActivity {
             Toast.makeText(MessageActivity.this, "Message content cannot be empty", Toast.LENGTH_SHORT).show();
         }
     }
-
     // Thay thế `Single<List<Message>>` bằng kiểu trả về đúng
     public void getAPIData(int userId) {
-        ApiMessageService.apiMessageService.getAllMessages()
+        // Thay vì gọi getAllMessages, bạn gọi getAllMessageByTwoUserId với userId hiện tại và userId bạn nhận từ Intent
+        ApiMessageService.apiMessageService.getAllMessageByTwoUserId(9, userId)  // 9 là ID của người dùng hiện tại
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Message>>() {
@@ -171,18 +171,9 @@ public class MessageActivity extends AppCompatActivity {
                         // Log để kiểm tra
                         Log.d("MessageActivity", "Received messages: " + messages.toString());
 
-                        // Lọc tin nhắn giữa người dùng có id = 9 và userId được truyền qua Intent
-                        List<Message> filteredMessages = new ArrayList<>();
-                        for (Message message : messages) {
-                            if ((message.getSender_ID() == 9 && message.getReceiver_ID() == userId) ||
-                                    (message.getSender_ID() == userId && message.getReceiver_ID() == 9)) {
-                                filteredMessages.add(message);
-                            }
-                        }
-
                         // Cập nhật danh sách và thông báo adapter rằng dữ liệu đã thay đổi
                         messageList.clear();  // Xóa dữ liệu cũ
-                        messageList.addAll(filteredMessages);  // Thêm dữ liệu mới đã được lọc
+                        messageList.addAll(messages);  // Thêm dữ liệu mới
                         messengerShowAdapter.notifyDataSetChanged();  // Thông báo dữ liệu thay đổi
                     }
 
@@ -198,8 +189,6 @@ public class MessageActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
