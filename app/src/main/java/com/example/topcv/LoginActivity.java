@@ -116,14 +116,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             int userId = user.getId();
 
-                            // Kiểm tra xem Applicant đã tồn tại chưa
-                            ApiApplicantService.apiApplicantService.getApplicantByUserId(userId)
+                            ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(response -> {
                                         if (response != null) {
                                             // Nếu tồn tại Applicant, chuyển đến MainActivity
-                                            navigateToMainActivity(userId, response.getId(), response.getApplicant_Name(), response.getPhone_Number());
+                                            navigateToMainActivity(userId, response.getId(), response.getApplicantName(), response.getPhoneNumber());
                                         } else {
                                             // Nếu không tồn tại Applicant, chuyển đến InformationActivity
                                             navigateToInformationActivity(userId);

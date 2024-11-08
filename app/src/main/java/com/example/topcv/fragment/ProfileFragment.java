@@ -55,8 +55,8 @@ public class ProfileFragment extends Fragment {
             if (appItems.size() >= 5) {
                 // Hiển thị AlertDialog nếu danh sách đã đủ 5 Resume
                 new androidx.appcompat.app.AlertDialog.Builder(getContext())
-                        .setTitle("Thông báo")
-                        .setMessage("Danh sách resume đã đủ 5. Vui lòng xóa resume không cần thiết trước khi thêm mới.")
+                        .setTitle("Notification")
+                        .setMessage("The resume list is full 5. Please delete unnecessary resumes before adding new ones.")
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()) // Nút OK để đóng dialog
                         .show();
             } else {

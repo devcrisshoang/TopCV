@@ -25,6 +25,17 @@ public class Applicant {
     @SerializedName("working_Experience")
     private String workingExperience;
 
+    @SerializedName("iD_User")
+    private int iD_User;
+
+    public int getiD_User() {
+        return iD_User;
+    }
+
+    public void setiD_User(int iD_User) {
+        this.iD_User = iD_User;
+    }
+
     // Constructor có tham số
     public Applicant(int id, String applicantName, String phoneNumber, String email, String jobDesire, String workingLocationDesire, String workingExperience) {
         this.id = id;
@@ -47,6 +58,7 @@ public class Applicant {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getApplicantName() {
         return applicantName;
     }
@@ -70,6 +82,7 @@ public class Applicant {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getJobDesire() {
         return jobDesire;
     }
