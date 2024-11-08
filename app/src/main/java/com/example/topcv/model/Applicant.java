@@ -1,43 +1,45 @@
 package com.example.topcv.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Applicant {
-    private int id;  // ID của Applicant, có thể được tự động tạo
-    private int id_User;  // ID_User là khóa ngoại từ User
-    private String applicant_Name;
-    private String phone_Number;
-    private String email; // Tùy chọn, có thể để trống
-    private String job_Desire; // Tùy chọn, có thể để trống
-    private String working_Location_Desire; // Tùy chọn, có thể để trống
-    private String working_Experience; // Tùy chọn, có thể để trống
 
-    // Constructor cho tên và số điện thoại
-    public Applicant(String applicant_Name, String phone_Number, int id_User) {
-        this.applicant_Name = applicant_Name;
-        this.phone_Number = phone_Number;
-        this.id_User = id_User;
-        this.email = null; // Đặt mặc định là null
-        this.job_Desire = null; // Đặt mặc định là null
-        this.working_Location_Desire = null; // Đặt mặc định là null
-        this.working_Experience = null; // Đặt mặc định là null
-    }
+    @SerializedName("id")
+    private int id;
 
-    // Constructor với tất cả các tham số
-    public Applicant(int id, String applicant_Name, String phone_Number, String email, String job_Desire, String working_Location_Desire, String working_Experience, int id_User) {
+    @SerializedName("applicant_Name")
+    private String applicantName;
+
+    @SerializedName("phone_Number")
+    private String phoneNumber;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("job_Desire")
+    private String jobDesire;
+
+    @SerializedName("working_Location_Desire")
+    private String workingLocationDesire;
+
+    @SerializedName("working_Experience")
+    private String workingExperience;
+
+    // Constructor có tham số
+    public Applicant(int id, String applicantName, String phoneNumber, String email, String jobDesire, String workingLocationDesire, String workingExperience) {
         this.id = id;
-        this.applicant_Name = applicant_Name;
-        this.phone_Number = phone_Number;
+        this.applicantName = applicantName;
+        this.phoneNumber = phoneNumber;
         this.email = email;
-        this.job_Desire = job_Desire;
-        this.working_Location_Desire = working_Location_Desire;
-        this.working_Experience = working_Experience;
-        this.id_User = id_User;
+        this.jobDesire = jobDesire;
+        this.workingLocationDesire = workingLocationDesire;
+        this.workingExperience = workingExperience;
     }
 
     // Default constructor
-    public Applicant() {
-    }
+    public Applicant() {}
 
-    // Getters and setters
+    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -45,29 +47,20 @@ public class Applicant {
     public void setId(int id) {
         this.id = id;
     }
-
-    public int getId_User() {
-        return id_User;
+    public String getApplicantName() {
+        return applicantName;
     }
 
-    public void setId_User(int id_User) {
-        this.id_User = id_User;
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
     }
 
-    public String getApplicant_Name() {
-        return applicant_Name;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setApplicant_Name(String applicant_Name) {
-        this.applicant_Name = applicant_Name;
-    }
-
-    public String getPhone_Number() {
-        return phone_Number;
-    }
-
-    public void setPhone_Number(String phone_Number) {
-        this.phone_Number = phone_Number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -77,28 +70,28 @@ public class Applicant {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getJob_Desire() {
-        return job_Desire;
+    public String getJobDesire() {
+        return jobDesire;
     }
 
-    public void setJob_Desire(String job_Desire) {
-        this.job_Desire = job_Desire;
+    public void setJobDesire(String jobDesire) {
+        this.jobDesire = jobDesire;
     }
 
-    public String getWorking_Location_Desire() {
-        return working_Location_Desire;
+    public String getWorkingLocationDesire() {
+        return workingLocationDesire;
     }
 
-    public void setWorking_Location_Desire(String working_Location_Desire) {
-        this.working_Location_Desire = working_Location_Desire;
+    public void setWorkingLocationDesire(String workingLocationDesire) {
+        this.workingLocationDesire = workingLocationDesire;
     }
 
-    public String getWorking_Experience() {
-        return working_Experience;
+    public String getWorkingExperience() {
+        return workingExperience;
     }
 
-    public void setWorking_Experience(String working_Experience) {
-        this.working_Experience = working_Experience;
+    public void setWorkingExperience(String workingExperience) {
+        this.workingExperience = workingExperience;
     }
+
 }

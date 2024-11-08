@@ -1,35 +1,46 @@
 package com.example.topcv.model;
 
-import java.util.Date;
+import com.google.gson.annotations.SerializedName;
 
 public class Article {
+
+    @SerializedName("id")
     private int id;
+
+    @SerializedName("article_Name")
     private String name;
+
+    @SerializedName("content")
     private String content;
-    private Date time;
-    private int image;
 
-    public Article(int image, Date time, String content, String name) {
-        this.image = image;
+    // Để thời gian dưới dạng String để dễ parse
+    @SerializedName("create_Time")
+    private String time;
+
+    @SerializedName("image")
+    private String image;
+
+    @SerializedName("iD_Recruiter")
+    private int idRecruiter;
+
+    // Constructor đầy đủ
+    public Article(int id, String name, String content, String time, String image, int idRecruiter) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
         this.time = time;
-        this.content = content;
-        this.name = name;
+        this.image = image;
+        this.idRecruiter = idRecruiter;
     }
 
-    public Article(String name, String content, int image) {
+    public Article(String name, String content, String time, String image) {
         this.name = name;
         this.content = content;
+        this.time = time;
         this.image = image;
     }
 
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
-    }
-
+    // Getter và Setter
     public int getId() {
         return id;
     }
@@ -54,11 +65,27 @@ public class Article {
         this.content = content;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getIdRecruiter() {
+        return idRecruiter;
+    }
+
+    public void setIdRecruiter(int idRecruiter) {
+        this.idRecruiter = idRecruiter;
     }
 }

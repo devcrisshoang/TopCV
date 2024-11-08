@@ -2,6 +2,7 @@ package com.example.topcv.api;
 
 import com.example.topcv.model.Applicant;
 import com.example.topcv.model.User;
+import com.example.topcv.utils.NetworkUtils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,9 +35,10 @@ public interface ApiUserService {
             .retryOnConnectionFailure(true)
             .build();
 
+    String BASE_URL = NetworkUtils.getBaseUrl();
     // Sử dụng Retrofit để tạo API service
     ApiUserService apiUserService = new Retrofit.Builder()
-            .baseUrl("https://10.0.2.2:7200/")  // Địa chỉ máy chủ
+            .baseUrl(BASE_URL)  // Địa chỉ máy chủ
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

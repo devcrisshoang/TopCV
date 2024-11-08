@@ -22,6 +22,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/back_ic" />
         <TextView
+            android:id="@+id/work_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,6 +81,7 @@
                         android:src="@drawable/google_ic" />
 
                     <TextView
+                        android:id="@+id/job_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -89,6 +91,7 @@
                         android:text="Intern" />
 
                     <TextView
+                        android:id="@+id/company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -131,6 +134,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@id/salary"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text="Up to $20000"
@@ -167,6 +171,7 @@
                         android:textSize="15sp" />
 
                     <TextView
+                        android:id="@+id/location"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text="America"
@@ -203,11 +208,12 @@
                         android:textSize="15sp" />
 
                     <TextView
-                        android:layout_height="wrap_content"
+                        android:id="@+id/experience"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="6 Years"
                         android:textAlignment="center"
-                        android:layout_gravity="center"
                         android:textColor="@color/green_color"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -263,6 +269,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/experience_detail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -306,6 +313,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/work_method"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -349,6 +357,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/number_of_people"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -392,6 +401,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/gender"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -435,6 +445,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/position"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -470,6 +481,7 @@
                             android:layout_gravity="center"
                             android:orientation="vertical">
                             <TextView
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -478,6 +490,7 @@
 
                             </TextView>
                             <TextView
+                                android:id="@+id/deadline"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start"
@@ -503,20 +516,24 @@
 
                     </TextView>
                     <TextView
+                        android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="abc">
 
                     </TextView>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Applying conditions:"
-                        android:textStyle="bold"
-                        android:textSize="18sp">
+                        android:textSize="18sp"
+                        android:textStyle="bold">
 
                     </TextView>
+
                     <TextView
+                        android:id="@+id/conditions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="abc">
@@ -525,12 +542,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Interests:"
+                        android:text="Benifits:"
                         android:textStyle="bold"
                         android:textSize="18sp">
 
                     </TextView>
                     <TextView
+                        android:id="@+id/interesting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="abc">
@@ -545,6 +563,7 @@
 
                     </TextView>
                     <TextView
+                        android:id="@+id/working_place"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="abc">
@@ -559,6 +578,7 @@
 
                     </TextView>
                     <TextView
+                        android:id="@+id/working_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="abc">
@@ -582,7 +602,7 @@
         app:itemHorizontalTranslationEnabled="false">
 
         <Button
-            android:id="@+id/Apply_Button"
+            android:id="@+id/apply_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

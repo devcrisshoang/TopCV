@@ -5,15 +5,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiMessageService;
 import com.example.topcv.adapter.MessengerShowAdapter;
 import com.example.topcv.model.Message;
+import com.example.topcv.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,8 @@ public class MessageActivity extends AppCompatActivity {
     private Disposable disposable;
     private ImageButton messenger_send_button;
     private EditText input_message_edittext;
+    private int userId;
+    private TextView friend_name; // lay ten applicant
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,15 @@ public class MessageActivity extends AppCompatActivity {
         MessageShowRecyclerView = findViewById(R.id.MessageShowRecyclerView);
         messenger_send_button = findViewById(R.id.messenger_send_button);
         input_message_edittext = findViewById(R.id.input_message_edittext);
+        friend_name = findViewById(R.id.friend_name);
+
+        userId = getIntent().getIntExtra("userId", -1);  // Nhận giá trị userId
+        getApplicantName(userId);
+
+        // Kiểm tra nếu userId hợp lệ
+        if (userId != -1) {
+            getAPIData(userId);
+        }
 
         // Khởi tạo danh sách và adapter trống ban đầu
         messageList = new ArrayList<>();
@@ -51,8 +65,8 @@ public class MessageActivity extends AppCompatActivity {
         back_button.setOnClickListener(view -> finish());
 
         // Gọi API để lấy dữ liệu
-        getAPIData();
-        messengerShowAdapter = new MessengerShowAdapter(messageList, MessageActivity.this);
+
+        messengerShowAdapter = new MessengerShowAdapter(messageList, userId);
 
         // Gán LayoutManager và Adapter cho RecyclerView
         MessageShowRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -66,19 +80,42 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Method to get applicant name based on the user ID
+    private void getApplicantName(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                friend_name.setText(applicant.getApplicantName());
+                                Log.d("MessengerAdapter", "Fetched applicant name: " + applicant.getApplicantName());
+                            } else {
+                                friend_name.setText("Unknown User"); // Hoặc xử lý lỗi nếu không có dữ liệu
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant name: " + throwable.getMessage());
+                            Toast.makeText(this, "Failed to load applicant name", Toast.LENGTH_SHORT).show();
+                        }
+                );
+
+    }
     // Hàm gửi tin nhắn
     private void sendMessage() {
         String messageContent = input_message_edittext.getText().toString().trim();
+        String currentTime = DateTimeUtils.getCurrentTime();
 
         if (!messageContent.isEmpty()) {
-            // Tạo đối tượng Message
+            // Tạo đối tượng Message mới
             Message newMessage = new Message(
                     0,  // ID tạm thời (server sẽ tự sinh)
-                    9,  // sender_ID là 6
-                    10,  // receiver_ID là 7
+                    9,  // sender_ID là 9
+                    userId,  // receiver_ID
                     messageContent,
                     false,  // status giả định là "sent"
-                    "2024-10-19T12:00:00"  // send_Time giả định, bạn có thể dùng thời gian hiện tại
+                    currentTime  // send_Time giả định, dùng thời gian hiện tại
             );
 
             // Gọi API để gửi tin nhắn
@@ -93,12 +130,11 @@ public class MessageActivity extends AppCompatActivity {
 
                         @Override
                         public void onNext(@NonNull Message messageResponse) {
-                            // Tin nhắn được gửi thành công, thêm vào danh sách và cập nhật giao diện
-                            messageList.add(messageResponse);
-                            messengerShowAdapter.notifyDataSetChanged();
-
-                            // Xóa nội dung trong input sau khi gửi
+                            // Tin nhắn được gửi thành công, xóa nội dung trong input sau khi gửi
                             input_message_edittext.setText("");
+
+                            // Sau khi gửi tin nhắn thành công, gọi lại API để cập nhật toàn bộ tin nhắn
+                            getAPIData(userId);
                             Toast.makeText(MessageActivity.this, "Message sent!", Toast.LENGTH_SHORT).show();
                         }
 
@@ -118,10 +154,10 @@ public class MessageActivity extends AppCompatActivity {
             Toast.makeText(MessageActivity.this, "Message content cannot be empty", Toast.LENGTH_SHORT).show();
         }
     }
-
     // Thay thế `Single<List<Message>>` bằng kiểu trả về đúng
-    public void getAPIData() {
-        ApiMessageService.apiMessageService.getAllMessages()
+    public void getAPIData(int userId) {
+        // Thay vì gọi getAllMessages, bạn gọi getAllMessageByTwoUserId với userId hiện tại và userId bạn nhận từ Intent
+        ApiMessageService.apiMessageService.getAllMessageByTwoUserId(9, userId)  // 9 là ID của người dùng hiện tại
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Message>>() {
@@ -153,9 +189,6 @@ public class MessageActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
