@@ -21,9 +21,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Notification;
 import com.example.topcv.model.Resume;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -44,6 +49,7 @@ public class EditCvActivity extends AppCompatActivity {
     private EditText experience;
     private int id;
     private Uri resumeImageUri;
+    private int id_User;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +63,7 @@ public class EditCvActivity extends AppCompatActivity {
         setWidget();
         back_button.setOnClickListener(view -> finish());
         int resume_id = getIntent().getIntExtra("resume_edit",-1);
+        id_User = getIntent().getIntExtra("id_User",-1);
         fetchResumeData(resume_id);
         edit_cv_button.setOnClickListener(view -> {
             editResumeData();
@@ -82,6 +89,7 @@ public class EditCvActivity extends AppCompatActivity {
                 .show();
     }
     private void deleteResume() {
+        Log.e("Delete","Delete");
         ApiResumeService.apiResumeService.deleteResumeById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

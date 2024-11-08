@@ -25,11 +25,13 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
     private List<Resume> mAppItems;
     private Context mContext;
+    private int id_User;
 
     // Constructor, cần truyền Context và danh sách CV vào
-    public ProfileAdapter(Context context, List<Resume> appItems) {
+    public ProfileAdapter(Context context, List<Resume> appItems, int id_User) {
         mAppItems = appItems;
         mContext = context;
+        id_User = id_User;
     }
 
     // Interface để xử lý sự kiện click
@@ -92,6 +94,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         holder.edit_cv.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, EditCvActivity.class);
             intent.putExtra("resume_edit", resume.getId());
+            intent.putExtra("id_User",id_User);
             mContext.startActivity(intent);
         });
     }

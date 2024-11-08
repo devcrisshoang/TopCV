@@ -129,7 +129,7 @@ public class ProfileFragment extends Fragment {
     private void updateAdapter() {
         if (adapter == null) {
             // Tạo adapter mới nếu chưa có
-            adapter = new ProfileAdapter(getContext(), appItems);
+            adapter = new ProfileAdapter(getContext(), appItems,id_User);
             recyclerView.setAdapter(adapter);
         } else {
             // Cập nhật dữ liệu cho adapter hiện tại

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.ArticleActivity;
+import com.example.topcv.CompanyActivity;
 import com.example.topcv.CompanyInformationsActivity;
 import com.example.topcv.R;
 import com.example.topcv.SeeAllActivity;
@@ -138,20 +139,13 @@ public class NewsFeedFragment extends Fragment {
             startActivity(intent);
         });
         companyTopAdapter.setOnItemClickListener(company -> {
-            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            Intent intent = new Intent(getContext(), CompanyActivity.class);
             intent.putExtra("company_id", company.getId()); // Truyền dữ liệu cần thiết (như id công việc)
             startActivity(intent);
         });
 
         return view;
     }
-
-    private List<Job> parseSuggestedJobs(String suggestedJobsContent) {
-        Gson gson = new Gson();
-        Type jobListType = new TypeToken<List<Job>>() {}.getType();
-        return gson.fromJson(suggestedJobsContent, jobListType);
-    }
-
 
     public void getAPIJobData() {
         ApiJobService.ApiJobService.getAllJobs()

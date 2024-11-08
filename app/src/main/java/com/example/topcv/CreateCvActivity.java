@@ -28,11 +28,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.example.topcv.api.ApiApplicantService;
+import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Notification;
 import com.example.topcv.model.Resume;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -54,7 +58,6 @@ public class CreateCvActivity extends AppCompatActivity {
     private Uri resumeImageUri;
     private int id_User;
     public int id_Applicant;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +152,7 @@ public class CreateCvActivity extends AppCompatActivity {
                 id_Applicant
         );
 
+
         // Gọi API để đăng dữ liệu hồ sơ
         ApiResumeService.apiResumeService.createResume(resume)
                 .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
@@ -157,6 +161,32 @@ public class CreateCvActivity extends AppCompatActivity {
                         response -> {
                             // Xử lý khi thành công
                             Toast.makeText(CreateCvActivity.this, "CV đã được tạo thành công!", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Xử lý khi có lỗi
+                            Toast.makeText(CreateCvActivity.this, "Có lỗi xảy ra: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                );
+        String content = "You just created a " + resumeJobApplication +" job resume.";
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        // Định dạng thời gian nếu cần
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDateTime = currentTime.format(formatter);
+
+        Notification notification = new Notification(
+                0,
+                content,
+                formattedDateTime,
+                id_User
+        );
+        ApiNotificationService.ApiNotificationService.createNotification(notification)
+                .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
+                .observeOn(AndroidSchedulers.mainThread())  // Quan sát kết quả trên luồng chính
+                .subscribe(
+                        response -> {
+                            // Xử lý khi thành công
+                            Toast.makeText(CreateCvActivity.this, "Notification đã được tạo thành công!", Toast.LENGTH_SHORT).show();
                         },
                         throwable -> {
                             // Xử lý khi có lỗi

@@ -54,7 +54,7 @@ public class NotificationFragment extends Fragment {
     }
 
     private void loadNotifications(int userId) {
-        compositeDisposable.add(ApiNotificationService.ApiNotificationService.getNotificationByUserId(userId)
+        ApiNotificationService.ApiNotificationService.getNotificationByUserId(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(notifications -> {
@@ -65,7 +65,7 @@ public class NotificationFragment extends Fragment {
                 }, throwable -> {
                     // Xử lý lỗi khi gọi API
                     Toast.makeText(getContext(), "Failed to load notifications: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                }));
+                });
     }
 
     @Override
