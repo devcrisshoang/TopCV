@@ -125,7 +125,7 @@ public class CreateCvActivity extends AppCompatActivity {
         );
 
         // Gọi API để đăng dữ liệu hồ sơ
-        ApiResumeService.apiResumeService.createUser(resume)
+        ApiResumeService.apiResumeService.createResume(resume)
                 .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
                 .observeOn(AndroidSchedulers.mainThread())  // Quan sát kết quả trên luồng chính
                 .subscribe(

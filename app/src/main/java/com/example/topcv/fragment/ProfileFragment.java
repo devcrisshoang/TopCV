@@ -51,11 +51,21 @@ public class ProfileFragment extends Fragment {
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
 
-        // Thiết lập Button để chuyển đến CreateCvActivity
         create_cv_button.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), CreateCvActivity.class);
-            startActivity(intent);
+            if (appItems.size() >= 5) {
+                // Hiển thị AlertDialog nếu danh sách đã đủ 5 Resume
+                new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                        .setTitle("Thông báo")
+                        .setMessage("Danh sách resume đã đủ 5. Vui lòng xóa resume không cần thiết trước khi thêm mới.")
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()) // Nút OK để đóng dialog
+                        .show();
+            } else {
+                // Nếu chưa đủ, chuyển đến CreateCvActivity để thêm resume mới
+                Intent intent = new Intent(getContext(), CreateCvActivity.class);
+                startActivity(intent);
+            }
         });
+
 
         // Gọi API để lấy Resume của Applicant có ID = 6
         fetchResumesByApplicantId(6);
@@ -74,7 +84,14 @@ public class ProfileFragment extends Fragment {
                     } else {
                         // Cập nhật danh sách Resume vào biến appItems
                         appItems.clear(); // Đảm bảo danh sách trống trước khi thêm dữ liệu mới
-                        appItems.addAll(resumes); // Thêm tất cả resume nhận được vào danh sách
+                        // Lọc những Resume có file_path là rỗng
+                        List<Resume> filteredResumes = new ArrayList<>();
+                        for (Resume resume : resumes) {
+                            if (resume.getFile_path().isEmpty()) {
+                                filteredResumes.add(resume);
+                            }
+                        }
+                        appItems.addAll(filteredResumes); // Thêm tất cả resume lọc được vào danh sách
                     }
 
                     // Cập nhật adapter bằng cách gọi phương thức riêng

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,29 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.ArticleActivity;
 import com.example.topcv.CompanyInformationsActivity;
-import com.example.topcv.InformationActivity;
-import com.example.topcv.LoginActivity;
-import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
 import com.example.topcv.SeeAllActivity;
 import com.example.topcv.adapter.ArticleAdapter;
 import com.example.topcv.adapter.CompanyTopAdapter;
-import com.example.topcv.adapter.ProfileAdapter;
 import com.example.topcv.adapter.TheBestJobAdapter;
 import com.example.topcv.adapter.WorkAdapter;
 import com.example.topcv.api.ApiArticleService;
 import com.example.topcv.api.ApiCompanyService;
 import com.example.topcv.api.ApiJobService;
-import com.example.topcv.api.ApiMessageService;
-import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Article;
 import com.example.topcv.model.Company;
 import com.example.topcv.model.Job;
-import com.example.topcv.model.Message;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +41,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class NewsFeedFragment extends Fragment {
 
@@ -87,11 +73,15 @@ public class NewsFeedFragment extends Fragment {
     private List<Company> companyList;
     private List<Article> articleList;
 
+    private List<Job> suggestedJobs;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
         setWidget(view);
+
         //api
         getAPIJobData();
         getAPICompanyData();
@@ -147,9 +137,22 @@ public class NewsFeedFragment extends Fragment {
             intent.putExtra("best_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
             startActivity(intent);
         });
+        companyTopAdapter.setOnItemClickListener(company -> {
+            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            intent.putExtra("company_id", company.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            startActivity(intent);
+        });
 
         return view;
     }
+
+    private List<Job> parseSuggestedJobs(String suggestedJobsContent) {
+        Gson gson = new Gson();
+        Type jobListType = new TypeToken<List<Job>>() {}.getType();
+        return gson.fromJson(suggestedJobsContent, jobListType);
+    }
+
+
     public void getAPIJobData() {
         ApiJobService.ApiJobService.getAllJobs()
                 .subscribeOn(Schedulers.io())

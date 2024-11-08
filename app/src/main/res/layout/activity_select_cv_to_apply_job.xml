@@ -81,11 +81,11 @@
                         android:textStyle="bold" />
                 </RadioGroup>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/select_cv_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp">
+                        android:id="@+id/select_cv_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_margin="10dp">
                 </androidx.recyclerview.widget.RecyclerView>
                 <!-- Khung chứa icon và hướng dẫn -->
                 <LinearLayout
@@ -205,9 +205,11 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:id="@+id/letter"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="10dp"
+                    android:gravity="top"
                     android:background="@drawable/circle_with_grey_border"
                     android:hint="Write a brief introduction about yourself (strengths, weaknesses) and clearly state your desire and reason for working at this company."
                     android:padding="10dp" />
@@ -227,7 +229,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
-                    android:text="TopCV advises all of you to always be cautious during the job search process and proactively research information about the company and the job position before applying. Applicants should take responsibility for their application behavior. If you encounter suspicious job postings or receive unexpected communication from recruiters, report it immediately to TopCV via email at hotro@topcv.vn for timely support."
+                    android:text="We advises all of you to always be cautious during the job search process and proactively research information about the company and the job position before applying. Applicants should take responsibility for their application behavior. If you encounter suspicious job postings or receive unexpected communication from recruiters, report it immediately to TopCV via email at hotro@topcv.vn for timely support."
                     android:textSize="15dp" />
             </LinearLayout>
 

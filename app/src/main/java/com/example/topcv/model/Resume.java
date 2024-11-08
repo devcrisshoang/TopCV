@@ -39,7 +39,25 @@ public class Resume {
     @SerializedName("iD_Applicant") // Ánh xạ trường JSON
     private int id_applicant;
 
-    public Resume() {
+    @SerializedName("file_Path") // Ánh xạ trường JSON
+    private String file_path;
+
+    public String getFile_path() {
+        return file_path;
+    }
+
+    public Resume(String file_path, int id_applicant) {
+
+        this.file_path = file_path;
+        this.id_applicant = id_applicant;
+    }
+
+    public void setFile_path(String file_path) {
+        this.file_path = file_path;
+    }
+
+    public Resume(){
+
     }
 
     // Constructor
