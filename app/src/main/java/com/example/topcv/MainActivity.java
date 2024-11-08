@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectFragment(int fragmentCode, Fragment fragment, LinearLayout layoutHeader, int headerVisibility) {
         if (currentFragment != fragmentCode) {
-            if (fragment instanceof AccountFragment) {
-                // Truyền applicantName và applicantId vào AccountFragment qua Bundle
+            // Kiểm tra fragment và truyền id_User vào bundle khi cần
+            if (fragment instanceof AccountFragment || fragment instanceof ProfileFragment || fragment instanceof MessengerFragment || fragment instanceof NotificationFragment) {
                 Bundle bundle = new Bundle();
-                bundle.putString("applicantName", applicantName);
-                bundle.putInt("user_id", id_User);
-                bundle.putString("phoneNumber",phoneNumber);
+                bundle.putString("applicantName", applicantName); // chỉ cần thiết cho AccountFragment
+                bundle.putInt("user_id", id_User); // truyền id_User cho tất cả các fragment
+                bundle.putString("phoneNumber", phoneNumber); // chỉ cần thiết cho AccountFragment
                 fragment.setArguments(bundle); // Đặt Bundle vào Fragment
             }
 
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         setImageButtonColor(this, getButtonForFragment(fragmentCode), R.color.green_color);
         getTextViewForFragment(fragmentCode).setTextColor(getResources().getColor(R.color.green_color));
     }
+
 
     private ImageButton getButtonForFragment(int fragmentCode) {
         switch (fragmentCode) {

@@ -2,6 +2,7 @@ package com.example.topcv.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.CreateCvActivity;
 import com.example.topcv.R;
 import com.example.topcv.adapter.ProfileAdapter;
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Resume;
 
@@ -34,7 +36,7 @@ public class ProfileFragment extends Fragment {
 
     // Danh sách để lưu resumes
     private List<Resume> appItems;
-
+    private int id_User;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +47,8 @@ public class ProfileFragment extends Fragment {
 
         // Khởi tạo danh sách resumes
         appItems = new ArrayList<>();
+        id_User = getArguments().getInt("user_id", -1);
+
 
         // Thiết lập RecyclerView
         recyclerView.setHasFixedSize(true);
@@ -62,15 +66,35 @@ public class ProfileFragment extends Fragment {
             } else {
                 // Nếu chưa đủ, chuyển đến CreateCvActivity để thêm resume mới
                 Intent intent = new Intent(getContext(), CreateCvActivity.class);
+                intent.putExtra("id_User",id_User);
                 startActivity(intent);
             }
         });
 
 
-        // Gọi API để lấy Resume của Applicant có ID = 6
-        fetchResumesByApplicantId(6);
+        getApplicant(id_User);
+        Log.e("id_User", "id_User" + id_User);
 
         return view;
+    }
+
+    private void getApplicant(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                fetchResumesByApplicantId(applicant.getId());
+                            } else {
+                                Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
     }
 
     private void fetchResumesByApplicantId(int applicantId) {

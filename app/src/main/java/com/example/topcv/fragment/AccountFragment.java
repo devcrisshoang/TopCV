@@ -62,12 +62,7 @@ public class AccountFragment extends Fragment {
     private ActivityResultLauncher<Intent> imagePickerLauncherAvatar;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private String applicant_name;
-    private String phone_number;
     private int id_User;
-    private String location;
-    private String job;
-    private String experience;
     private Applicant applicants;
 
     @Nullable
@@ -79,16 +74,7 @@ public class AccountFragment extends Fragment {
             id_User = getArguments().getInt("user_id", -1);
             Log.e("ID","ID: "+id_User);
         }
-        getApplicantName(id_User);
-        // Hiển thị tên ứng viên trong TextView
-//        if (applicants != null) {
-//            name.setText(applicants.getApplicantName());
-//            number.setText(applicants.getPhoneNumber());
-//            jobDesireEditText.setText(applicants.getJobDesire());
-//            workingLocationDesireEditText.setText(applicants.getWorkingLocationDesire());
-//            workingExperienceEditText.setText(applicants.getWorkingExperience());
-//
-//        }
+        getApplicant(id_User);
 
         // Initialize ActivityResultLaunchers for image picking
         initImagePicker();
@@ -99,7 +85,7 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-    private void getApplicantName(int userId) {
+    private void getApplicant(int userId) {
         ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

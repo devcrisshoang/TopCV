@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Resume;
 import com.github.dhaval2404.imagepicker.ImagePicker;
@@ -50,6 +52,8 @@ public class CreateCvActivity extends AppCompatActivity {
     private EditText certification;
     private EditText experience;
     private Uri resumeImageUri;
+    private int id_User;
+    public int id_Applicant;
 
 
     @Override
@@ -64,9 +68,11 @@ public class CreateCvActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        id_User = getIntent().getIntExtra("id_User", -1);
+        getApplicant(id_User);
         setWidget();
 
-        add_new_cv_button.setOnClickListener(v -> postResume());
+        add_new_cv_button.setOnClickListener(v -> postResume(id_Applicant));
         information_back_button.setOnClickListener(view -> {
             finish();
         });
@@ -96,7 +102,26 @@ public class CreateCvActivity extends AppCompatActivity {
         experience = findViewById(R.id.experience);
     }
 
-    private void postResume() {
+    private void getApplicant(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                id_Applicant = applicant.getId();
+                            } else {
+                                Toast.makeText(this, "Applicant null", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(this, "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
+    private void postResume(int id_Applicant) {
         // Lấy dữ liệu từ các trường nhập liệu
         String resumeName = name.getText().toString();
         String resumeEmail = email.getText().toString();
@@ -121,7 +146,7 @@ public class CreateCvActivity extends AppCompatActivity {
                 resumeIntroduction,
                 resumeImage,
                 resumeExperience,
-                6
+                id_Applicant
         );
 
         // Gọi API để đăng dữ liệu hồ sơ
