@@ -26,6 +26,19 @@ public interface ApiApplicantService {
             .retryOnConnectionFailure(true)
             .build();
 
+    @PUT("api/Applicant/{id}")
+    Single<Response<Void>> updateApplicant(@Path("id") int id, @Body Applicant applicant);
+
+    // Thêm phương thức lấy ứng viên theo userId
+    @GET("api/Applicant/getApplicantByUserId/{userId}")
+    Single<Applicant> getApplicantByUserId(@Path("userId") int userId);
+
+    @GET("api/Applicant/{id}")
+    Single<Applicant> getApplicantById(@Path("id") int id);
+
+    @POST("api/Applicant") // This should match your controller's create action
+    Single<Response<Applicant>> addApplicant(@Body Applicant applicant);
+
     // Sử dụng Retrofit để tạo API service
     ApiApplicantService ApiApplicantService = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")  // Thay địa chỉ bằng IP của máy bạn hoặc server thật

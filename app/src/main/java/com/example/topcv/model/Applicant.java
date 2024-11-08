@@ -47,7 +47,6 @@ public class Applicant {
     public void setId(int id) {
         this.id = id;
     }
-
     public String getApplicantName() {
         return applicantName;
     }
@@ -71,7 +70,6 @@ public class Applicant {
     public void setEmail(String email) {
         this.email = email;
     }
-
     public String getJobDesire() {
         return jobDesire;
     }
