@@ -11,9 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.topcv.api.ApiSortOfUser; // Thêm import cho ApiSortOfUser
 import com.example.topcv.api.ApiUserService;
-import com.example.topcv.model.SortOfUser; // Thêm import cho SortOfUser
+import com.example.topcv.model.Applicant;
 import com.example.topcv.model.User;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -25,7 +24,6 @@ public class PolicyActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private View linearLayoutAgreement;
     private CheckBox agreeCheckBox;
-    private ApiUserService apiUserService;
 
     private boolean isAgreementVisible = false;
     private String username;
@@ -74,46 +72,21 @@ public class PolicyActivity extends AppCompatActivity {
 
     private void createUserAndRedirect() {
         // Create a new User object
-        User newUser = new User(username, password, 0, 0, 0, null);
-
+        User newUser = new User(username, password, 0, 0, null);
         // Call API to create User
         ApiUserService.apiUserService.createUser(newUser)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
-                    Toast.makeText(PolicyActivity.this, "Tạo người dùng thành công!", Toast.LENGTH_SHORT).show();
-
-                    // Save User ID to SortOfUser
-                    saveUserIdToSortOfUser(user.getId());
+                    Toast.makeText(PolicyActivity.this, "User created successfully!", Toast.LENGTH_SHORT).show();
+                    // Save username and password in Intent
+                    Intent intent = new Intent(PolicyActivity.this, LoginActivity.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("password", password);
+                    startActivity(intent);
+                    finish();
                 }, throwable -> {
-                    Toast.makeText(PolicyActivity.this, "Không thể tạo người dùng: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PolicyActivity.this, "Failed to create user: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
-    private void saveUserIdToSortOfUser(int userId) {
-        SortOfUser sortOfUser = new SortOfUser();
-        sortOfUser.setID_User(userId); // Save User ID
-
-        // Call API to add SortOfUser
-        ApiSortOfUser.apiSortOfUser.addSortOfUser(sortOfUser)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(response -> {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(PolicyActivity.this, "Lưu ID người dùng vào SortOfUser thành công!", Toast.LENGTH_SHORT).show();
-
-                        // Lưu tên tài khoản và mật khẩu vào Intent
-                        Intent intent = new Intent(PolicyActivity.this, LoginActivity.class);
-                        intent.putExtra("username", username);
-                        intent.putExtra("password", password);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(PolicyActivity.this, "Không thể lưu SortOfUser: " + response.message(), Toast.LENGTH_SHORT).show();
-                    }
-                }, throwable -> {
-                    Toast.makeText(PolicyActivity.this, "Lỗi khi lưu SortOfUser: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
 }

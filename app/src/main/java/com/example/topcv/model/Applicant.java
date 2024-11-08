@@ -1,26 +1,28 @@
 package com.example.topcv.model;
 
 public class Applicant {
-    private int id;  // Optional, can be auto-generated
+    private int id;  // ID của Applicant, có thể được tự động tạo
+    private int id_User;  // ID_User là khóa ngoại từ User
     private String applicant_Name;
     private String phone_Number;
-    private String email; // Optional, can be null
-    private String job_Desire; // Optional, can be null
-    private String working_Location_Desire; // Optional, can be null
-    private String working_Experience; // Optional, can be null
+    private String email; // Tùy chọn, có thể để trống
+    private String job_Desire; // Tùy chọn, có thể để trống
+    private String working_Location_Desire; // Tùy chọn, có thể để trống
+    private String working_Experience; // Tùy chọn, có thể để trống
 
-    // Constructor for name and phone number
-    public Applicant(String applicant_Name, String phone_Number) {
+    // Constructor cho tên và số điện thoại
+    public Applicant(String applicant_Name, String phone_Number, int id_User) {
         this.applicant_Name = applicant_Name;
         this.phone_Number = phone_Number;
-        this.email = null; // Set to null by default
-        this.job_Desire = null; // Set to null by default
-        this.working_Location_Desire = null; // Set to null by default
-        this.working_Experience = null; // Set to null by default
+        this.id_User = id_User;
+        this.email = null; // Đặt mặc định là null
+        this.job_Desire = null; // Đặt mặc định là null
+        this.working_Location_Desire = null; // Đặt mặc định là null
+        this.working_Experience = null; // Đặt mặc định là null
     }
 
-    // Constructor with all parameters
-    public Applicant(int id, String applicant_Name, String phone_Number, String email, String job_Desire, String working_Location_Desire, String working_Experience) {
+    // Constructor với tất cả các tham số
+    public Applicant(int id, String applicant_Name, String phone_Number, String email, String job_Desire, String working_Location_Desire, String working_Experience, int id_User) {
         this.id = id;
         this.applicant_Name = applicant_Name;
         this.phone_Number = phone_Number;
@@ -28,6 +30,7 @@ public class Applicant {
         this.job_Desire = job_Desire;
         this.working_Location_Desire = working_Location_Desire;
         this.working_Experience = working_Experience;
+        this.id_User = id_User;
     }
 
     // Default constructor
@@ -41,6 +44,14 @@ public class Applicant {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId_User() {
+        return id_User;
+    }
+
+    public void setId_User(int id_User) {
+        this.id_User = id_User;
     }
 
     public String getApplicant_Name() {

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiUserService;
 import com.example.topcv.model.Applicant;
 
@@ -21,7 +22,8 @@ public class InformationActivity extends AppCompatActivity {
     private EditText phoneEditText;
     private Button submitButton;
 
-    private int userId; // Biến lưu ID người dùng
+    private int id_User; // Biến lưu ID người dùng
+    private String username; // Biến lưu tên người dùng
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +36,13 @@ public class InformationActivity extends AppCompatActivity {
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
-        String username = intent.getStringExtra("username"); // Tên tài khoản
-        String password = intent.getStringExtra("password"); // Mật khẩu
+        username = intent.getStringExtra("username"); // Tên tài khoản
+        id_User = intent.getIntExtra("user_id", -1); // Nhận ID người dùng
 
         // Điền dữ liệu vào EditText nếu cần
         if (username != null) {
-            nameEditText.setText(username); // Có thể muốn sử dụng tên tài khoản
+            nameEditText.setText(username);
         }
-
-        // Nhận ID người dùng từ Intent
-        userId = intent.getIntExtra("userId", -1);
 
         submitButton.setOnClickListener(v -> submitApplicant());
     }
@@ -59,43 +58,45 @@ public class InformationActivity extends AppCompatActivity {
 
         Log.d("Applicant Info", "Name: " + name + ", Phone: " + phone);
 
-        // Ghi lại tên và số điện thoại vào Intent để sử dụng sau này
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("applicantName", name);
-        intent.putExtra("phoneNumber", phone);
-        startActivity(intent);
-        finish(); // Kết thúc Activity hiện tại
-
-        // Gửi thông tin đến server
+        // Gửi thông tin đến server và chuyển Activity khi thành công
         sendApplicantData(name, phone);
     }
 
     private void sendApplicantData(String name, String phone) {
+        if (id_User <= 0) {
+            Toast.makeText(this, "ID người dùng không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Applicant newApplicant = new Applicant();
         newApplicant.setApplicant_Name(name);
         newApplicant.setPhone_Number(phone);
+        Log.d("userId", "userId: " + id_User);
+        newApplicant.setId_User(id_User);
 
-        ApiUserService.apiUserService.addApplicant(newApplicant)
+        ApiApplicantService.apiApplicantService.addApplicant(newApplicant)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
                     if (response.isSuccessful() && response.body() != null) {
                         Toast.makeText(this, "Đã thêm ứng viên thành công!", Toast.LENGTH_SHORT).show();
 
-                        // Chuyển sang MainActivity
+                        // Chuyển sang MainActivity với thông tin applicant
                         Intent intent = new Intent(this, MainActivity.class);
                         intent.putExtra("applicantName", name);
                         intent.putExtra("phoneNumber", phone);
+                        intent.putExtra("user_id", id_User);
                         startActivity(intent);
                         finish();
                     } else {
+                        // Xử lý lỗi
                         String errorMessage = response.errorBody() != null ? response.errorBody().string() : response.message();
                         Log.e("API Error", "Error: " + errorMessage);
-                        Toast.makeText(this, "Không thể thêm ứng viên: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Thêm ứng viên thất bại: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
                     Log.e("API Error", "Error: " + throwable.getMessage());
-                    Toast.makeText(this, "Lỗi kết nối: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Có lỗi xảy ra: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 }

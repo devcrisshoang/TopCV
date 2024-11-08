@@ -18,14 +18,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface ApiUserService {
+public interface ApiApplicantService {
 
-    // Logging interceptor để theo dõi request và response
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    // Sử dụng OkHttpClient an toàn bỏ qua SSL
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
@@ -34,27 +33,26 @@ public interface ApiUserService {
             .retryOnConnectionFailure(true)
             .build();
 
-    // Sử dụng Retrofit để tạo API service
-    ApiUserService apiUserService = new Retrofit.Builder()
+    Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")  // Địa chỉ máy chủ
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-            .create(ApiUserService.class);
+            .build();
 
-    // Phương thức để thêm một User
-    @POST("api/User") // Đường dẫn đến API để thêm người dùng
-    Observable<User> createUser(@Body User user);
+    ApiApplicantService apiApplicantService = retrofit.create(ApiApplicantService.class);
 
-    // Phương thức lấy tất cả tên đăng nhập
-    @GET("api/User/usernames")
-    Observable<List<String>> getAllUsernames();
+    @PUT("api/Applicant/{id}")
+    Single<Response<Void>> updateApplicant(@Path("id") int id, @Body Applicant applicant);
 
-    // Phương thức lấy tất cả người dùng
-    @GET("api/User")
-    Observable<List<User>> getAllUser();
+    // Thêm phương thức lấy ứng viên theo userId
+    @GET("api/Applicant/getApplicantByUserId/{userId}")
+    Single<Applicant> getApplicantByUserId(@Path("userId") int userId);
 
-    @POST("api/User") // Đường dẫn đến API để thêm người dùng
-    Single<Response<User>> addUser(@Body User user);
+    @GET("api/Applicant/{id}")
+    Single<Applicant> getApplicantById(@Path("id") int id);
+
+    @POST("api/Applicant") // This should match your controller's create action
+    Single<Response<Applicant>> addApplicant(@Body Applicant applicant);
+
 }
