@@ -18,8 +18,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-
                 <ImageView
                     android:id="@+id/background"
                     android:layout_width="match_parent"
@@ -83,7 +81,8 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.506"
                             app:layout_constraintStart_toEndOf="@+id/imageView6"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="UnknownId" />
 
                         <TextView
                             android:id="@+id/textView11"
@@ -142,7 +141,7 @@
                         </LinearLayout>
 
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -185,7 +184,7 @@
                         </LinearLayout>
 
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -227,7 +226,7 @@
 
                         </LinearLayout>
 
-                        <TextView
+                        <EditText
                             android:id="@+id/textView8"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
