@@ -1,5 +1,6 @@
 package com.example.topcv;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -109,6 +110,21 @@ public class SeeAllActivity extends AppCompatActivity {
             public boolean isLastPage() {
                 return isLastPage;
             }
+        });
+        articleAdapter.setOnItemClickListener(article -> {
+            Intent intent = new Intent(this, ArticleActivity.class);
+            intent.putExtra("article_id", article.getId()); // Truyền ID của bài viết
+            startActivity(intent);
+        });
+        workAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            intent.putExtra("job_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            startActivity(intent);
+        });
+        theBestJobAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            intent.putExtra("best_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            startActivity(intent);
         });
     }
 

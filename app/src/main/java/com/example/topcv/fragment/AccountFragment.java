@@ -1,7 +1,6 @@
 package com.example.topcv.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,7 +27,9 @@ import com.example.topcv.PrivatePolicyActivity;
 import com.example.topcv.R;
 import com.example.topcv.TermOfServiceActivity;
 import com.example.topcv.api.ApiApplicantService;
+import com.example.topcv.api.ApiUserService;
 import com.example.topcv.model.Applicant;
+import com.example.topcv.model.User;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -44,55 +45,48 @@ public class AccountFragment extends Fragment {
     private ImageView background;
     private ImageView avatar;
     private ImageView change_avatar;
-    private TextView textView25;
 
-    private EditText jobDesireEditText;
-    private EditText workingLocationDesireEditText;
-    private EditText workingExperienceEditText;
-    private Button editButton1; // Nút Edit cho jobDesire
-    private Button editButton2; // Nút Edit cho workingLocationDesire
-    private Button editButton3; // Nút Edit cho workingExperience
-    private int id_User; // Biến này cần được gán giá trị từ đâu đó
+    private TextView name;
+    private TextView number;
+    private TextView job;
+    private TextView location;
+    private TextView experience;
+    private Button edit_experience; // Nút Edit cho jobDesire
+    private Button edit_job; // Nút Edit cho workingLocationDesire
+    private Button edit_location; // Nút Edit cho workingExperience
+
 
     private ActivityResultLauncher<Intent> imagePickerLauncherBackground;
     private ActivityResultLauncher<Intent> imagePickerLauncherAvatar;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    private ApiApplicantService apiApplicantService;
+    private int id_User;
+    private Applicant applicants;
+    private int applicant_id;
 
-    private String applicantName;
-    private String phoneNumber;
+    private LayoutInflater inflater;
+    private View dialogView;
+
+    // Khởi tạo EditText trong Dialog
+    private EditText editTextJobDesire;
+
+    private Uri backgroundImageUri;
+    private Uri avatarImageUri;
+
+    private String username;
+    private String password;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        apiApplicantService = ApiApplicantService.apiApplicantService;
-
-        jobDesireEditText = view.findViewById(R.id.textView3); // Thay đổi ID nếu cần
-        workingLocationDesireEditText = view.findViewById(R.id.textView6); // Thay đổi ID nếu cần
-        workingExperienceEditText = view.findViewById(R.id.textView8); // Thay đổi ID nếu cần
-
-        // Lấy `applicantId` và `applicantName` từ `Bundle`
+        setWidget(view);
         if (getArguments() != null) {
             id_User = getArguments().getInt("user_id", -1);
-            applicantName = getArguments().getString("applicantName");
-            phoneNumber = getArguments().getString("phoneNumber");
+            Log.e("ID","ID: "+id_User);
         }
-
-        // Khởi tạo thành phần giao diện UI
-        initUI(view);
-
-        // Hiển thị tên ứng viên trong TextView
-        if (applicantName != null && !applicantName.isEmpty()) {
-            Log.d("AccountFragment", "Tên ứng viên: " + applicantName);
-            textView25.setText(applicantName); // Đảm bảo textView25 đã được khởi tạo trong `initUI`
-        } else {
-            Log.e("AccountFragment", "applicantName là null hoặc rỗng.");
-        }
-
-        // Lấy thông tin ứng viên từ API
-        loadApplicantInfo();
+        getApplicant(id_User);
+        getUserById(id_User);
 
         // Initialize ActivityResultLaunchers for image picking
         initImagePicker();
@@ -103,8 +97,64 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-    private void initUI(View view) {
-        textView25 = view.findViewById(R.id.textView25);
+    private void getApplicant(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                applicants = applicant;
+                                applicant_id = applicant.getId();
+                                // Cập nhật các TextView tại đây
+                                name.setText(applicants.getApplicantName());
+                                number.setText(applicants.getPhoneNumber());
+                                job.setText(applicants.getJobDesire());
+                                location.setText(applicants.getWorkingLocationDesire());
+                                experience.setText(applicants.getWorkingExperience());
+                            } else {
+                                Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
+    private void updateApplicantInfo(String experience, String job, String location){
+        String experienced = experience;
+        String work = job;
+        String place = location;
+        Applicant applicant = new Applicant();
+        applicant.setWorkingExperience(experienced);
+        applicant.setJobDesire(work);
+        applicant.setWorkingLocationDesire(place);
+        applicant.setApplicantName(name.getText().toString());
+        applicant.setPhoneNumber(number.getText().toString());
+        applicant.setiD_User(id_User);
+        applicant.setIs_Registered(true);
+        ApiApplicantService.ApiApplicantService.updateApplicantById(applicant_id, applicant)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    // Xử lý thành công
+                    Log.d("AccountFragment", "Updated successfully");
+                    Toast.makeText(getContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
+                }, throwable -> {
+                    // Xử lý lỗi
+                    Log.e("AccountFragment", "Failed to update: " + throwable.getMessage());
+                    Toast.makeText(getContext(), "Failed to update", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void setWidget(View view) {
+        applicants = new Applicant();
+        job = view.findViewById(R.id.job); // Thay đổi ID nếu cần
+        location = view.findViewById(R.id.location); // Thay đổi ID nếu cần
+        experience = view.findViewById(R.id.experience); // Thay đổi ID nếu cần
+        name = view.findViewById(R.id.name);
         about_application_button = view.findViewById(R.id.about_application_button);
         term_of_services_button = view.findViewById(R.id.term_of_services_button);
         privacy_policy_button = view.findViewById(R.id.privacy_policy_button);
@@ -113,9 +163,13 @@ public class AccountFragment extends Fragment {
         background = view.findViewById(R.id.background);
         avatar = view.findViewById(R.id.avatar);
         change_avatar = view.findViewById(R.id.change_avatar);
-        editButton1 = view.findViewById(R.id.textView2); // Nút Edit cho jobDesire
-        editButton2 = view.findViewById(R.id.textView4); // Nút Edit cho workingLocationDesire
-        editButton3 = view.findViewById(R.id.textView9); // Nút Edit cho workingExperience
+        edit_experience = view.findViewById(R.id.edit_experience); // Nút Edit cho jobDesire
+        edit_job = view.findViewById(R.id.edit_job); // Nút Edit cho workingLocationDesire
+        edit_location = view.findViewById(R.id.edit_location); // Nút Edit cho workingExperience
+        number = view.findViewById(R.id.number);
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_edit, null);
+        editTextJobDesire = dialogView.findViewById(R.id.et_job_name);
     }
 
     private void initListeners() {
@@ -156,10 +210,134 @@ public class AccountFragment extends Fragment {
                     });
         });
 
-        // Listener cho các nút Edit
-        editButton1.setOnClickListener(view -> saveChanges("jobDesire"));
-        editButton2.setOnClickListener(view -> saveChanges("workingLocationDesire"));
-        editButton3.setOnClickListener(view -> saveChanges("workingExperience"));
+        edit_experience.setOnClickListener(view -> {
+
+            // Lấy giá trị hiện tại từ jobDesireEditText và đặt vào EditText trong Dialog
+            editTextJobDesire.setText(experience.getText().toString());
+            // Khởi tạo Dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(dialogView);
+
+            // Tạo Dialog
+            AlertDialog dialog = builder.create();
+
+            // Xử lý sự kiện cho nút OK
+            Button btnOk = dialogView.findViewById(R.id.btn_ok);
+            btnOk.setOnClickListener(v -> {
+                // Hiển thị AlertDialog để xác nhận thay đổi
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Xác nhận")
+                        .setMessage("Bạn có chắc chắn muốn cập nhật thông tin này không?")
+                        .setPositiveButton("Có", (dialog1, which) -> {
+                            updateApplicantInfo(editTextJobDesire.getText().toString(), job.getText().toString(),location.getText().toString());
+
+                            // Đóng Dialog thay đổi
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Không", (dialog1, which) -> {
+                            // Nếu không đồng ý, chỉ cần đóng dialog mà không làm gì
+                            dialog1.dismiss();
+                        })
+                        .show();
+            });
+
+            // Xử lý sự kiện cho nút Cancel
+            Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+            btnCancel.setOnClickListener(v12 -> {
+                // Đóng Dialog mà không làm gì
+                dialog.dismiss();
+            });
+
+            // Hiển thị Dialog
+            dialog.show();
+        });
+
+        edit_job.setOnClickListener(v -> {
+            // Khởi tạo LayoutInflater và Dialog
+            // Lấy giá trị hiện tại từ jobDesireEditText và đặt vào EditText trong Dialog
+            editTextJobDesire.setText(job.getText().toString());
+
+            // Khởi tạo Dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(dialogView);
+
+            // Tạo Dialog
+            AlertDialog dialog = builder.create();
+
+            // Xử lý sự kiện cho nút OK
+            Button btnOk = dialogView.findViewById(R.id.btn_ok);
+            btnOk.setOnClickListener(v1 -> {
+                // Hiển thị AlertDialog để xác nhận thay đổi
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Xác nhận")
+                        .setMessage("Bạn có chắc chắn muốn cập nhật thông tin này không?")
+                        .setPositiveButton("Có", (dialog1, which) -> {
+                            updateApplicantInfo( experience.getText().toString(),editTextJobDesire.getText().toString(),location.getText().toString());
+
+                            // Đóng Dialog thay đổi
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Không", (dialog1, which) -> {
+                            // Nếu không đồng ý, chỉ cần đóng dialog mà không làm gì
+                            dialog1.dismiss();
+                        })
+                        .show();
+            });
+
+            // Xử lý sự kiện cho nút Cancel
+            Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+            btnCancel.setOnClickListener(v12 -> {
+                // Đóng Dialog mà không làm gì
+                dialog.dismiss();
+            });
+
+            // Hiển thị Dialog
+            dialog.show();
+        });
+
+        edit_location.setOnClickListener(view -> {
+            // Khởi tạo EditText trong Dialog
+
+            // Lấy giá trị hiện tại từ jobDesireEditText và đặt vào EditText trong Dialog
+            editTextJobDesire.setText(location.getText().toString());
+
+            // Khởi tạo Dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(dialogView);
+
+            // Tạo Dialog
+            AlertDialog dialog = builder.create();
+
+            // Xử lý sự kiện cho nút OK
+            Button btnOk = dialogView.findViewById(R.id.btn_ok);
+            btnOk.setOnClickListener(v -> {
+                // Hiển thị AlertDialog để xác nhận thay đổi
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Xác nhận")
+                        .setMessage("Bạn có chắc chắn muốn cập nhật thông tin này không?")
+                        .setPositiveButton("Có", (dialog1, which) -> {
+                            updateApplicantInfo(experience.getText().toString(),job.getText().toString(),editTextJobDesire.getText().toString());
+
+                            // Đóng Dialog thay đổi
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Không", (dialog1, which) -> {
+                            // Nếu không đồng ý, chỉ cần đóng dialog mà không làm gì
+                            dialog1.dismiss();
+                        })
+                        .show();
+            });
+
+            // Xử lý sự kiện cho nút Cancel
+            Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+            btnCancel.setOnClickListener(v12 -> {
+                // Đóng Dialog mà không làm gì
+                dialog.dismiss();
+            });
+
+            // Hiển thị Dialog
+            dialog.show();
+        });
     }
 
     private void initImagePicker() {
@@ -167,8 +345,11 @@ public class AccountFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        background.setImageURI(uri);
+                        // Nhận URI của ảnh đã chọn
+                        backgroundImageUri = result.getData().getData();
+
+                        // Cập nhật hình ảnh cho ImageView background
+                        background.setImageURI(backgroundImageUri);
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn hình ảnh", Toast.LENGTH_SHORT).show();
                     }
@@ -179,8 +360,8 @@ public class AccountFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        avatar.setImageURI(uri);
+                        avatarImageUri = result.getData().getData();
+                        avatar.setImageURI(avatarImageUri);
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn hình ảnh", Toast.LENGTH_SHORT).show();
                     }
@@ -188,51 +369,26 @@ public class AccountFragment extends Fragment {
         );
     }
 
-    private void saveChanges(String field) {
-        // Lấy thông tin từ EditText
-        String jobDesire = jobDesireEditText.getText().toString().trim();
-        String workingLocationDesire = workingLocationDesireEditText.getText().toString().trim();
-        String workingExperience = workingExperienceEditText.getText().toString().trim();
-
-        // Tạo đối tượng Applicant với thông tin cần thiết
-        Applicant applicant = new Applicant();
-        applicant.setId_User(id_User); // ID ứng viên
-        applicant.setApplicant_Name(applicantName); // Giữ nguyên tên ứng viên
-        applicant.setPhone_Number(phoneNumber);
-        // Giữ nguyên số điện thoại
-        applicant.setJob_Desire(jobDesire); // Chỉ gán nếu có thay đổi
-        applicant.setWorking_Location_Desire(workingLocationDesire); // Chỉ gán nếu có thay đổi
-        applicant.setWorking_Experience(workingExperience); // Chỉ gán nếu có thay đổi
-
-        // Gửi yêu cầu cập nhật đến server
-        compositeDisposable.add(
-                apiApplicantService.updateApplicant(id_User, applicant)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                        }, throwable -> {
-                            Toast.makeText(getContext(), "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
-                            Log.e("AccountFragment", "Lỗi khi cập nhật: " + throwable.getMessage());
-                        })
-        );
-    }
-
-    private void loadApplicantInfo() {
-        compositeDisposable.add(
-                apiApplicantService.getApplicantById(id_User)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(applicant -> {
-                            // Gán giá trị cho các EditText chỉ khi thông tin ứng viên được tải thành công
-                            jobDesireEditText.setText(applicant.getJob_Desire());
-                            workingLocationDesireEditText.setText(applicant.getWorking_Location_Desire());
-                            workingExperienceEditText.setText(applicant.getWorking_Experience());
-                        }, throwable -> {
-                            Toast.makeText(getContext(), "Không thể tải thông tin ứng viên", Toast.LENGTH_SHORT).show();
-                            Log.e("AccountFragment", "Lỗi khi tải thông tin: " + throwable.getMessage());
-                        })
-        );
+    private void getUserById(int userId){
+        ApiUserService.apiUserService.getUserById(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        user -> {
+                            if (user != null) {
+                                username = user.getUsername();
+                                Log.e("username","username" + username);
+                                password = user.getPassword();
+                                Log.e("password","password" + password);
+                            } else {
+                                Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
     }
 
     @Override

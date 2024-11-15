@@ -1,6 +1,7 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Notification;
+import com.example.topcv.model.Resume;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +12,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiNotificationService {
@@ -36,4 +39,7 @@ public interface ApiNotificationService {
     // API lấy danh sách notifications
     @GET("api/Notification/User/{id}")
     Observable<List<Notification>> getNotificationByUserId(@Path("id") int id);
+
+    @POST("api/Notification")
+    Observable<Notification> createNotification(@Body Notification notification);
 }

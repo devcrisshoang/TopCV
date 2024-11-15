@@ -21,6 +21,17 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int TYPE_LOADING = 2;
     private List<Company> mListCompany;
     private boolean isLoadingAdd;
+
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Company company);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public void setData(List<Company> list){
         this.mListCompany = list;
         notifyDataSetChanged();
@@ -67,6 +78,11 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
             companyViewHolder.company_name.setText(company.getName());
             companyViewHolder.company_field.setText(company.getField());
+            holder.itemView.setOnClickListener(v -> {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(company);
+                }
+            });
         }
     }
 

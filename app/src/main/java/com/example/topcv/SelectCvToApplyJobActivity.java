@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.topcv.adapter.AppliedResumeAdapter;
+import com.example.topcv.adapter.ProfileAdapter;
+import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Company;
+import com.example.topcv.model.Job;
+import com.example.topcv.model.Resume;
+import com.example.topcv.utils.PaginationScrollListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SelectCvToApplyJobActivity extends AppCompatActivity {
     private static final int PICK_FILE_REQUEST = 1; // Mã yêu cầu để mở hộp thoại chọn file
@@ -36,37 +54,38 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
     private TextView file_name, size_of_file, warning;
     private ImageButton close_ic;
     private ImageButton back_button;
+    private AppliedResumeAdapter appliedResumeAdapter;
+    private List<Resume> resumeList;
+    private boolean isLoading;//
+    private boolean isLastPage;//
+    private int totalPage;//
+    private int currentPage = 1;//
+    private List<Resume> resume_data;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView.ItemDecoration itemDecoration;
+    private String filePath;
+    private Button Apply_Button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_select_cv_to_apply_job);
-
-        // Áp dụng padding cho main layout
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        my_cv = findViewById(R.id.my_cv);
-        upload_from_device = findViewById(R.id.upload_from_device);
-        select_cv_recyclerview = findViewById(R.id.select_cv_recyclerview);
-        upload_layout = findViewById(R.id.upload_layout);
-        file_layout = findViewById(R.id.file_layout);
-        button_upload = findViewById(R.id.button_upload);
-        file_name = findViewById(R.id.file_name);
-        size_of_file = findViewById(R.id.size_of_file);
-        warning = findViewById(R.id.warning);
-        close_ic = findViewById(R.id.close_ic);
-        back_button = findViewById(R.id.back_button);
+        setWidget();
+        fetchResumesByApplicantId(6);
 
         back_button.setOnClickListener(view -> finish());
         upload_layout.setVisibility(View.GONE);
         my_cv.setOnClickListener(view -> {
             select_cv_recyclerview.setVisibility(View.VISIBLE);
             upload_layout.setVisibility(View.GONE);
+            fetchResumesByApplicantId(6);
+
         });
         upload_from_device.setOnClickListener(view -> {
             select_cv_recyclerview.setVisibility(View.GONE);
@@ -80,6 +99,150 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
         close_ic.setOnClickListener(view -> {
             file_layout.setVisibility(View.GONE);
         });
+        select_cv_recyclerview.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+            @Override
+            public void loadMoreItem() {
+                isLoading = true;
+                currentPage += 1;
+                loadNextPageResume();
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+        });
+        Apply_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postResume(filePath);
+            }
+        });
+    }
+
+    private void getTotalPageResume(){
+        if(resume_data.size() <= 10){
+            totalPage = 1;
+        }
+        else if(resume_data.size() % 10 == 0){
+            totalPage = resume_data.size()/10;
+        }
+        else if(resume_data.size() % 10 != 0){
+            totalPage = resume_data.size()/10 +1;
+        }
+        Log.e("total page","total = " + totalPage);
+    }
+
+    private void setFirstResumeData(){
+        resumeList = getListResume();
+        appliedResumeAdapter.setData(resumeList);
+
+        if (currentPage < totalPage){
+            appliedResumeAdapter.addFooterLoading();
+        } else {
+            isLastPage = true;
+        }
+    }
+
+    private void loadNextPageResume(){
+        new Handler().postDelayed(() -> {
+            List<Resume> list = getListResume();
+            appliedResumeAdapter.removeFooterLoading();
+            resumeList.addAll(list);
+            appliedResumeAdapter.notifyDataSetChanged();
+            isLoading = false;
+
+            if (currentPage < totalPage) {
+                appliedResumeAdapter.addFooterLoading();
+            }
+            else {
+                isLastPage = true;
+            }
+        }, 2000);
+    }
+
+    private List<Resume> getListResume() {
+        Toast.makeText(this, "Load data page" + currentPage, Toast.LENGTH_SHORT).show();
+        List<Resume> list = new ArrayList<>();
+
+        int start = (currentPage - 1) * 5; // Tính chỉ số bắt đầu
+        int end = Math.min(start + 5, resume_data.size()); // Tính chỉ số kết thúc
+
+        if (start < resume_data.size()) {
+            list.addAll(resume_data.subList(start, end)); // Thêm các phần tử từ workList vào danh sách
+        }
+        return list;
+    }
+
+    private void fetchResumesByApplicantId(int applicantId) {
+        ApiResumeService.apiResumeService.getResumesByApplicantId(applicantId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(resumes -> {
+                    if (resumes.isEmpty()) {
+                        Toast.makeText(this, "Không có dữ liệu hồ sơ.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Clear the existing list and add new data
+                        resume_data.clear();
+                        List<Resume> filteredResumes = new ArrayList<>();
+                        for (Resume resume : resumes) {
+                            if (resume.getFile_path().isEmpty()) {
+                                filteredResumes.add(resume);
+                            }
+                        }
+                        resume_data.addAll(filteredResumes);
+
+                        // Pass the data to the adapter
+                        //appliedResumeAdapter.setData(resumeList);
+
+                        getTotalPageResume(); // Tính tổng số trang sau khi có dữ liệu
+                        setFirstResumeData(); // Gọi setFirstData sau khi có dữ liệu
+                        select_cv_recyclerview.setLayoutManager(linearLayoutManager);
+                        select_cv_recyclerview.setAdapter(appliedResumeAdapter);
+                        select_cv_recyclerview.addItemDecoration(itemDecoration);
+                        appliedResumeAdapter.notifyDataSetChanged();
+                    }
+                }, throwable -> {
+                    // Handle errors
+                    throwable.printStackTrace();
+                });
+    }
+
+    private void setWidget(){
+        Apply_Button = findViewById(R.id.Apply_Button);
+        my_cv = findViewById(R.id.my_cv);
+        upload_from_device = findViewById(R.id.upload_from_device);
+        select_cv_recyclerview = findViewById(R.id.select_cv_recyclerview);
+        upload_layout = findViewById(R.id.upload_layout);
+        file_layout = findViewById(R.id.file_layout);
+        button_upload = findViewById(R.id.button_upload);
+        file_name = findViewById(R.id.file_name);
+        size_of_file = findViewById(R.id.size_of_file);
+        warning = findViewById(R.id.warning);
+        close_ic = findViewById(R.id.close_ic);
+        back_button = findViewById(R.id.back_button);
+
+        // Khởi tạo adapter với danh sách trống ban đầu
+        appliedResumeAdapter = new AppliedResumeAdapter();
+        appliedResumeAdapter.setData(new ArrayList<>()); // Set dữ liệu trống ban đầu
+
+        // Khởi tạo LinearLayoutManager và gán nó cho RecyclerView
+        linearLayoutManager = new LinearLayoutManager(this);  // Khởi tạo layout manager
+        select_cv_recyclerview.setLayoutManager(linearLayoutManager);  // Gắn layout manager cho RecyclerView
+
+        // Khởi tạo item decoration
+        itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+
+        // Gắn adapter cho RecyclerView
+        select_cv_recyclerview.setAdapter(appliedResumeAdapter);
+
+        resumeList = new ArrayList<>();
+        resume_data = new ArrayList<>();
     }
 
     // Mở hộp thoại chọn file
@@ -96,10 +259,57 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
         if (requestCode == PICK_FILE_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri fileUri = data.getData();
             if (fileUri != null) {
-                // Hiển thị tên và kích thước file
+                // Hiển thị thông tin file
                 displayFileInfo(fileUri);
+
+                // Lưu đường dẫn file vào biến filePath
+                filePath = getRealPathFromUri(fileUri);
+                Log.d("FilePath", "File path: " + filePath); // Để kiểm tra đường dẫn
             }
         }
+    }
+
+    private void postResume(String filePath) {
+        // Tạo đối tượng Resume
+        Resume resume = new Resume(
+                filePath,
+                6
+        );
+
+        // Gọi API để đăng dữ liệu hồ sơ
+        ApiResumeService.apiResumeService.createResume(resume)
+                .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
+                .observeOn(AndroidSchedulers.mainThread())  // Quan sát kết quả trên luồng chính
+                .subscribe(
+                        response -> {
+                            // Xử lý khi thành công
+                            Toast.makeText(this, "CV đã được tạo thành công!", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Xử lý khi có lỗi
+                            Toast.makeText(this, "Có lỗi xảy ra: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                );
+        finish();
+    }
+
+    private String getRealPathFromUri(Uri uri) {
+        String filePath = null;
+        if (uri.getScheme().equals("content")) {
+            try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (columnIndex != -1) {
+                        String fileName = cursor.getString(columnIndex);
+                        filePath = getExternalFilesDir(null) + "/" + fileName;
+
+                    }
+                }
+            }
+        } else if (uri.getScheme().equals("file")) {
+            filePath = uri.getPath();
+        }
+        return filePath;
     }
 
     // Hiển thị thông tin file

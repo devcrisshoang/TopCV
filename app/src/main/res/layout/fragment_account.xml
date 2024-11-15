@@ -72,7 +72,7 @@
                             app:tint="@android:color/black" />
 
                         <TextView
-                            android:id="@+id/textView25"
+                            android:id="@+id/name"
                             android:layout_width="146dp"
                             android:layout_height="31dp"
                             android:layout_marginTop="20dp"
@@ -85,15 +85,15 @@
                             tools:ignore="UnknownId" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/number"
                             android:layout_width="146dp"
                             android:layout_height="31dp"
-                            android:text="Software engineer"
+                            android:text="0372885036"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/textView25"
+                            app:layout_constraintEnd_toEndOf="@+id/name"
                             app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="@+id/textView25"
-                            app:layout_constraintTop_toBottomOf="@+id/textView25"
+                            app:layout_constraintStart_toStartOf="@+id/name"
+                            app:layout_constraintTop_toBottomOf="@+id/name"
                             app:layout_constraintVertical_bias="0.319" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,7 +130,7 @@
                                 android:textStyle="bold" />
 
                             <Button
-                                android:id="@+id/textView2"
+                                android:id="@+id/edit_experience"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="#FEF7FF"
@@ -141,8 +141,8 @@
                         </LinearLayout>
 
 
-                        <EditText
-                            android:id="@+id/textView3"
+                        <TextView
+                            android:id="@+id/experience"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -168,12 +168,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Working desire"
+                                android:text="Job desire"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
                             <Button
-                                android:id="@+id/textView4"
+                                android:id="@+id/edit_job"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="#FEF7FF"
@@ -184,8 +184,8 @@
                         </LinearLayout>
 
 
-                        <EditText
-                            android:id="@+id/textView6"
+                        <TextView
+                            android:id="@+id/job"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -211,12 +211,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Working place desire"
+                                android:text="Working location desire"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
 
                             <Button
-                                android:id="@+id/textView9"
+                                android:id="@+id/edit_location"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="#FEF7FF"
@@ -226,8 +226,8 @@
 
                         </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/textView8"
+                        <TextView
+                            android:id="@+id/location"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

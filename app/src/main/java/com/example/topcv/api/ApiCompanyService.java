@@ -13,6 +13,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface ApiCompanyService {
     // Logging interceptor để theo dõi request và response
@@ -39,4 +40,8 @@ public interface ApiCompanyService {
     // API lấy danh sách job
     @GET("api/Company")
     Observable<List<Company>> getAllCompany();
+
+    @GET("api/Company/{ID}")
+    Observable <Company> getCompanyByID(@Path("ID") int ID);
+
 }

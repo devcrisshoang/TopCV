@@ -44,7 +44,7 @@ public interface ApiResumeService {
 
     // POST method to create a new user
     @POST("api/Resume")
-    Observable<Resume> createUser(@Body Resume resume);
+    Observable<Resume> createResume(@Body Resume resume);
 
     // GET method to fetch resumes by applicant ID
     @GET("api/Resume/GetResumeBy/{applicantId}")

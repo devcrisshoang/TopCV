@@ -29,12 +29,15 @@ public class NotificationFragment extends Fragment {
     private NotificationAdapter notificationAdapter;
     private List<Notification> notificationList;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private int id_User;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
         NotificationRecyclerView = view.findViewById(R.id.NotificationRecyclerView);
+
+        id_User = getArguments().getInt("user_id", -1);
 
         // Khởi tạo danh sách thông báo
         notificationList = new ArrayList<>();
@@ -45,13 +48,13 @@ public class NotificationFragment extends Fragment {
         NotificationRecyclerView.setAdapter(notificationAdapter);
 
         // Gọi API để lấy thông báo của userId = 9
-        loadNotifications(9);
+        loadNotifications(id_User);
 
         return view;
     }
 
     private void loadNotifications(int userId) {
-        compositeDisposable.add(ApiNotificationService.ApiNotificationService.getNotificationByUserId(userId)
+        ApiNotificationService.ApiNotificationService.getNotificationByUserId(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(notifications -> {
@@ -62,7 +65,7 @@ public class NotificationFragment extends Fragment {
                 }, throwable -> {
                     // Xử lý lỗi khi gọi API
                     Toast.makeText(getContext(), "Failed to load notifications: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                }));
+                });
     }
 
     @Override

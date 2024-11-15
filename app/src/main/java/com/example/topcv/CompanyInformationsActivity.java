@@ -45,6 +45,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private ImageButton back_button;
     private int jobId;
     private int bestId;
+    private int companyId;
 
     private Button apply_button;
     private TextView working_time;
@@ -83,6 +84,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         // Lấy jobId từ Intent
         jobId = getIntent().getIntExtra("job_id", -1);
         bestId = getIntent().getIntExtra("best_id", -1);
+        companyId = getIntent().getIntExtra("company_id", -1);
 
         if (jobId != -1){
             // Gọi API để lấy job theo ID

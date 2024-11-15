@@ -35,6 +35,7 @@ public class MessengerFragment extends Fragment {
     private RecyclerView messageRecyclerView;
     private MessengerAdapter messageAdapter;
     private List<User> userList = new ArrayList<>();
+    private int id_User;
 
     @Nullable
     @Override
@@ -46,9 +47,10 @@ public class MessengerFragment extends Fragment {
         // Khởi tạo adapter ngay lập tức
         messageAdapter = new MessengerAdapter(userList, getContext());
         messageRecyclerView.setAdapter(messageAdapter);
+        id_User = getArguments().getInt("user_id", -1);
 
         // Fetch data để hiển thị trong RecyclerView
-        int userId = 9; // Giả sử đây là ID của người dùng đã đăng nhập
+        int userId = id_User; // Giả sử đây là ID của người dùng đã đăng nhập
         getChatPartners(userId);
         return view;
     }

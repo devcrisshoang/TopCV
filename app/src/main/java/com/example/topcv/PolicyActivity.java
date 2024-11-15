@@ -72,7 +72,7 @@ public class PolicyActivity extends AppCompatActivity {
 
     private void createUserAndRedirect() {
         // Create a new User object
-        User newUser = new User(username, password, 0, 0, null);
+        User newUser = new User(username, password, "", "", null);
         // Call API to create User
         ApiUserService.apiUserService.createUser(newUser)
                 .subscribeOn(Schedulers.io())

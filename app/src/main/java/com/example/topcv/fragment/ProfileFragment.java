@@ -2,6 +2,7 @@ package com.example.topcv.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.CreateCvActivity;
 import com.example.topcv.R;
 import com.example.topcv.adapter.ProfileAdapter;
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Resume;
 
@@ -34,7 +36,7 @@ public class ProfileFragment extends Fragment {
 
     // Danh sách để lưu resumes
     private List<Resume> appItems;
-
+    private int id_User;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,22 +47,54 @@ public class ProfileFragment extends Fragment {
 
         // Khởi tạo danh sách resumes
         appItems = new ArrayList<>();
+        id_User = getArguments().getInt("user_id", -1);
+
 
         // Thiết lập RecyclerView
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getContext(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
 
-        // Thiết lập Button để chuyển đến CreateCvActivity
         create_cv_button.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), CreateCvActivity.class);
-            startActivity(intent);
+            if (appItems.size() >= 5) {
+                // Hiển thị AlertDialog nếu danh sách đã đủ 5 Resume
+                new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                        .setTitle("Notification")
+                        .setMessage("The resume list is full 5. Please delete unnecessary resumes before adding new ones.")
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()) // Nút OK để đóng dialog
+                        .show();
+            } else {
+                // Nếu chưa đủ, chuyển đến CreateCvActivity để thêm resume mới
+                Intent intent = new Intent(getContext(), CreateCvActivity.class);
+                intent.putExtra("id_User",id_User);
+                startActivity(intent);
+            }
         });
 
-        // Gọi API để lấy Resume của Applicant có ID = 6
-        fetchResumesByApplicantId(6);
+
+        getApplicant(id_User);
+        Log.e("id_User", "id_User" + id_User);
 
         return view;
+    }
+
+    private void getApplicant(int userId) {
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                fetchResumesByApplicantId(applicant.getId());
+                            } else {
+                                Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
     }
 
     private void fetchResumesByApplicantId(int applicantId) {
@@ -74,7 +108,14 @@ public class ProfileFragment extends Fragment {
                     } else {
                         // Cập nhật danh sách Resume vào biến appItems
                         appItems.clear(); // Đảm bảo danh sách trống trước khi thêm dữ liệu mới
-                        appItems.addAll(resumes); // Thêm tất cả resume nhận được vào danh sách
+                        // Lọc những Resume có file_path là rỗng
+                        List<Resume> filteredResumes = new ArrayList<>();
+                        for (Resume resume : resumes) {
+                            if (resume.getFile_path().isEmpty()) {
+                                filteredResumes.add(resume);
+                            }
+                        }
+                        appItems.addAll(filteredResumes); // Thêm tất cả resume lọc được vào danh sách
                     }
 
                     // Cập nhật adapter bằng cách gọi phương thức riêng
@@ -88,7 +129,7 @@ public class ProfileFragment extends Fragment {
     private void updateAdapter() {
         if (adapter == null) {
             // Tạo adapter mới nếu chưa có
-            adapter = new ProfileAdapter(getContext(), appItems);
+            adapter = new ProfileAdapter(getContext(), appItems,id_User);
             recyclerView.setAdapter(adapter);
         } else {
             // Cập nhật dữ liệu cho adapter hiện tại

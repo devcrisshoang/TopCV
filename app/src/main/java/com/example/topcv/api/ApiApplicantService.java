@@ -1,16 +1,21 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Applicant;
+import com.example.topcv.model.Resume;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiApplicantService {
@@ -26,19 +31,6 @@ public interface ApiApplicantService {
             .retryOnConnectionFailure(true)
             .build();
 
-    @PUT("api/Applicant/{id}")
-    Single<Response<Void>> updateApplicant(@Path("id") int id, @Body Applicant applicant);
-
-    // Thêm phương thức lấy ứng viên theo userId
-    @GET("api/Applicant/getApplicantByUserId/{userId}")
-    Single<Applicant> getApplicantByUserId(@Path("userId") int userId);
-
-    @GET("api/Applicant/{id}")
-    Single<Applicant> getApplicantById(@Path("id") int id);
-
-    @POST("api/Applicant") // This should match your controller's create action
-    Single<Response<Applicant>> addApplicant(@Body Applicant applicant);
-
     // Sử dụng Retrofit để tạo API service
     ApiApplicantService ApiApplicantService = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")  // Thay địa chỉ bằng IP của máy bạn hoặc server thật
@@ -50,6 +42,12 @@ public interface ApiApplicantService {
 
     @GET("api/Applicant/user/{id}")
     Observable <Applicant> getApplicantByUserId(@Path("id") int id);
+
+    @POST("api/Applicant")
+    Observable<Applicant> createApplicant(@Body Applicant applicant);
+
+    @PUT("api/Applicant/{id}")
+    Completable updateApplicantById(@Path("id") int id, @Body Applicant applicant);
 
 }
 

@@ -46,27 +46,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        // Lấy dữ liệu từ Intent
-        Intent intent = getIntent();
-        applicantName = intent.getStringExtra("applicantName"); // Tên ứng viên
-        id_User = intent.getIntExtra("user_id", -1);  // Lấy userId từ Intent
-        if (id_User == -1) {
-            Log.e("Error", "userId không hợp lệ");
-        }
-        phoneNumber = intent.getStringExtra("phoneNumber");
-
-        // Kiểm tra và log giá trị applicantName và applicantId
-        Log.d("MainActivity", "applicantName: " + applicantName + ", user_id: " + id_User);
-
-        // Cài đặt padding cho layout toàn màn hình
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        setWidget();
 
-        // Khởi tạo các thành phần giao diện người dùng
+        Log.e("MainActivity", "ID Main: " + id_User);
+        openNewsFeedFragment(id_User);
+        //selectNewsFeedFragment(FRAGMENT_HOME, new NewsFeedFragment(), layout_header, View.VISIBLE);
+
+        setDefaultColorButton();
+
+        setClick();
+
+    }
+
+    private void setDefaultColorButton(){
+        // Thiết lập fragment mặc định và màu sắc ban đầu cho nút
+        setImageButtonColor(this, homeButton, R.color.green_color);
+        setImageButtonColor(this, profileButton, R.color.black);
+        setImageButtonColor(this, messengerButton, R.color.black);
+        setImageButtonColor(this, notificationButton, R.color.black);
+        setImageButtonColor(this, accountButton, R.color.black);
+    }
+
+    private void setWidget(){
         homeButton = findViewById(R.id.Home);
         profileButton = findViewById(R.id.Profile);
         messengerButton = findViewById(R.id.Messenger);
@@ -79,47 +85,56 @@ public class MainActivity extends AppCompatActivity {
         Messenger_Textview = findViewById(R.id.Messenger_Textview);
         Notification_Textview = findViewById(R.id.Notification_Textview);
         Account_Textview = findViewById(R.id.Account_Textview);
+        // Lấy dữ liệu từ Intent
+        Intent intent = getIntent();
+        applicantName = intent.getStringExtra("applicantName"); // Tên ứng viên
+        id_User = intent.getIntExtra("user_id", -1);  // Lấy userId từ Intent
+        if (id_User == -1) {
+            Log.e("Error", "userId không hợp lệ");
+        }
+        phoneNumber = intent.getStringExtra("phoneNumber");
+    }
 
-        // Thiết lập fragment mặc định và màu sắc ban đầu cho nút
-        replaceFragment(new NewsFeedFragment());
-        setImageButtonColor(this, homeButton, R.color.green_color);
-        setImageButtonColor(this, profileButton, R.color.black);
-        setImageButtonColor(this, messengerButton, R.color.black);
-        setImageButtonColor(this, notificationButton, R.color.black);
-        setImageButtonColor(this, accountButton, R.color.black);
-
-        // Thiết lập các nút bấm để chuyển đổi giữa các fragment
+    private void setClick(){
         homeButton.setOnClickListener(view -> selectFragment(FRAGMENT_HOME, new NewsFeedFragment(), layout_header, View.VISIBLE));
         profileButton.setOnClickListener(view -> selectFragment(FRAGMENT_PROFILE, new ProfileFragment(), layout_header, View.GONE));
         messengerButton.setOnClickListener(view -> selectFragment(FRAGMENT_MESSENGER, new MessengerFragment(), layout_header, View.GONE));
         notificationButton.setOnClickListener(view -> selectFragment(FRAGMENT_NOTIFICATION, new NotificationFragment(), layout_header, View.GONE));
         accountButton.setOnClickListener(view -> selectFragment(FRAGMENT_ACCOUNT, new AccountFragment(), layout_header, View.GONE));
-
-        // Thiết lập sự kiện click cho thanh tìm kiếm
         search_edit_text.setOnClickListener(view -> {
             Intent searchIntent = new Intent(this, SearchActivity.class);
             startActivity(searchIntent);
         });
     }
 
+    private void openNewsFeedFragment(int userId) {
+        NewsFeedFragment newsFeedFragment = new NewsFeedFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id", userId);
+        newsFeedFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.news, newsFeedFragment)
+                .commit();
+    }
+
     private void selectFragment(int fragmentCode, Fragment fragment, LinearLayout layoutHeader, int headerVisibility) {
         if (currentFragment != fragmentCode) {
-            if (fragment instanceof AccountFragment) {
-                // Truyền applicantName và applicantId vào AccountFragment qua Bundle
+            // Kiểm tra fragment và truyền id_User vào bundle khi cần
+            if (fragment instanceof AccountFragment || fragment instanceof ProfileFragment || fragment instanceof MessengerFragment || fragment instanceof NotificationFragment || fragment instanceof NewsFeedFragment) {
                 Bundle bundle = new Bundle();
-                bundle.putString("applicantName", applicantName);
-                bundle.putInt("user_id", id_User);
-                bundle.putString("phoneNumber",phoneNumber);
+                bundle.putString("applicantName", applicantName); // chỉ cần thiết cho AccountFragment
+                bundle.putInt("user_id", id_User); // truyền id_User cho tất cả các fragment
+                bundle.putString("phoneNumber", phoneNumber); // chỉ cần thiết cho AccountFragment
                 fragment.setArguments(bundle); // Đặt Bundle vào Fragment
             }
-
             replaceFragment(fragment); // Thay thế fragment hiện tại bằng fragment đã chọn
             currentFragment = fragmentCode;
             layoutHeader.setVisibility(headerVisibility);
+            resetButtonColors();
+            setImageButtonColor(this, getButtonForFragment(fragmentCode), R.color.green_color);
+            getTextViewForFragment(fragmentCode).setTextColor(getResources().getColor(R.color.green_color));
         }
-        resetButtonColors();
-        setImageButtonColor(this, getButtonForFragment(fragmentCode), R.color.green_color);
-        getTextViewForFragment(fragmentCode).setTextColor(getResources().getColor(R.color.green_color));
     }
 
     private ImageButton getButtonForFragment(int fragmentCode) {
