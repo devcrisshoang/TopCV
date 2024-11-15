@@ -170,14 +170,10 @@ public class CreateCvActivity extends AppCompatActivity {
         String content = "You just created a " + resumeJobApplication +" job resume.";
         LocalDateTime currentTime = LocalDateTime.now();
 
-        // Định dạng thời gian nếu cần
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String formattedDateTime = currentTime.format(formatter);
-
         Notification notification = new Notification(
                 0,
                 content,
-                formattedDateTime,
+                currentTime.toString(),
                 id_User
         );
         ApiNotificationService.ApiNotificationService.createNotification(notification)

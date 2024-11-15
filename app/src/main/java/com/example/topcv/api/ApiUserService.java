@@ -7,6 +7,7 @@ import com.example.topcv.utils.NetworkUtils;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import okhttp3.OkHttpClient;
@@ -19,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiUserService {
@@ -53,10 +55,14 @@ public interface ApiUserService {
     @GET("api/User/usernames")
     Observable<List<String>> getAllUsernames();
 
+    // Phương thức lấy tất cả tên đăng nhập
+    @GET("api/User/{id}")
+    Observable<User> getUserById(@Path("id") int id);
+
     // Phương thức lấy tất cả người dùng
     @GET("api/User")
     Observable<List<User>> getAllUser();
 
-    @POST("api/User") // Đường dẫn đến API để thêm người dùng
-    Single<Response<User>> addUser(@Body User user);
+    @PUT("api/User/{id}")
+    Completable updateBackgroundById(@Path("id") int id, @Body User user);
 }

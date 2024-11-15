@@ -28,6 +28,17 @@ public class Applicant {
     @SerializedName("iD_User")
     private int iD_User;
 
+    @SerializedName("is_Registered")
+    private boolean is_Registered;
+
+    public boolean isIs_Registered() {
+        return is_Registered;
+    }
+
+    public void setIs_Registered(boolean is_Registered) {
+        this.is_Registered = is_Registered;
+    }
+
     public int getiD_User() {
         return iD_User;
     }
@@ -37,7 +48,7 @@ public class Applicant {
     }
 
     // Constructor có tham số
-    public Applicant(int id, String applicantName, String phoneNumber, String email, String jobDesire, String workingLocationDesire, String workingExperience) {
+    public Applicant(int id, String applicantName, String phoneNumber, String email, String jobDesire, String workingLocationDesire, String workingExperience, boolean is_Registered) {
         this.id = id;
         this.applicantName = applicantName;
         this.phoneNumber = phoneNumber;
@@ -45,6 +56,7 @@ public class Applicant {
         this.jobDesire = jobDesire;
         this.workingLocationDesire = workingLocationDesire;
         this.workingExperience = workingExperience;
+        this.is_Registered = is_Registered;
     }
 
     // Default constructor

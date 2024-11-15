@@ -4,17 +4,21 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private int imageBackground;
-    private int avatar;
+    private String imageBackground;
+    private String avatar;
     private String uid; // Thêm uid
     private Applicant applicant;  // Sửa lại thành Applicant thay vì List<Applicant>
 
-    public User(String username, String password, int imageBackground, int avatar, String uid) {
+    public User(String username, String password, String imageBackground, String avatar, String uid) {
         this.username = username;
         this.password = password;
         this.imageBackground = imageBackground;
         this.avatar = avatar;
         this.uid = uid;
+    }
+
+    public User() {
+
     }
 
     // Getters và setters
@@ -42,19 +46,19 @@ public class User {
         this.password = password;
     }
 
-    public int getImageBackground() {
+    public String getImageBackground() {
         return imageBackground;
     }
 
-    public void setImageBackground(int imageBackground) {
+    public void setImageBackground(String imageBackground) {
         this.imageBackground = imageBackground;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

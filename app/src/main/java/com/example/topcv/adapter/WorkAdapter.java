@@ -147,7 +147,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addFooterLoading() {
         isLoadingAdd = true;
-        mListWork.add(new Job("","","","",""));
+        mListWork.add(new Job("","","","",0));
     }
 
     public void removeFooterLoading() {

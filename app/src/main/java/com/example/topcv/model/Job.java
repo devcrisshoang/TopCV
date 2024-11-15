@@ -25,7 +25,7 @@ public class Job{
     private String location;
 
     @SerializedName("salary")
-    private String salary;
+    private int salary;
 
     @SerializedName("create_Time")
     private String createTime;
@@ -39,7 +39,7 @@ public class Job{
     @SerializedName("iD_Recruiter")
     private int recruiterId;
 
-    public Job(String imageId, String jobName, String companyName, String experience, String location, String salary, String createTime, String applicationDate, boolean applicationStatus, int recruiterId) {
+    public Job(String imageId, String jobName, String companyName, String experience, String location, int salary, String createTime, String applicationDate, boolean applicationStatus, int recruiterId) {
         this.imageId = imageId;
         this.jobName = jobName;
         this.companyName = companyName;
@@ -88,7 +88,7 @@ public class Job{
         this.recruiterId = recruiterId;
     }
 
-    public Job(String imageId, String jobName, String companyName, String location, String salary) {
+    public Job(String imageId, String jobName, String companyName, String location, int salary) {
         this.imageId = imageId;
         this.jobName = jobName;
         this.companyName = companyName;
@@ -145,11 +145,11 @@ public class Job{
         this.experience = experience;
     }
 
-    public String getSalary() {
+    public int getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 }

@@ -12,9 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiUserService;
+import com.example.topcv.fragment.NewsFeedFragment;
 import com.example.topcv.model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -52,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // Khởi tạo FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -120,19 +129,20 @@ public class LoginActivity extends AppCompatActivity {
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(response -> {
-                                        if (response != null) {
+                                        if (response.isIs_Registered() == true) {
                                             // Nếu tồn tại Applicant, chuyển đến MainActivity
-                                            navigateToMainActivity(userId, response.getId(), response.getApplicantName(), response.getPhoneNumber());
-                                        } else {
+                                            navigateToMainActivity(userId, response.getApplicantName(), response.getPhoneNumber());
+                                        } else if(response.isIs_Registered() == false || response == null){
                                             // Nếu không tồn tại Applicant, chuyển đến InformationActivity
                                             navigateToInformationActivity(userId);
+                                        } else {
+                                            Toast.makeText(this, "This account is invalid", Toast.LENGTH_SHORT).show();
                                         }
                                     }, throwable -> {
                                         Log.e("API Error", "Error fetching applicant: " + throwable.getMessage());
                                         Toast.makeText(LoginActivity.this, "Không tìm thấy Applicant, chuyển đến trang Information.", Toast.LENGTH_SHORT).show();
                                         navigateToInformationActivity(userId);
                                     });
-
                             return;
                         }
                     }
@@ -145,12 +155,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void navigateToMainActivity(int id_User, int applicantId, String applicantName, String phoneNumber) {
+    private void navigateToMainActivity(int id_User, String applicantName, String phoneNumber) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra("user_id", id_User);
         intent.putExtra("applicantName", applicantName);
         intent.putExtra("phoneNumber", phoneNumber);
         startActivity(intent);
+        // Tạo NewsFeedFragment và truyền Bundle vào
         finish();
     }
 

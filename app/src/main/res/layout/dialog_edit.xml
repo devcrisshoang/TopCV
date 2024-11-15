@@ -1,0 +1,29 @@
+<!-- dialog_edit_job.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- EditText để nhập tên công việc -->
+    <EditText
+        android:id="@+id/et_job_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10sp" />
+
+    <!-- Nút đồng ý -->
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK" />
+
+    <!-- Nút từ chối -->
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+
+</LinearLayout>

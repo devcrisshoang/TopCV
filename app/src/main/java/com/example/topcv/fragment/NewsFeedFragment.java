@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,15 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.ArticleActivity;
 import com.example.topcv.CompanyActivity;
 import com.example.topcv.CompanyInformationsActivity;
+import com.example.topcv.LoginActivity;
 import com.example.topcv.R;
 import com.example.topcv.SeeAllActivity;
 import com.example.topcv.adapter.ArticleAdapter;
 import com.example.topcv.adapter.CompanyTopAdapter;
 import com.example.topcv.adapter.TheBestJobAdapter;
 import com.example.topcv.adapter.WorkAdapter;
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiArticleService;
 import com.example.topcv.api.ApiCompanyService;
 import com.example.topcv.api.ApiJobService;
+import com.example.topcv.model.Applicant;
 import com.example.topcv.model.Article;
 import com.example.topcv.model.Company;
 import com.example.topcv.model.Job;
@@ -36,6 +40,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -74,8 +79,8 @@ public class NewsFeedFragment extends Fragment {
     private List<Company> companyList;
     private List<Article> articleList;
 
-    private List<Job> suggestedJobs;
-
+    private Applicant applicants;
+    private int id_User;
 
     @Nullable
     @Override
@@ -83,16 +88,30 @@ public class NewsFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
         setWidget(view);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            id_User = bundle.getInt("user_id", 0);  // 0 là giá trị mặc định
+            Log.e("NewsFeedFragment", "User ID received: " + id_User);
+        } else {
+            Log.e("NewsFeedFragment", "Bundle is null, user ID not received " + id_User);
+        }
+
         //api
         getAPIJobData();
         getAPICompanyData();
         getAPIArticleData();
+
+        getAPIApplicantData(id_User);
+        if(applicants == null){
+            Log.e("applicants", "applicants null: " + applicants);
+        }
         //data
         TheSuitableJob();
         TheBestJob();
         TheInterestingJob();
         TheTopCompany();
         TheArticle();
+
         view_all_suitable_job.setOnClickListener(view1 -> {
             String text = suggest_job_textview.getText().toString(); // Lấy nội dung của suggest_job_textview
             Intent intent = new Intent(getContext(), SeeAllActivity.class);
@@ -147,51 +166,98 @@ public class NewsFeedFragment extends Fragment {
         return view;
     }
 
+    public void getAPIApplicantData(int UserID){
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(UserID)
+            .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        if (response != null) {
+                            applicants = response;
+                        }
+                    }, throwable -> {
+                        Log.e("API Error", "Error fetching applicant: " + throwable.getMessage());
+                    });
+        }
+
     public void getAPIJobData() {
         ApiJobService.ApiJobService.getAllJobs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Job>>() {
                     @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {}
 
-                    }
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Job> jobs) {
                         Log.d("MessageActivity", "Received jobs: " + jobs.toString());
 
                         if (jobs != null && !jobs.isEmpty()) {
-                            // Xóa dữ liệu cũ
                             workList.clear();
                             bestjobList.clear();
                             interestingList.clear();
-                            // Giới hạn danh sách chỉ còn 5 phần tử đầu tiên
-                            List<Job> work = jobs.size() > 5 ? jobs.subList(0, 5) : jobs;
-                            List<Job> best = jobs.size() > 10 ? jobs.subList(0, 10) : jobs;
-                            List<Job> interesting = jobs.size() > 5 ? jobs.subList(0, 5) : jobs;
-                            // Thêm dữ liệu mới giới hạn
-                            workList.addAll(work);
-                            bestjobList.addAll(best);
-                            interestingList.addAll(interesting);
+
+                            // Lọc danh sách công việc dựa trên mong muốn của người dùng
+                            List<Job> work = new ArrayList<>();
+                            for (Job job : jobs) {
+                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) &&
+                                        job.getLocation().toLowerCase().contains(applicants.getWorkingLocationDesire().toLowerCase())) {
+                                    work.add(job);
+                                }
+                            }
+
+                            // Giới hạn danh sách chỉ còn 5 phần tử đầu tiên (kiểm tra an toàn)
+                            List<Job> limitedWorkList = work.size() > 5 ? work.subList(0, 5) : new ArrayList<>(work);
+                            workList.addAll(limitedWorkList);
+                            while (workList.size() < 5 && work.size() > workList.size()) {
+                                workList.add(work.get(workList.size()));
+                            }
+
+                            // Danh sách công việc lương cao hơn 1000
+                            List<Job> best = new ArrayList<>();
+                            for (Job job : jobs) {
+                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) && job.getSalary() > 1000) {
+                                    best.add(job);
+                                }
+                            }
+                            List<Job> limitedBestList = best.size() > 10 ? best.subList(0, 10) : new ArrayList<>(best);
+                            bestjobList.addAll(limitedBestList);
+                            while (bestjobList.size() < 10 && best.size() > bestjobList.size()) {
+                                bestjobList.add(best.get(bestjobList.size()));
+                            }
+
+                            // Danh sách công việc thú vị
+                            List<Job> interesting = new ArrayList<>();
+                            for (Job job : jobs) {
+                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) && job.getSalary() > 1000) {
+                                    interesting.add(job);
+                                }
+                            }
+                            List<Job> limitedInterestingList = interesting.size() > 10 ? interesting.subList(0, 10) : new ArrayList<>(interesting);
+                            interestingList.addAll(limitedInterestingList);
+                            while (interestingList.size() < 10 && interesting.size() > interestingList.size()) {
+                                interestingList.add(interesting.get(interestingList.size()));
+                            }
 
                             workAdapter.notifyDataSetChanged();
                             theBestJobAdapter.notifyDataSetChanged();
-
                         } else {
                             Log.d("MessageActivity", "Received jobs list is empty");
                         }
                     }
+
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
                         //Toast.makeText(requireContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onComplete() {
                         //Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
     public void getAPICompanyData() {
         ApiCompanyService.ApiCompanyService.getAllCompany()
                 .subscribeOn(Schedulers.io())
@@ -297,6 +363,8 @@ public class NewsFeedFragment extends Fragment {
         interesting_job_textview = view.findViewById(R.id.interesting_job_textview);
         top_company_textview = view.findViewById(R.id.top_company_textview);
         article_textview = view.findViewById(R.id.article_textview);
+
+        applicants = new Applicant();
     }
     private void TheSuitableJob(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

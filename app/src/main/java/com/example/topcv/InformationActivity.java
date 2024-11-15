@@ -84,6 +84,7 @@ public class InformationActivity extends AppCompatActivity {
         newApplicant.setJobDesire(job);
         newApplicant.setWorkingLocationDesire(location);
         newApplicant.setWorkingExperience(experience);
+        newApplicant.setIs_Registered(true);
         Log.d("userId", "userId: " + id_User);
         newApplicant.setiD_User(id_User);
 

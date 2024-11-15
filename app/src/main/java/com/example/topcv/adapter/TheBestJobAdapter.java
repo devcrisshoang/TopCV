@@ -119,7 +119,7 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void addFooterLoading() {
         isLoadingAdd = true;
-        mListWork.add(new Job("","","","",""));
+        mListWork.add(new Job("","","","",0));
     }
 
     public void removeFooterLoading() {
