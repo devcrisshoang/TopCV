@@ -64,5 +64,5 @@ public interface ApiUserService {
     Observable<List<User>> getAllUser();
 
     @PUT("api/User/{id}")
-    Completable updateBackgroundById(@Path("id") int id, @Body User user);
+    Completable updateUserById(@Path("id") int id, @Body User user);
 }

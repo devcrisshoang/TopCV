@@ -125,25 +125,30 @@ public class LoginActivity extends AppCompatActivity {
 
                             int userId = user.getId();
 
-                            ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(response -> {
-                                        if (response.isIs_Registered() == true) {
-                                            // Nếu tồn tại Applicant, chuyển đến MainActivity
-                                            navigateToMainActivity(userId, response.getApplicantName(), response.getPhoneNumber());
-                                        } else if(response.isIs_Registered() == false || response == null){
-                                            // Nếu không tồn tại Applicant, chuyển đến InformationActivity
+                            if(user.isApplicant() == true){
+                                ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(response -> {
+                                            if (response.isIs_Registered() == true) {
+                                                // Nếu tồn tại Applicant, chuyển đến MainActivity
+                                                navigateToMainActivity(userId, response.getApplicantName(), response.getPhoneNumber());
+                                            } else if(response.isIs_Registered() == false || response == null){
+                                                // Nếu không tồn tại Applicant, chuyển đến InformationActivity
+                                                navigateToInformationActivity(userId);
+                                            } else {
+                                                Toast.makeText(this, "This account is invalid", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }, throwable -> {
+                                            Log.e("API Error", "Error fetching applicant: " + throwable.getMessage());
+                                            Toast.makeText(LoginActivity.this, "Không tìm thấy Applicant, chuyển đến trang Information.", Toast.LENGTH_SHORT).show();
                                             navigateToInformationActivity(userId);
-                                        } else {
-                                            Toast.makeText(this, "This account is invalid", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }, throwable -> {
-                                        Log.e("API Error", "Error fetching applicant: " + throwable.getMessage());
-                                        Toast.makeText(LoginActivity.this, "Không tìm thấy Applicant, chuyển đến trang Information.", Toast.LENGTH_SHORT).show();
-                                        navigateToInformationActivity(userId);
-                                    });
-                            return;
+                                        });
+                                return;
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "This account is not exist", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
