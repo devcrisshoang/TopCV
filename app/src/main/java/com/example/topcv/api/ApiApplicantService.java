@@ -1,7 +1,6 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Applicant;
-import com.example.topcv.model.Resume;
 
 import java.util.concurrent.TimeUnit;
 

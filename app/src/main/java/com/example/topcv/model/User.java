@@ -6,15 +6,34 @@ public class User {
     private String password;
     private String imageBackground;
     private String avatar;
-    private String uid; // Thêm uid
-    private Applicant applicant;  // Sửa lại thành Applicant thay vì List<Applicant>
+    private String uid;
+    private boolean isApplicant;
+    private boolean isRecruiter;
 
-    public User(String username, String password, String imageBackground, String avatar, String uid) {
+    public boolean isApplicant() {
+        return isApplicant;
+    }
+
+    public void setApplicant(boolean applicant) {
+        isApplicant = applicant;
+    }
+
+    public boolean isRecruiter() {
+        return isRecruiter;
+    }
+
+    public void setRecruiter(boolean recruiter) {
+        isRecruiter = recruiter;
+    }
+
+    public User(String username, String password, String imageBackground, String avatar, String uid, boolean isApplicant, boolean isRecruiter) {
         this.username = username;
         this.password = password;
         this.imageBackground = imageBackground;
         this.avatar = avatar;
         this.uid = uid;
+        this.isApplicant = isApplicant;
+        this.isRecruiter = isRecruiter;
     }
 
     public User() {
@@ -70,11 +89,4 @@ public class User {
         this.uid = uid;
     }
 
-    public Applicant getApplicant() {
-        return applicant;
-    }
-
-    public void setApplicant(Applicant applicant) {
-        this.applicant = applicant;
-    }
 }

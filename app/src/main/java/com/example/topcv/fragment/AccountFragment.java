@@ -21,7 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.topcv.AboutActicity;
+import com.example.topcv.ChangePasswordActivity;
 import com.example.topcv.LoginActivity;
 import com.example.topcv.PrivatePolicyActivity;
 import com.example.topcv.R;
@@ -54,7 +56,7 @@ public class AccountFragment extends Fragment {
     private Button edit_experience; // Nút Edit cho jobDesire
     private Button edit_job; // Nút Edit cho workingLocationDesire
     private Button edit_location; // Nút Edit cho workingExperience
-
+    private Button change_password_button;
 
     private ActivityResultLauncher<Intent> imagePickerLauncherBackground;
     private ActivityResultLauncher<Intent> imagePickerLauncherAvatar;
@@ -75,6 +77,8 @@ public class AccountFragment extends Fragment {
 
     private String username;
     private String password;
+    private String currentAvatarUrl;
+    private String currentBackgroundUrl;
 
     @Nullable
     @Override
@@ -170,6 +174,7 @@ public class AccountFragment extends Fragment {
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.dialog_edit, null);
         editTextJobDesire = dialogView.findViewById(R.id.et_job_name);
+        change_password_button = view.findViewById(R.id.change_password_button);
     }
 
     private void initListeners() {
@@ -209,6 +214,16 @@ public class AccountFragment extends Fragment {
                         return null;
                     });
         });
+        change_password_button.setOnClickListener(view -> {
+            // Create an Intent to start the ChangePasswordActivity
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+
+            // Pass the user_id to the ChangePasswordActivity
+            intent.putExtra("user_id", id_User);  // `id_User` is the user_id you want to pass
+            intent.putExtra("user_id", id_User);
+            startActivity(intent);
+        });
+
 
         edit_experience.setOnClickListener(view -> {
 
@@ -345,11 +360,12 @@ public class AccountFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        // Nhận URI của ảnh đã chọn
+                        // Nhận URI của ảnh background đã chọn
                         backgroundImageUri = result.getData().getData();
-
-                        // Cập nhật hình ảnh cho ImageView background
                         background.setImageURI(backgroundImageUri);
+
+                        // Cập nhật ảnh background lên server
+                        updateBackground(backgroundImageUri);
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn hình ảnh", Toast.LENGTH_SHORT).show();
                     }
@@ -362,6 +378,9 @@ public class AccountFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         avatarImageUri = result.getData().getData();
                         avatar.setImageURI(avatarImageUri);
+
+                        // Cập nhật avatar lên server
+                        updateAvatar(avatarImageUri);
                     } else {
                         Toast.makeText(getContext(), "Chưa chọn hình ảnh", Toast.LENGTH_SHORT).show();
                     }
@@ -369,7 +388,9 @@ public class AccountFragment extends Fragment {
         );
     }
 
-    private void getUserById(int userId){
+
+
+    private void getUserById(int userId) {
         ApiUserService.apiUserService.getUserById(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -377,18 +398,140 @@ public class AccountFragment extends Fragment {
                         user -> {
                             if (user != null) {
                                 username = user.getUsername();
-                                Log.e("username","username" + username);
                                 password = user.getPassword();
-                                Log.e("password","password" + password);
+                                Log.e("username", "username: " + username);
+                                Log.e("password", "password: " + password);
+
+                                currentAvatarUrl = user.getAvatar();  // Store current avatar URL
+                                currentBackgroundUrl = user.getImageBackground();
+                                setUserImages(currentAvatarUrl, currentBackgroundUrl);
                             } else {
-                                Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
                             }
                         },
                         throwable -> {
-                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
-                            Toast.makeText(getContext(), "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                            Log.e("AccountFragment", "Error fetching user: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to load user", Toast.LENGTH_SHORT).show();
                         }
                 );
+    }
+
+    private void updateAvatar(Uri avatarUri) {
+        // Kiểm tra xem avatarUri có hợp lệ không
+        String avatarUrl;
+
+        // Nếu có ảnh mới, lấy URL từ avatarUri, nếu không giữ lại avatar cũ
+        if (avatarUri != null) {
+            avatarUrl = avatarUri.toString();  // Chuyển avatarUri thành URL mới
+        } else {
+            avatarUrl = (currentAvatarUrl != null) ? currentAvatarUrl : "";  // Giữ ảnh cũ nếu không có ảnh mới
+        }
+
+        if (avatarUrl.isEmpty()) {
+            Log.e("AccountFragment", "Avatar is empty, skipping update.");
+            return;  // Nếu avatarUrl rỗng, không thực hiện cập nhật
+        }
+
+        // Giữ nguyên ảnh background nếu không thay đổi
+        String backgroundUrl = (backgroundImageUri != null) ? backgroundImageUri.toString() : (currentBackgroundUrl != null) ? currentBackgroundUrl : "";  // Giữ background cũ nếu không thay đổi
+
+        // Tạo đối tượng User mới với các thông tin cần cập nhật
+        User user = new User();
+        user.setId(id_User);  // ID của người dùng
+        user.setUsername(username);  // Giữ nguyên username
+        user.setPassword(password);  // Giữ nguyên password
+        user.setAvatar(avatarUrl);  // Cập nhật avatar mới hoặc giữ avatar cũ
+        user.setImageBackground(backgroundUrl);  // Cập nhật background mới hoặc giữ background cũ
+
+        // Gửi yêu cầu PUT để cập nhật thông tin người dùng
+        ApiUserService.apiUserService.updateUserById(id_User, user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            // Thành công
+                            Log.d("AccountFragment", "User updated successfully");
+                            Toast.makeText(getContext(), "User info updated successfully", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Lỗi
+                            Log.e("AccountFragment", "Error updating user: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to update user", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
+
+    private void updateBackground(Uri backgroundUri) {
+        // Kiểm tra xem backgroundUri có hợp lệ không
+        String backgroundUrl;
+
+        // Nếu có ảnh mới, lấy URL từ backgroundUri, nếu không giữ lại background cũ
+        if (backgroundUri != null) {
+            backgroundUrl = backgroundUri.toString();  // Chuyển backgroundUri thành URL mới
+        } else {
+            backgroundUrl = (currentBackgroundUrl != null) ? currentBackgroundUrl : "";  // Giữ background cũ nếu không có ảnh mới
+        }
+
+        if (backgroundUrl.isEmpty()) {
+            Log.e("AccountFragment", "Background is empty, skipping update.");
+            return;  // Nếu backgroundUrl rỗng, không thực hiện cập nhật
+        }
+
+        // Giữ nguyên avatar nếu không thay đổi
+        String avatarUrl = (avatarImageUri != null) ? avatarImageUri.toString() : (currentAvatarUrl != null) ? currentAvatarUrl : "";  // Giữ avatar cũ nếu không thay đổi
+
+        // Tạo đối tượng User mới với các thông tin cần cập nhật
+        User user = new User();
+        user.setId(id_User);  // ID của người dùng
+        user.setUsername(username);  // Giữ nguyên username
+        user.setPassword(password);  // Giữ nguyên password
+        user.setAvatar(avatarUrl);  // Giữ nguyên avatar
+        user.setImageBackground(backgroundUrl);  // Cập nhật background mới
+
+        // Gửi yêu cầu PUT để cập nhật thông tin người dùng
+        ApiUserService.apiUserService.updateUserById(id_User, user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            // Thành công
+                            Log.d("AccountFragment", "User updated successfully");
+                            Toast.makeText(getContext(), "User info updated successfully", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Lỗi
+                            Log.e("AccountFragment", "Error updating user: " + throwable.getMessage());
+                            Toast.makeText(getContext(), "Failed to update user", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
+
+
+    private void setUserImages(String avatarUrl, String backgroundUrl) {
+        // Hiển thị Avatar
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(avatarUrl)
+                    .override(200, 200) // Kích thước tối đa của ảnh
+                    .fitCenter() // Điều chỉnh ảnh để vừa với ImageView
+                    .placeholder(R.drawable.account_ic)
+                    .error(R.drawable.account_ic)
+                    .into(avatar);
+
+        }
+
+        // Hiển thị Background
+        if (backgroundUrl != null && !backgroundUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(backgroundUrl)
+                    .override(1080, 720) // Ví dụ, bạn có thể điều chỉnh kích thước ảnh nền
+                    .fitCenter() // Điều chỉnh ảnh để vừa với ImageView
+                    .placeholder(R.drawable.google_ic)
+                    .error(R.drawable.google_ic)
+                    .into(background);
+
+        }
     }
 
     @Override

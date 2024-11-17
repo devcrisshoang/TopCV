@@ -26,6 +26,9 @@
             android:name=".EditCvActivity"
             android:exported="false" />
         <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ArticleActivity"
             android:exported="false" />
         <activity
