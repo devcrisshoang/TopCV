@@ -107,7 +107,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             workViewHolder.job_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.company_location.setText(job.getLocation());
-            workViewHolder.salary.setText(job.getSalary());
+            workViewHolder.salary.setText(String.valueOf(job.getSalary()));
             workViewHolder.job_experience.setText(job.getExperience());
         }
     }

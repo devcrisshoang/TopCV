@@ -52,15 +52,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         setWidget();
-
-        Log.e("MainActivity", "ID Main: " + id_User);
         openNewsFeedFragment(id_User);
-        //selectNewsFeedFragment(FRAGMENT_HOME, new NewsFeedFragment(), layout_header, View.VISIBLE);
-
         setDefaultColorButton();
-
         setClick();
-
     }
 
     private void setDefaultColorButton(){

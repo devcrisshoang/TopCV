@@ -255,7 +255,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         company_name.setText(job.getCompanyName());
         experience.setText(job.getExperience());
         working_place.setText(job.getLocation());
-        salary.setText(job.getSalary());
+        salary.setText(String.valueOf(job.getSalary()));
         location.setText(job.getLocation());
         experience_detail.setText(job.getExperience());
         // Chuyển đổi chuỗi ngày

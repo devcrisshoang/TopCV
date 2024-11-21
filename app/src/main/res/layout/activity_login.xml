@@ -12,24 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:text="Pooh"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="50dp"
-            android:textColor="@color/black"
-            android:scaleType="fitCenter">
-        </TextView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Welcome to Pooh"
-            android:textAlignment="center"
-            android:textSize="20sp">
 
-        </TextView>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

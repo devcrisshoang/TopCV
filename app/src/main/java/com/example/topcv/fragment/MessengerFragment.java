@@ -1,13 +1,10 @@
 package com.example.topcv.fragment;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,10 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.R;
 import com.example.topcv.adapter.MessengerAdapter;
-import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiMessageService;
-import com.example.topcv.model.Applicant;
-import com.example.topcv.model.Message;
 import com.example.topcv.model.User;
 
 import java.util.ArrayList;

@@ -80,7 +80,7 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             workViewHolder.position_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.working_place.setText(job.getLocation());
-            workViewHolder.salary.setText(job.getSalary());
+            workViewHolder.salary.setText(String.valueOf(job.getSalary()));
         }
     }
 

@@ -4,7 +4,7 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private String imageBackground;
+    private String image_Background;
     private String avatar;
     private String uid;
     private boolean isApplicant;
@@ -29,7 +29,7 @@ public class User {
     public User(String username, String password, String imageBackground, String avatar, String uid, boolean isApplicant, boolean isRecruiter) {
         this.username = username;
         this.password = password;
-        this.imageBackground = imageBackground;
+        this.image_Background = imageBackground;
         this.avatar = avatar;
         this.uid = uid;
         this.isApplicant = isApplicant;
@@ -66,11 +66,11 @@ public class User {
     }
 
     public String getImageBackground() {
-        return imageBackground;
+        return image_Background;
     }
 
     public void setImageBackground(String imageBackground) {
-        this.imageBackground = imageBackground;
+        this.image_Background = imageBackground;
     }
 
     public String getAvatar() {
