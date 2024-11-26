@@ -1,7 +1,6 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Notification;
-import com.example.topcv.model.Resume;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,14 +28,13 @@ public interface ApiNotificationService {
             .build();
 
     ApiNotificationService ApiNotificationService = new Retrofit.Builder()
-            .baseUrl("https://10.0.2.2:7200/")  // Thay địa chỉ bằng IP của máy bạn hoặc server thật
+            .baseUrl("https://10.0.2.2:7200/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(ApiNotificationService.class);
 
-    // API lấy danh sách notifications
     @GET("api/Notification/User/{id}")
     Observable<List<Notification>> getNotificationByUserId(@Path("id") int id);
 

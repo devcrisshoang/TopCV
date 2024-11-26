@@ -1,6 +1,5 @@
 package com.example.topcv.api;
 
-import com.example.topcv.model.Article;
 import com.example.topcv.model.Job;
 
 import java.util.List;
@@ -16,10 +15,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface ApiJobService {
-    // Logging interceptor để theo dõi request và response
+
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    // Sử dụng OkHttpClient an toàn bỏ qua SSL
+
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
@@ -28,16 +27,15 @@ public interface ApiJobService {
             .retryOnConnectionFailure(true)
             .build();
 
-    // Sử dụng Retrofit để tạo API service
+
     ApiJobService ApiJobService = new Retrofit.Builder()
-            .baseUrl("https://10.0.2.2:7200/")  // Thay địa chỉ bằng IP của máy bạn hoặc server thật
-            .client(okHttpClient)  // Áp dụng OkHttpClient bỏ qua SSL
-            .addConverterFactory(GsonConverterFactory.create())  // Chuyển đổi JSON sang đối tượng Java
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())  // Sử dụng RxJava3
+            .baseUrl("https://10.0.2.2:7200/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(ApiJobService.class);
 
-    // API lấy danh sách job
     @GET("api/Job")
     Observable<List<Job>> getAllJobs();
     @GET("api/Job/{id}")

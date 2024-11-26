@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,7 +17,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.topcv.fragment.AccountFragment;
 import com.example.topcv.fragment.MessengerFragment;
@@ -27,19 +25,34 @@ import com.example.topcv.fragment.NotificationFragment;
 import com.example.topcv.fragment.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
+
     private LinearLayout layout_header;
+
     private EditText search_edit_text;
+
     private static final int FRAGMENT_HOME = 0;
     private static final int FRAGMENT_PROFILE = 1;
     private static final int FRAGMENT_NOTIFICATION = 2;
     private static final int FRAGMENT_ACCOUNT = 3;
     private static final int FRAGMENT_MESSENGER = 4;
     private int currentFragment = FRAGMENT_HOME;
-    private ImageButton homeButton, profileButton, messengerButton, notificationButton, accountButton;
-    private TextView Home_textview, Profile_Textview, Messenger_Textview, Notification_Textview, Account_Textview;
-    private String applicantName; // Lưu trữ tên ứng viên
-    private int id_User;      // Lưu trữ ID ứng viên
+
+    private ImageButton homeButton;
+    private ImageButton profileButton;
+    private ImageButton messengerButton;
+    private ImageButton notificationButton;
+    private ImageButton accountButton;
+
+    private TextView Home_textview;
+    private TextView Profile_Textview;
+    private TextView Messenger_Textview;
+    private TextView Notification_Textview;
+    private TextView Account_Textview;
+
+    private String applicantName;
     private String phoneNumber;
+
+    private int id_User;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +64,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         setWidget();
-        openNewsFeedFragment(id_User);
-        setDefaultColorButton();
+
         setClick();
     }
 
     private void setDefaultColorButton(){
-        // Thiết lập fragment mặc định và màu sắc ban đầu cho nút
         setImageButtonColor(this, homeButton, R.color.green_color);
         setImageButtonColor(this, profileButton, R.color.black);
         setImageButtonColor(this, messengerButton, R.color.black);
@@ -79,14 +91,13 @@ public class MainActivity extends AppCompatActivity {
         Messenger_Textview = findViewById(R.id.Messenger_Textview);
         Notification_Textview = findViewById(R.id.Notification_Textview);
         Account_Textview = findViewById(R.id.Account_Textview);
-        // Lấy dữ liệu từ Intent
-        Intent intent = getIntent();
-        applicantName = intent.getStringExtra("applicantName"); // Tên ứng viên
-        id_User = intent.getIntExtra("user_id", -1);  // Lấy userId từ Intent
-        if (id_User == -1) {
-            Log.e("Error", "userId không hợp lệ");
-        }
-        phoneNumber = intent.getStringExtra("phoneNumber");
+
+        applicantName = getIntent().getStringExtra("applicantName");
+        id_User = getIntent().getIntExtra("user_id", 0);
+        phoneNumber = getIntent().getStringExtra("phoneNumber");
+
+        openNewsFeedFragment(id_User);
+        setDefaultColorButton();
     }
 
     private void setClick(){
@@ -114,15 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void selectFragment(int fragmentCode, Fragment fragment, LinearLayout layoutHeader, int headerVisibility) {
         if (currentFragment != fragmentCode) {
-            // Kiểm tra fragment và truyền id_User vào bundle khi cần
             if (fragment instanceof AccountFragment || fragment instanceof ProfileFragment || fragment instanceof MessengerFragment || fragment instanceof NotificationFragment || fragment instanceof NewsFeedFragment) {
                 Bundle bundle = new Bundle();
-                bundle.putString("applicantName", applicantName); // chỉ cần thiết cho AccountFragment
-                bundle.putInt("user_id", id_User); // truyền id_User cho tất cả các fragment
-                bundle.putString("phoneNumber", phoneNumber); // chỉ cần thiết cho AccountFragment
-                fragment.setArguments(bundle); // Đặt Bundle vào Fragment
+                bundle.putString("applicantName", applicantName);
+                bundle.putInt("user_id", id_User);
+                bundle.putString("phoneNumber", phoneNumber);
+                fragment.setArguments(bundle);
             }
-            replaceFragment(fragment); // Thay thế fragment hiện tại bằng fragment đã chọn
             currentFragment = fragmentCode;
             layoutHeader.setVisibility(headerVisibility);
             resetButtonColors();
@@ -180,9 +189,4 @@ public class MainActivity extends AppCompatActivity {
         button.setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.news, fragment);
-        transaction.commit();
-    }
 }
