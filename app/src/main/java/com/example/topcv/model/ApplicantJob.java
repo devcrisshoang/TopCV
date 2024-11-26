@@ -25,7 +25,6 @@ public class ApplicantJob {
     @SerializedName("time")
     private String time;
 
-    // Constructor
     public ApplicantJob(int jobId, int applicantId, int resumeId, boolean isAccepted, boolean isRejected, String time) {
         this.jobId = jobId;
         this.applicantId = applicantId;
@@ -39,7 +38,6 @@ public class ApplicantJob {
 
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

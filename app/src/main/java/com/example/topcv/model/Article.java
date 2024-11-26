@@ -13,7 +13,6 @@ public class Article {
     @SerializedName("content")
     private String content;
 
-    // Để thời gian dưới dạng String để dễ parse
     @SerializedName("create_Time")
     private String time;
 
@@ -23,7 +22,6 @@ public class Article {
     @SerializedName("iD_Recruiter")
     private int idRecruiter;
 
-    // Constructor đầy đủ
     public Article(int id, String name, String content, String time, String image, int idRecruiter) {
         this.id = id;
         this.name = name;
@@ -40,7 +38,6 @@ public class Article {
         this.image = image;
     }
 
-    // Getter và Setter
     public int getId() {
         return id;
     }

@@ -55,7 +55,6 @@ public class JobDetail {
         this.numberOfPeople = numberOfPeople;
     }
 
-    // Getter và Setter cho các trường
     public int getId() {
         return id;
     }

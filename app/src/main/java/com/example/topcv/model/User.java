@@ -40,7 +40,6 @@ public class User {
 
     }
 
-    // Getters và setters
     public int getId() {
         return id;
     }
