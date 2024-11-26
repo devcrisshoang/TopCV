@@ -1,9 +1,7 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Recruiter;
-
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

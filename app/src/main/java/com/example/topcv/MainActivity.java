@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.topcv.fragment.AccountFragment;
 import com.example.topcv.fragment.MessengerFragment;
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView Account_Textview;
 
     private String applicantName;
-    private String phoneNumber;
-
     private int id_User;
+
+    private String phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setWidget();
+
+        openNewsFeedFragment(id_User);
+
+        setDefaultColorButton();
 
         setClick();
     }
@@ -95,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
         applicantName = getIntent().getStringExtra("applicantName");
         id_User = getIntent().getIntExtra("user_id", 0);
         phoneNumber = getIntent().getStringExtra("phoneNumber");
-
-        openNewsFeedFragment(id_User);
-        setDefaultColorButton();
     }
 
     private void setClick(){
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putString("phoneNumber", phoneNumber);
                 fragment.setArguments(bundle);
             }
+            replaceFragment(fragment);
             currentFragment = fragmentCode;
             layoutHeader.setVisibility(headerVisibility);
             resetButtonColors();
@@ -189,4 +192,9 @@ public class MainActivity extends AppCompatActivity {
         button.setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.news, fragment);
+        transaction.commit();
+    }
 }

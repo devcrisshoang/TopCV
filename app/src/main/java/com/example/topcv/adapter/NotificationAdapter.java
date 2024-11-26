@@ -14,10 +14,9 @@ import com.example.topcv.utils.DateTimeUtils;
 
 import java.util.List;
 
-
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
-    private List<Notification> notificationList;
+    private final List<Notification> notificationList;
     private Context context;
 
     public NotificationAdapter(List<Notification> notificationList, Context context) {
@@ -36,26 +35,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         Notification notification = notificationList.get(position);
 
-        // Lấy chuỗi thời gian từ notification
         String timeString = notification.getTime();
 
-        // Kiểm tra null trước khi định dạng lại thời gian
         String formattedTime = (timeString != null) ? DateTimeUtils.formatTimeAgo(timeString) : "No time available";
 
-        // Đặt thời gian và nội dung cho TextView
         holder.textViewTime.setText(formattedTime);
         holder.textViewContent.setText(notification.getContent());
     }
-
-
-
 
     @Override
     public int getItemCount() {
         return notificationList.size();
     }
 
-    // ViewHolder để quản lý từng phần tử trong RecyclerView
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewContent;
         public TextView textViewTime;

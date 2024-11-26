@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
 import com.example.topcv.api.ApiMessageService;
@@ -20,19 +18,17 @@ import com.example.topcv.api.ApiRecruiterService;
 import com.example.topcv.model.Message;
 import com.example.topcv.model.User;
 import com.example.topcv.utils.DateTimeUtils;
-
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.MessengerViewHolder> {
 
-    private List<User> userList;
+    private final List<User> userList;
 
-    private Context context;
+    private final Context context;
 
-    private int userIdApplicant;
+    private final int userIdApplicant;
     private int userIdRecruiter;
 
     private String recruiterName;
@@ -87,8 +83,6 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
                                 recruiterName = recruiter.getRecruiterName();
                                 userIdRecruiter = recruiter.getIdUser();
                                 Log.d("MessengerAdapter", "Fetched applicant name: " + recruiter.getRecruiterName());
-                            } else {
-                                holder.sender_name.setText("Unknown User"); // Hoặc xử lý lỗi nếu không có dữ liệu
                             }
                         },
                         throwable -> {
@@ -100,26 +94,19 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
     @SuppressLint("CheckResult")
     private void getLatestMessage(int currentUserId, int otherUserId, MessengerViewHolder holder) {
         ApiMessageService.apiMessageService.getAllMessageByTwoUserId(currentUserId, otherUserId)
-                .subscribeOn(Schedulers.io())  // Run in the background
-                .observeOn(AndroidSchedulers.mainThread())  // Observe on the main thread
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         messages -> {
                             if (!messages.isEmpty()) {
-                                // Get the latest message
                                 Message latestMessage = messages.get(messages.size() - 1);
                                 holder.message.setText(latestMessage.getContent());
 
-                                // Format and set the timestamp
                                 String time = latestMessage.getSend_Time();
                                 if (time != null && !time.isEmpty()) {
                                     String formattedTime = DateTimeUtils.formatTimeAgo(time);
                                     holder.send_time.setText(formattedTime);
-                                } else {
-                                    holder.send_time.setText("No time available");
                                 }
-                            } else {
-                                holder.message.setText("No messages");
-                                holder.send_time.setText("No time available");
                             }
                         },
                         throwable -> {

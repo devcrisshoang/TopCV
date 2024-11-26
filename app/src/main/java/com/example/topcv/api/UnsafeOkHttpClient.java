@@ -1,7 +1,6 @@
 package com.example.topcv.api;
 
 import java.security.cert.CertificateException;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;

@@ -1,24 +1,21 @@
 package com.example.topcv.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.R;
 import com.example.topcv.model.Message;
-
 import java.util.List;
 
 public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdapter.MessengerViewHolder> {
 
-    private List<Message> messageList;
+    private final List<Message> messageList;
 
-    private int MainID;
-    private int SubID;
+    private final int MainID;
+    private final int SubID;
 
     public MessengerShowAdapter(List<Message> messageList, int MainID, int SubID) {
         this.messageList = messageList;

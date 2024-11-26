@@ -27,13 +27,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MessengerFragment extends Fragment {
 
-    private RecyclerView messageRecyclerView;
-
     private MessengerAdapter messageAdapter;
 
-    private List<User> userList = new ArrayList<>();
-
-    private int id_User;
+    private final List<User> userList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -46,21 +42,16 @@ public class MessengerFragment extends Fragment {
     }
 
     private void setWidget(View view){
-
-        id_User = getArguments().getInt("user_id", 0);
-        Log.e("MessageFragment", "User ID: "+id_User);
-
-        messageRecyclerView = view.findViewById(R.id.MessageRecyclerView);
-
+        int id_User = getArguments().getInt("user_id", 0);
+        Log.e("MessageFragment", "User ID: "+ id_User);
+        RecyclerView messageRecyclerView = view.findViewById(R.id.MessageRecyclerView);
         messageRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        messageAdapter = new MessengerAdapter(userList, getContext(),id_User);
+        messageAdapter = new MessengerAdapter(userList, getContext(), id_User);
         messageRecyclerView.setAdapter(messageAdapter);
-
         getChatPartners(id_User);
     }
 
-    @SuppressLint("CheckResult")
+    @SuppressLint({"CheckResult", "NotifyDataSetChanged"})
     private void getChatPartners(int userId) {
         ApiMessageService.apiMessageService.getAllChatPartnersByUserId(userId)
                 .subscribeOn(Schedulers.io())

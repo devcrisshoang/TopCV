@@ -2,10 +2,8 @@ package com.example.topcv.api;
 
 import com.example.topcv.model.Message;
 import com.example.topcv.model.User;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
