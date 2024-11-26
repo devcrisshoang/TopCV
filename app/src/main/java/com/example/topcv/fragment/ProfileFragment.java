@@ -86,6 +86,7 @@ public class ProfileFragment extends Fragment {
                         applicant -> {
                             if (applicant != null) {
                                 fetchResumesByApplicantId(applicant.getId());
+                                Log.e("ProfileFragment","ID: " + applicant.getId());
                             } else {
                                 Toast.makeText(getContext(), "Applicant null", Toast.LENGTH_SHORT).show();
                             }

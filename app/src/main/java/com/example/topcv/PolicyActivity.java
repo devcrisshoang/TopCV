@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.topcv.api.ApiUserService;
-import com.example.topcv.model.Applicant;
 import com.example.topcv.model.User;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

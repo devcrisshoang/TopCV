@@ -37,6 +37,16 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
         return TYPE_ITEM;
     }
 
+    public Resume getSelectedItem() {
+        // Kiểm tra nếu vị trí hợp lệ và danh sách không rỗng
+        if (selectedPosition != -1 && mListResume != null && selectedPosition < mListResume.size()) {
+            return mListResume.get(selectedPosition); // Trả về item tại vị trí được chọn
+        }
+        return null; // Trả về null nếu không có item nào được chọn
+    }
+
+
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }

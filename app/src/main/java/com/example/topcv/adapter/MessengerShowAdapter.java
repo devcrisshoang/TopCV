@@ -1,7 +1,5 @@
 package com.example.topcv.adapter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,24 +8,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
 import com.example.topcv.model.Message;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdapter.MessengerViewHolder> {
 
     private List<Message> messageList;
-    private int ID;
 
-    public MessengerShowAdapter(List<Message> messageList, int ID) {
+    private int MainID;
+    private int SubID;
+
+    public MessengerShowAdapter(List<Message> messageList, int MainID, int SubID) {
         this.messageList = messageList;
-        this.ID = ID;
+        this.MainID = MainID;
+        this.SubID = SubID;
     }
 
     @NonNull
@@ -41,31 +37,24 @@ public class MessengerShowAdapter extends RecyclerView.Adapter<MessengerShowAdap
     @Override
     public void onBindViewHolder(@NonNull MessengerViewHolder holder, int position) {
         Message message = messageList.get(position);
-        Log.d("MessengerAdapter", "Message content: " + message.getContent() + ", Sender ID: " + message.getSender_ID());
 
-        // Reset visibility trước khi áp dụng logic mới
         holder.me.setVisibility(View.VISIBLE);
         holder.other_people.setVisibility(View.VISIBLE);
 
-        // Xử lý hiển thị dựa trên Sender_ID
-        if (message.getSender_ID() == 9) {
-            // Nếu Sender_ID = 9, hiển thị tin nhắn của chính người dùng
+        if (message.getSender_ID() == MainID) {
             holder.me.setText(message.getContent());
-            holder.other_people.setVisibility(View.GONE);  // Ẩn tin nhắn của người khác
-        } else if (message.getSender_ID() == ID) {
-            // Nếu Sender_ID là người khác, hiển thị tin nhắn của họ
+            holder.other_people.setVisibility(View.GONE);
+        } else if (message.getSender_ID() == SubID) {
             holder.other_people.setText(message.getContent());
-            holder.me.setVisibility(View.GONE);  // Ẩn tin nhắn của chính mình
+            holder.me.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public int getItemCount() {
         return messageList.size();
     }
 
-    // ViewHolder để quản lý từng phần tử trong RecyclerView
     public static class MessengerViewHolder extends RecyclerView.ViewHolder {
         public TextView other_people;
         public TextView me;

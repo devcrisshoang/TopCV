@@ -1,5 +1,6 @@
 package com.example.topcv.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
-import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiMessageService;
-import com.example.topcv.model.Applicant;
+import com.example.topcv.api.ApiRecruiterService;
 import com.example.topcv.model.Message;
 import com.example.topcv.model.User;
 import com.example.topcv.utils.DateTimeUtils;
@@ -29,13 +29,18 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.MessengerViewHolder> {
 
     private List<User> userList;
-    private Context context;
-    private int currentUserId = 9;  // Assuming 9 is the logged-in user's ID
-    private Applicant applicant = new Applicant();
 
-    public MessengerAdapter(List<User> userList, Context context) {
+    private Context context;
+
+    private int userIdApplicant;
+    private int userIdRecruiter;
+
+    private String recruiterName;
+
+    public MessengerAdapter(List<User> userList, Context context, int userIdApplicant) {
         this.userList = userList;
         this.context = context;
+        this.userIdApplicant = userIdApplicant;
     }
 
     @NonNull
@@ -49,47 +54,50 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
     @Override
     public void onBindViewHolder(@NonNull MessengerViewHolder holder, int position) {
         if (position >= userList.size()) {
-            return;  // If position is invalid, skip
+            return;
         }
 
         User user = userList.get(position);
         int userId = user.getId();
 
-        // Fetch applicant name and latest message for this user
-        getApplicantName(userId, holder);  // Fetch and set the applicant name
-        getLatestMessage(currentUserId, userId, holder);  // Fetch and set the latest message and timestamp
+        getRecruiterInformation(userId, holder);
+        getLatestMessage(userIdApplicant, userId, holder);
 
-        // Handle item click to open the chat with the selected user
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MessageActivity.class);
-            intent.putExtra("userId",userId);
+            intent.putExtra("userIdApplicant",userIdApplicant);
+            intent.putExtra("recruiterName",recruiterName);
+            intent.putExtra("userIdRecruiter",userIdRecruiter);
+
+
             context.startActivity(intent);
         });
     }
 
-    // Method to get applicant name based on the user ID
-    private void getApplicantName(int userId, MessengerViewHolder holder) {
-        ApiApplicantService.ApiApplicantService.getApplicantByUserId(userId)
+
+    @SuppressLint("CheckResult")
+    private void getRecruiterInformation(int userId, MessengerViewHolder holder) {
+        ApiRecruiterService.ApiRecruiterService.getRecruiterByUserId(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        applicant -> {
-                            if (applicant != null) {
-                                holder.sender_name.setText(applicant.getApplicantName());
-                                Log.d("MessengerAdapter", "Fetched applicant name: " + applicant.getApplicantName());
+                        recruiter -> {
+                            if (recruiter != null) {
+                                holder.sender_name.setText(recruiter.getRecruiterName());
+                                recruiterName = recruiter.getRecruiterName();
+                                userIdRecruiter = recruiter.getIdUser();
+                                Log.d("MessengerAdapter", "Fetched applicant name: " + recruiter.getRecruiterName());
                             } else {
                                 holder.sender_name.setText("Unknown User"); // Hoặc xử lý lỗi nếu không có dữ liệu
                             }
                         },
                         throwable -> {
                             Log.e("MessengerAdapter", "Error fetching applicant name: " + throwable.getMessage());
-                            Toast.makeText(context, "Failed to load applicant name", Toast.LENGTH_SHORT).show();
                         }
                 );
-
     }
 
-    // Method to get the latest message between the current user (ID = 9) and another user
+    @SuppressLint("CheckResult")
     private void getLatestMessage(int currentUserId, int otherUserId, MessengerViewHolder holder) {
         ApiMessageService.apiMessageService.getAllMessageByTwoUserId(currentUserId, otherUserId)
                 .subscribeOn(Schedulers.io())  // Run in the background
@@ -126,7 +134,6 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
         return userList.size();
     }
 
-    // ViewHolder for managing each item in the RecyclerView
     public static class MessengerViewHolder extends RecyclerView.ViewHolder {
         public TextView sender_name;
         public TextView message;

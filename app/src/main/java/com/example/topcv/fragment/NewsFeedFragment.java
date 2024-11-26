@@ -150,11 +150,13 @@ public class NewsFeedFragment extends Fragment {
         workAdapter.setOnItemClickListener(job -> {
             Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
             intent.putExtra("job_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            intent.putExtra("id_User", id_User);
             startActivity(intent);
         });
         theBestJobAdapter.setOnItemClickListener(job -> {
             Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
             intent.putExtra("best_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
+            intent.putExtra("id_User", id_User);
             startActivity(intent);
         });
         companyTopAdapter.setOnItemClickListener(company -> {
@@ -191,55 +193,71 @@ public class NewsFeedFragment extends Fragment {
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Job> jobs) {
                         Log.d("MessageActivity", "Received jobs: " + jobs.toString());
 
+                        // Kiểm tra nếu jobs là null hoặc rỗng
                         if (jobs != null && !jobs.isEmpty()) {
+                            // Xóa dữ liệu cũ trước khi thêm mới
                             workList.clear();
                             bestjobList.clear();
                             interestingList.clear();
 
-                            // Lọc danh sách công việc dựa trên mong muốn của người dùng
-                            List<Job> work = new ArrayList<>();
-                            for (Job job : jobs) {
-                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) &&
-                                        job.getLocation().toLowerCase().contains(applicants.getWorkingLocationDesire().toLowerCase())) {
-                                    work.add(job);
+                            // Kiểm tra ứng viên có null không
+                            if (applicants != null) {
+                                String jobDesire = applicants.getJobDesire() != null ? applicants.getJobDesire().toLowerCase() : "";
+                                String locationDesire = applicants.getWorkingLocationDesire() != null ? applicants.getWorkingLocationDesire().toLowerCase() : "";
+
+                                // Lọc công việc theo yêu cầu của ứng viên
+                                List<Job> work = new ArrayList<>();
+                                for (Job job : jobs) {
+                                    // Kiểm tra job.getJobName() và job.getLocation() không null trước khi sử dụng
+                                    String jobName = job.getJobName() != null ? job.getJobName().toLowerCase() : "";
+                                    String location = job.getLocation() != null ? job.getLocation().toLowerCase() : "";
+
+                                    if (jobName.contains(jobDesire) && location.contains(locationDesire)) {
+                                        work.add(job);
+                                    }
                                 }
-                            }
 
-                            // Giới hạn danh sách chỉ còn 5 phần tử đầu tiên (kiểm tra an toàn)
-                            List<Job> limitedWorkList = work.size() > 5 ? work.subList(0, 5) : new ArrayList<>(work);
-                            workList.addAll(limitedWorkList);
-                            while (workList.size() < 5 && work.size() > workList.size()) {
-                                workList.add(work.get(workList.size()));
-                            }
-
-                            // Danh sách công việc lương cao hơn 1000
-                            List<Job> best = new ArrayList<>();
-                            for (Job job : jobs) {
-                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) && job.getSalary() > 1000) {
-                                    best.add(job);
+                                // Giới hạn danh sách công việc tối đa là 5
+                                List<Job> limitedWorkList = work.size() > 5 ? work.subList(0, 5) : new ArrayList<>(work);
+                                workList.addAll(limitedWorkList);
+                                while (workList.size() < 5 && work.size() > workList.size()) {
+                                    workList.add(work.get(workList.size()));
                                 }
-                            }
-                            List<Job> limitedBestList = best.size() > 10 ? best.subList(0, 10) : new ArrayList<>(best);
-                            bestjobList.addAll(limitedBestList);
-                            while (bestjobList.size() < 10 && best.size() > bestjobList.size()) {
-                                bestjobList.add(best.get(bestjobList.size()));
-                            }
 
-                            // Danh sách công việc thú vị
-                            List<Job> interesting = new ArrayList<>();
-                            for (Job job : jobs) {
-                                if (job.getJobName().toLowerCase().contains(applicants.getJobDesire().toLowerCase()) && job.getSalary() > 1000) {
-                                    interesting.add(job);
+                                // Danh sách công việc có lương cao hơn 1000
+                                List<Job> best = new ArrayList<>();
+                                for (Job job : jobs) {
+                                    String jobName = job.getJobName() != null ? job.getJobName().toLowerCase() : "";
+                                    if (jobName.contains(jobDesire) && job.getSalary() > 1000) {
+                                        best.add(job);
+                                    }
                                 }
-                            }
-                            List<Job> limitedInterestingList = interesting.size() > 10 ? interesting.subList(0, 10) : new ArrayList<>(interesting);
-                            interestingList.addAll(limitedInterestingList);
-                            while (interestingList.size() < 10 && interesting.size() > interestingList.size()) {
-                                interestingList.add(interesting.get(interestingList.size()));
-                            }
+                                List<Job> limitedBestList = best.size() > 10 ? best.subList(0, 10) : new ArrayList<>(best);
+                                bestjobList.addAll(limitedBestList);
+                                while (bestjobList.size() < 10 && best.size() > bestjobList.size()) {
+                                    bestjobList.add(best.get(bestjobList.size()));
+                                }
 
-                            workAdapter.notifyDataSetChanged();
-                            theBestJobAdapter.notifyDataSetChanged();
+                                // Danh sách công việc thú vị có lương cao hơn 1000
+                                List<Job> interesting = new ArrayList<>();
+                                for (Job job : jobs) {
+                                    String jobName = job.getJobName() != null ? job.getJobName().toLowerCase() : "";
+                                    if (jobName.contains(jobDesire) && job.getSalary() > 1000) {
+                                        interesting.add(job);
+                                    }
+                                }
+                                List<Job> limitedInterestingList = interesting.size() > 10 ? interesting.subList(0, 10) : new ArrayList<>(interesting);
+                                interestingList.addAll(limitedInterestingList);
+                                while (interestingList.size() < 10 && interesting.size() > interestingList.size()) {
+                                    interestingList.add(interesting.get(interestingList.size()));
+                                }
+
+                                // Notify các adapter cập nhật dữ liệu mới
+                                workAdapter.notifyDataSetChanged();
+                                theBestJobAdapter.notifyDataSetChanged();
+                            } else {
+                                Log.e("applicants", "applicants is null, cannot filter jobs");
+                            }
                         } else {
                             Log.d("MessageActivity", "Received jobs list is empty");
                         }
@@ -248,12 +266,14 @@ public class NewsFeedFragment extends Fragment {
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        //Toast.makeText(requireContext(), "Call API error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Thông báo lỗi nếu có
+                        Log.e("API Error", "Error fetching jobs: " + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        //Toast.makeText(getContext(), "Call API successful", Toast.LENGTH_SHORT).show();
+                        // Thông báo khi gọi API thành công
+                        Log.d("API", "Successfully fetched job data");
                     }
                 });
     }

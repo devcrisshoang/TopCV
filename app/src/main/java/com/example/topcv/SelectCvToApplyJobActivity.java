@@ -31,14 +31,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.topcv.adapter.AppliedResumeAdapter;
 import com.example.topcv.adapter.ProfileAdapter;
+import com.example.topcv.api.ApiApplicantJobService;
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiResumeService;
+import com.example.topcv.model.Applicant;
+import com.example.topcv.model.ApplicantJob;
 import com.example.topcv.model.Company;
 import com.example.topcv.model.Job;
 import com.example.topcv.model.Resume;
 import com.example.topcv.utils.PaginationScrollListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -66,6 +73,9 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
     private String filePath;
     private Button Apply_Button;
 
+    private int applicant_id;
+    private int jobId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,15 +86,17 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        applicant_id = getIntent().getIntExtra("applicant_id", 0);
+        Log.e("SelectCvToApply","applicant_id " + applicant_id);
         setWidget();
-        fetchResumesByApplicantId(6);
+        fetchResumesByApplicantId(applicant_id);
 
         back_button.setOnClickListener(view -> finish());
         upload_layout.setVisibility(View.GONE);
         my_cv.setOnClickListener(view -> {
             select_cv_recyclerview.setVisibility(View.VISIBLE);
             upload_layout.setVisibility(View.GONE);
-            fetchResumesByApplicantId(6);
+            fetchResumesByApplicantId(applicant_id);
 
         });
         upload_from_device.setOnClickListener(view -> {
@@ -117,12 +129,46 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
                 return isLastPage;
             }
         });
-        Apply_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                postResume(filePath);
-            }
-        });
+        Apply_Button.setOnClickListener(view -> sendApplicantJobData());
+    }
+
+    private void sendApplicantJobData() {
+        // Tạo đối tượng Calendar và định dạng thời gian
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String formattedTime = sdf.format(calendar.getTime());
+
+        // Lấy thông tin Resume đã chọn
+        Resume selectedResume = appliedResumeAdapter.getSelectedItem();
+        Log.e("SelectCvToApply", "IDD: " + selectedResume.getId());
+
+        // Tạo đối tượng ApplicantJob
+        ApplicantJob applicantJob = new ApplicantJob(jobId, applicant_id, selectedResume.getId(), false, false, formattedTime);
+
+        // Kiểm tra lại dữ liệu đã được gán đúng chưa
+        Log.e("SelectCvToApply", "ApplicantJob Data: " +
+                "ApplicantId: " + applicantJob.getApplicantId() +
+                ", JobId: " + applicantJob.getJobId() +
+                ", ResumeId: " + applicantJob.getResumeId() +
+                ", Time: " + applicantJob.getTime());
+
+        // Gửi dữ liệu đến API bằng Retrofit
+        ApiApplicantJobService.ApiApplicantJobService.createApplicantJob(applicantJob)
+                .subscribeOn(Schedulers.io())  // Chạy trên luồng nền
+                .observeOn(AndroidSchedulers.mainThread())  // Quan sát kết quả trên luồng chính
+                .subscribe(
+                        response -> {
+                            // Xử lý thành công
+                            Log.e("SelectCvToApply", "Successfully");
+                            Toast.makeText(this, "Dữ liệu đã được gửi thành công!", Toast.LENGTH_SHORT).show();
+                        },
+                        throwable -> {
+                            // Xử lý lỗi
+                            Toast.makeText(this, "Có lỗi xảy ra: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e("SelectCvToApply", "Error: " + throwable.getMessage());
+                        }
+                );
+        finish();
     }
 
     private void getTotalPageResume(){
@@ -243,6 +289,9 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
 
         resumeList = new ArrayList<>();
         resume_data = new ArrayList<>();
+
+        //Log.e("SelectCV","ID1: "+ applicant_id);
+        jobId = getIntent().getIntExtra("jobId",0);
     }
 
     // Mở hộp thoại chọn file
@@ -273,7 +322,7 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
         // Tạo đối tượng Resume
         Resume resume = new Resume(
                 filePath,
-                6
+                applicant_id
         );
 
         // Gọi API để đăng dữ liệu hồ sơ

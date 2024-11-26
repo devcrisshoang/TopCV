@@ -20,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.topcv.adapter.ListInformationlAdapter;
+import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiJobDetailService;
 import com.example.topcv.api.ApiJobService;
 import com.example.topcv.model.Job;
@@ -66,6 +67,8 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private TextView job_name;
     private TextView work_name;
 
+    private int id_User;
+
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
@@ -73,13 +76,15 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_company_informations);
-        // Thiết lập padding cho View chính
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         setWidget();
+
+        id_User = getIntent().getIntExtra("id_User",0);
+        Log.e("CompanyInformation","ID: "+ id_User);
 
         // Lấy jobId từ Intent
         jobId = getIntent().getIntExtra("job_id", -1);
@@ -104,7 +109,27 @@ public class CompanyInformationsActivity extends AppCompatActivity {
 
         // Thêm sự kiện onClick cho nút apply_button để chuyển sang màn hình SelectCvToApplyJobActivity
         apply_button.setOnClickListener(view -> {
-            startActivity(new Intent(this, SelectCvToApplyJobActivity.class));
+            ApiApplicantService.ApiApplicantService.getApplicantByUserId(id_User)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            applicant -> {
+                                if (applicant != null) {
+                                    Intent intent = new Intent(this, SelectCvToApplyJobActivity.class);
+                                    intent.putExtra("applicant_id",applicant.getId());
+                                    intent.putExtra("jobId",jobId);
+                                    startActivity(intent);
+                                    Log.e("ProfileFragment","ID: " + applicant.getId());
+                                } else {
+                                    Toast.makeText(this, "Applicant null", Toast.LENGTH_SHORT).show();
+                                }
+                            },
+                            throwable -> {
+                                Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                                Toast.makeText(this, "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                            }
+                    );
+
         });
 
         // Sự kiện nhấn nút quay lại
