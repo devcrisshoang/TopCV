@@ -1,5 +1,6 @@
 package com.example.topcv;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,12 +8,13 @@ import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.adapter.ArticleAdapter;
 import com.example.topcv.adapter.CompanyTopAdapter;
 import com.example.topcv.adapter.TheBestJobAdapter;
@@ -24,61 +26,85 @@ import com.example.topcv.model.Article;
 import com.example.topcv.model.Company;
 import com.example.topcv.model.Job;
 import com.example.topcv.utils.PaginationScrollListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SeeAllActivity extends AppCompatActivity {
+
     private boolean WORK = false;
     private boolean JOB = false;
     private boolean COMPANY = false;
     private boolean ARTICLE = false;
+    private boolean isLoading;
+    private boolean isLastPage;
 
-    private RecyclerView recycler_view_see_all; //
+    private RecyclerView recycler_view_see_all;
 
     private ImageButton back_button;
+
     private TextView content_list;
 
     private ArticleAdapter articleAdapter;
     private CompanyTopAdapter companyTopAdapter;
     private TheBestJobAdapter theBestJobAdapter;
-    private WorkAdapter workAdapter;//
+    private WorkAdapter workAdapter;
 
-    private List<Job> workList;//
+    private List<Job> workList;
     private List<Job> bestjobList;
-    private List<Job> interestingList;
     private List<Company> companyList;
     private List<Article> articleList;
-
-    private Disposable disposable;
-
-    private boolean isLoading;//
-    private boolean isLastPage;//
-    private int totalPage;//
-    private int currentPage = 1;//
     private List<Job> job_data;
     private List<Company> company_data;
     private List<Article> article_data;
 
+    private Disposable disposable;
+
+    private int totalPage;
+    private int currentPage = 1;
+
     private LinearLayoutManager linearLayoutManager;
+
     private RecyclerView.ItemDecoration itemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_all);
-        //
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         setWidget();
-        //
-        back_button.setOnClickListener(view -> finish());
-        //
+
+        setClick();
+
         getIntentData();
-        // Di chuyển setFirstData() vào cuối cùng sau khi lấy dữ liệu từ API
+
+    }
+
+    private void setClick(){
+        back_button.setOnClickListener(view -> finish());
+        articleAdapter.setOnItemClickListener(article -> {
+            Intent intent = new Intent(this, ArticleActivity.class);
+            intent.putExtra("article_id", article.getId());
+            startActivity(intent);
+        });
+        workAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            intent.putExtra("job_id", job.getId());
+            startActivity(intent);
+        });
+        theBestJobAdapter.setOnItemClickListener(job -> {
+            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            intent.putExtra("best_id", job.getId());
+            startActivity(intent);
+        });
         recycler_view_see_all.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
             @Override
             public void loadMoreItem() {
@@ -111,21 +137,6 @@ public class SeeAllActivity extends AppCompatActivity {
                 return isLastPage;
             }
         });
-        articleAdapter.setOnItemClickListener(article -> {
-            Intent intent = new Intent(this, ArticleActivity.class);
-            intent.putExtra("article_id", article.getId()); // Truyền ID của bài viết
-            startActivity(intent);
-        });
-        workAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(this, CompanyInformationsActivity.class);
-            intent.putExtra("job_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
-            startActivity(intent);
-        });
-        theBestJobAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(this, CompanyInformationsActivity.class);
-            intent.putExtra("best_id", job.getId()); // Truyền dữ liệu cần thiết (như id công việc)
-            startActivity(intent);
-        });
     }
 
     private void getTotalPageJob(){
@@ -135,8 +146,9 @@ public class SeeAllActivity extends AppCompatActivity {
         else if(job_data.size() % 10 == 0){
             totalPage = job_data.size()/10;
         }
-        else if(job_data.size() % 10 != 0){
-            totalPage = job_data.size()/10 +1;
+        else {
+            job_data.size();
+            totalPage = job_data.size() / 10 + 1;
         }
         Log.e("total page","total = " + totalPage);
     }
@@ -148,8 +160,9 @@ public class SeeAllActivity extends AppCompatActivity {
         else if(company_data.size() % 10 == 0){
             totalPage = company_data.size()/10;
         }
-        else if(company_data.size() % 10 != 0){
-            totalPage = company_data.size()/10 +1;
+        else {
+            company_data.size();
+            totalPage = company_data.size() / 10 + 1;
         }
         Log.e("total page","total = " + totalPage);
     }
@@ -161,12 +174,14 @@ public class SeeAllActivity extends AppCompatActivity {
         else if(article_data.size() % 10 == 0){
             totalPage = article_data.size()/10;
         }
-        else if(article_data.size() % 10 != 0){
-            totalPage = article_data.size()/10 +1;
+        else {
+            article_data.size();
+            totalPage = article_data.size() / 10 + 1;
         }
         Log.e("total page","total = " + totalPage);
     }
 
+    @SuppressLint("SetTextI18n")
     private void getIntentData() {
         String suggestText = getIntent().getStringExtra("suggestText");
         String bestText = getIntent().getStringExtra("bestText");
@@ -176,9 +191,9 @@ public class SeeAllActivity extends AppCompatActivity {
 
         if (suggestText != null && !suggestText.isEmpty()) {
             content_list.setText(suggestText);
-            WORK = true;  // Gán biến WORK thành true để biết đây là danh sách việc làm
-            setRecyclerViewAdapter(workAdapter);  // Đặt adapter cho RecyclerView
-            getAllWorks(); // Gọi API lấy dữ liệu job
+            WORK = true;
+            setRecyclerViewAdapter(workAdapter);
+            getAllWorks();
         } else if (bestText != null && !bestText.isEmpty()) {
             content_list.setText(bestText);
             JOB = true;
@@ -211,14 +226,10 @@ public class SeeAllActivity extends AppCompatActivity {
     }
 
     private void setWidget(){
-        // Thiết lập nút quay lại
         back_button = findViewById(R.id.back_button);
         content_list = findViewById(R.id.content_list);
-
-        // Khởi tạo danh sách job và adapter
         workList = new ArrayList<>();
         bestjobList = new ArrayList<>();
-        interestingList = new ArrayList<>();
         companyList = new ArrayList<>();
         articleList = new ArrayList<>();
         job_data = new ArrayList<>();
@@ -280,6 +291,7 @@ public class SeeAllActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadNextPageWork(){
         new Handler().postDelayed(() -> {
             List<Job> list = getListUser();
@@ -297,6 +309,7 @@ public class SeeAllActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadNextPageJob(){
         new Handler().postDelayed(() -> {
             List<Job> list = getListUser();
@@ -314,6 +327,7 @@ public class SeeAllActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadNextPageCompany(){
         new Handler().postDelayed(() -> {
             List<Company> list = getListCompany();
@@ -331,6 +345,7 @@ public class SeeAllActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadNextPageArticle(){
         new Handler().postDelayed(() -> {
             List<Article> list = getListArticle();
@@ -356,7 +371,7 @@ public class SeeAllActivity extends AppCompatActivity {
         int end = Math.min(start + 10, job_data.size()); // Tính chỉ số kết thúc
 
         if (start < job_data.size()) {
-            list.addAll(job_data.subList(start, end)); // Thêm các phần tử từ workList vào danh sách
+            list.addAll(job_data.subList(start, end));
         }
         return list;
     }
@@ -369,7 +384,7 @@ public class SeeAllActivity extends AppCompatActivity {
         int end = Math.min(start + 10, company_data.size()); // Tính chỉ số kết thúc
 
         if (start < company_data.size()) {
-            list.addAll(company_data.subList(start, end)); // Thêm các phần tử từ workList vào danh sách
+            list.addAll(company_data.subList(start, end));
         }
         return list;
     }
@@ -382,7 +397,7 @@ public class SeeAllActivity extends AppCompatActivity {
         int end = Math.min(start + 10, article_data.size()); // Tính chỉ số kết thúc
 
         if (start < article_data.size()) {
-            list.addAll(article_data.subList(start, end)); // Thêm các phần tử từ workList vào danh sách
+            list.addAll(article_data.subList(start, end));
         }
         return list;
     }
@@ -397,19 +412,18 @@ public class SeeAllActivity extends AppCompatActivity {
                         disposable = d;
                     }
 
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Job> jobs) {
                         if (jobs != null && !jobs.isEmpty()) {
                             job_data.clear();
                             job_data.addAll(jobs);
-                            getTotalPageJob(); // Tính tổng số trang sau khi có dữ liệu
-                            setFirstJobData(); // Gọi setFirstData sau khi có dữ liệu
+                            getTotalPageJob();
+                            setFirstJobData();
                             recycler_view_see_all.setLayoutManager(linearLayoutManager);
                             recycler_view_see_all.setAdapter(theBestJobAdapter);
                             recycler_view_see_all.addItemDecoration(itemDecoration);
                             theBestJobAdapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(SeeAllActivity.this, "Không có job nào", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -436,19 +450,18 @@ public class SeeAllActivity extends AppCompatActivity {
                         disposable = d;
                     }
 
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Job> jobs) {
                         if (jobs != null && !jobs.isEmpty()) {
                             job_data.clear();
                             job_data.addAll(jobs);
-                            getTotalPageJob(); // Tính tổng số trang sau khi có dữ liệu
-                            setFirstWorkData(); // Gọi setFirstData sau khi có dữ liệu
+                            getTotalPageJob();
+                            setFirstWorkData();
                             recycler_view_see_all.setLayoutManager(linearLayoutManager);
                             recycler_view_see_all.setAdapter(workAdapter);
                             recycler_view_see_all.addItemDecoration(itemDecoration);
                             workAdapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(SeeAllActivity.this, "Không có job nào", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -475,19 +488,18 @@ public class SeeAllActivity extends AppCompatActivity {
                         disposable = d;
                     }
 
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Company> companies) {
                         if (companies != null && !companies.isEmpty()) {
                             company_data.clear();
                             company_data.addAll(companies);
-                            getTotalPageCompany(); // Tính tổng số trang sau khi có dữ liệu
-                            setFirstCompanyData(); // Gọi setFirstData sau khi có dữ liệu
+                            getTotalPageCompany();
+                            setFirstCompanyData();
                             recycler_view_see_all.setLayoutManager(linearLayoutManager);
                             recycler_view_see_all.setAdapter(companyTopAdapter);
                             recycler_view_see_all.addItemDecoration(itemDecoration);
                             companyTopAdapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(SeeAllActivity.this, "Không có công ty nào", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -513,19 +525,18 @@ public class SeeAllActivity extends AppCompatActivity {
                         disposable = d;
                     }
 
+                    @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<Article> articles) {
                         if (articles != null && !articles.isEmpty()) {
                             article_data.clear();
                             article_data.addAll(articles);
-                            getTotalPageArticle(); // Tính tổng số trang sau khi có dữ liệu
-                            setFirstArticleData(); // Gọi setFirstData sau khi có dữ liệu
+                            getTotalPageArticle();
+                            setFirstArticleData();
                             recycler_view_see_all.setLayoutManager(linearLayoutManager);
                             recycler_view_see_all.setAdapter(articleAdapter);
                             recycler_view_see_all.addItemDecoration(itemDecoration);
                             articleAdapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(SeeAllActivity.this, "Không có bài viết nào", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -545,7 +556,7 @@ public class SeeAllActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();  // Giải phóng tài nguyên khi Activity bị hủy
+            disposable.dispose();
         }
     }
 }

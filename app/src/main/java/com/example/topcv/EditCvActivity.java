@@ -1,18 +1,15 @@
 package com.example.topcv;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -20,24 +17,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.api.ApiResumeService;
-import com.example.topcv.model.Notification;
 import com.example.topcv.model.Resume;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class EditCvActivity extends AppCompatActivity {
+
     private Button edit_cv_button;
+
     private ImageButton back_button;
     private ImageButton delete_button;
-    private ImageView camera_imageview, user_avatar;
+
+    private ImageView camera_imageview;
+    private ImageView user_avatar;
+
     private EditText position;
     private EditText name;
     private EditText introduction;
@@ -47,9 +42,12 @@ public class EditCvActivity extends AppCompatActivity {
     private EditText skills;
     private EditText certification;
     private EditText experience;
+
     private int id;
+    private int resume_id;
+
     private Uri resumeImageUri;
-    private int id_User;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,68 +58,69 @@ public class EditCvActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         setWidget();
+
+        setClick();
+    }
+
+    private void setClick(){
         back_button.setOnClickListener(view -> finish());
-        int resume_id = getIntent().getIntExtra("resume_edit",-1);
-        id_User = getIntent().getIntExtra("id_User",-1);
-        fetchResumeData(resume_id);
-        edit_cv_button.setOnClickListener(view -> {
-            editResumeData();
-        });
-        camera_imageview.setOnClickListener(view -> {
-            ImagePicker.with(this)
-                    .crop()	    			//Crop image(Optional), Check Customization for more option
-                    .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                    .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
-                    .start();
-        });
-        delete_button.setOnClickListener(view -> {
-            showDeleteConfirmationDialog();
-        });
+
+        edit_cv_button.setOnClickListener(view -> editResumeData());
+
+        camera_imageview.setOnClickListener(view -> ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start());
+
+        delete_button.setOnClickListener(view -> showDeleteConfirmationDialog());
     }
 
     private void showDeleteConfirmationDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Xác nhận xóa")
-                .setMessage("Bạn có chắc chắn muốn xóa hồ sơ này không?")
-                .setPositiveButton("Có", (dialog, which) -> deleteResume())
-                .setNegativeButton("Không", (dialog, which) -> dialog.dismiss())
+                .setTitle("Confirm")
+                .setMessage("Are you sure you want to delete this profile?")
+                .setPositiveButton("Yes", (dialog, which) -> deleteResume())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .show();
     }
+    @SuppressLint("CheckResult")
     private void deleteResume() {
         Log.e("Delete","Delete");
         ApiResumeService.apiResumeService.deleteResumeById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    // Xử lý thành công
                     Log.d("EditCvActivity", "Resume deleted successfully.");
                     Toast.makeText(EditCvActivity.this, "CV deleted successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }, throwable -> {
-                    // Xử lý lỗi
                     Log.e("EditCvActivity", "Error deleting resume: " + throwable.getMessage());
                     Toast.makeText(EditCvActivity.this, "Failed to delete CV", Toast.LENGTH_SHORT).show();
                 });
     }
 
+    @SuppressLint("CheckResult")
     private void fetchResumeData(int resumeId) {
         ApiResumeService.apiResumeService.getResumeById(resumeId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resume -> {
                     if (resume != null) {
-                        populateResumeData(resume);  // Gán dữ liệu vào view
+                        populateResumeData(resume);
                     } else {
                         Log.e("CvActivity", "No resume found with this resumeId.");
                         Toast.makeText(this, "No resume found", Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
                     Log.e("CvActivity", "Error fetching resume data: " + throwable.getMessage());
-                    throwable.printStackTrace(); // Để ghi chi tiết lỗi
+                    throwable.printStackTrace();
                     Toast.makeText(this, "Error fetching resume data", Toast.LENGTH_SHORT).show();
                 });
     }
+
     private void populateResumeData(Resume resume) {
         if (resume != null) {
             Log.d("CvActivity", "Populating resume data: " + resume.toString());
@@ -141,7 +140,6 @@ public class EditCvActivity extends AppCompatActivity {
             education.setText(resume.getEducation());
             skills.setText(resume.getSkills());
             certification.setText(resume.getCertificate());
-            // Example for ImageView
             String imageUri = resume.getImage();
             if (imageUri != null && !imageUri.isEmpty()) {
                 user_avatar.setImageURI(Uri.parse(imageUri));
@@ -158,11 +156,12 @@ public class EditCvActivity extends AppCompatActivity {
     private String checkAndLogNull(String input, String fieldName) {
         if (input == null) {
             Log.e("EditCvActivity", fieldName + " is null.");
-            return "Not provided"; // Hoặc giá trị mặc định khác tùy vào ngữ cảnh của bạn
+            return "Not provided";
         }
         return input;
     }
 
+    @SuppressLint("CheckResult")
     private void editResumeData() {
         String updatedName = checkAndLogNull(name.getText().toString().trim(), "Name");
         String updatedPosition = checkAndLogNull(position.getText().toString().trim(), "Position");
@@ -192,12 +191,10 @@ public class EditCvActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    // Xử lý thành công
                     Log.d("EditCvActivity", "Resume updated successfully with 204 No Content.");
                     Toast.makeText(EditCvActivity.this, "CV updated successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }, throwable -> {
-                    // Xử lý lỗi
                     Log.e("EditCvActivity", "Error updating resume: " + throwable.getMessage());
                     Toast.makeText(EditCvActivity.this, "Failed to update CV", Toast.LENGTH_SHORT).show();
                 });
@@ -228,5 +225,7 @@ public class EditCvActivity extends AppCompatActivity {
         certification = findViewById(R.id.certification);
         experience = findViewById(R.id.experience);
         delete_button = findViewById(R.id.delete_button);
+        resume_id = getIntent().getIntExtra("resume_edit",0);
+        fetchResumeData(resume_id);
     }
 }

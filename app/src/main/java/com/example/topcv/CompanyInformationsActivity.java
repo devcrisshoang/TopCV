@@ -1,5 +1,6 @@
 package com.example.topcv;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -12,43 +13,44 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.example.topcv.adapter.ListInformationlAdapter;
 import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiJobDetailService;
 import com.example.topcv.api.ApiJobService;
 import com.example.topcv.model.Job;
 import com.example.topcv.model.JobDetail;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CompanyInformationsActivity extends AppCompatActivity {
-    private ListInformationlAdapter listInformationlAdapter;
-    private ImageButton informationBackButton;
+
     private ScrollView scrollView;
+
     private boolean isImageVisible = true;
+
     private LinearLayout header_title;
+
     private ImageView company_logo;
+
     private ImageButton back_button;
+    private ImageButton informationBackButton;
+
     private int jobId;
-    private int bestId;
     private int companyId;
+    private int id_User;
 
     private Button apply_button;
+
     private TextView working_time;
     private TextView working_place;
     private TextView interesting;
@@ -67,10 +69,9 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     private TextView job_name;
     private TextView work_name;
 
-    private int id_User;
-
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,84 +82,44 @@ public class CompanyInformationsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         setWidget();
 
-        id_User = getIntent().getIntExtra("id_User",0);
-        Log.e("CompanyInformation","ID: "+ id_User);
+        setClick();
 
-        // Lấy jobId từ Intent
-        jobId = getIntent().getIntExtra("job_id", -1);
-        bestId = getIntent().getIntExtra("best_id", -1);
-        companyId = getIntent().getIntExtra("company_id", -1);
+    }
 
-        if (jobId != -1){
-            // Gọi API để lấy job theo ID
-            getJobs(jobId);
-
-            // Gọi API để lấy chi tiết công việc
-            getJobDetails(jobId);
-
-        }
-        else if(bestId != -1){
-            // Gọi API để lấy job theo ID
-            getJobs(bestId);
-
-            // Gọi API để lấy chi tiết công việc
-            getJobDetails(bestId);
-        }
-
-        // Thêm sự kiện onClick cho nút apply_button để chuyển sang màn hình SelectCvToApplyJobActivity
-        apply_button.setOnClickListener(view -> {
-            ApiApplicantService.ApiApplicantService.getApplicantByUserId(id_User)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            applicant -> {
-                                if (applicant != null) {
-                                    Intent intent = new Intent(this, SelectCvToApplyJobActivity.class);
-                                    intent.putExtra("applicant_id",applicant.getId());
-                                    intent.putExtra("jobId",jobId);
-                                    startActivity(intent);
-                                    Log.e("ProfileFragment","ID: " + applicant.getId());
-                                } else {
-                                    Toast.makeText(this, "Applicant null", Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            throwable -> {
-                                Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
-                                Toast.makeText(this, "Failed to load applicant", Toast.LENGTH_SHORT).show();
+    @SuppressLint("CheckResult")
+    private void applyButton(){
+        ApiApplicantService.ApiApplicantService.getApplicantByUserId(id_User)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        applicant -> {
+                            if (applicant != null) {
+                                Intent intent = new Intent(this, SelectCvToApplyJobActivity.class);
+                                intent.putExtra("applicant_id",applicant.getId());
+                                intent.putExtra("jobId",jobId);
+                                startActivity(intent);
+                                Log.e("ProfileFragment","ID: " + applicant.getId());
+                            } else {
+                                Toast.makeText(this, "Applicant null", Toast.LENGTH_SHORT).show();
                             }
-                    );
+                        },
+                        throwable -> {
+                            Log.e("MessengerAdapter", "Error fetching applicant: " + throwable.getMessage());
+                            Toast.makeText(this, "Failed to load applicant", Toast.LENGTH_SHORT).show();
+                        }
+                );
+    }
 
-        });
+    private void setClick(){
 
-        // Sự kiện nhấn nút quay lại
+        apply_button.setOnClickListener(view -> applyButton());
+
         informationBackButton.setOnClickListener(v -> finish());
+
         back_button.setOnClickListener(v -> finish());
-
-        // Ẩn tiêu đề ban đầu
-        header_title.setVisibility(View.GONE);
-        isImageVisible = true;
-
-        // Thêm OnScrollChangedListener vào ScrollView
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
-            // Kiểm tra xem company_logo có nằm trong vùng nhìn thấy không
-            if (isViewVisible(company_logo)) {
-                if (!isImageVisible) {
-                    Log.d("ButtonVisibility", "Button is visible again!");
-                    // Nút đã xuất hiện trở lại
-                    header_title.setVisibility(View.GONE);
-                    isImageVisible = true;
-                }
-            } else {
-                if (isImageVisible) {
-                    Log.d("ButtonVisibility", "Button is out of screen!");
-                    // Nút đã bị kéo ra khỏi màn hình
-                    header_title.setVisibility(View.VISIBLE);
-                    isImageVisible = false;
-                }
-            }
-        });
     }
 
     private void setWidget() {
@@ -185,6 +146,35 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         company_name = findViewById(R.id.company_name);
         job_name = findViewById(R.id.job_name);
         work_name = findViewById(R.id.work_name);
+        id_User = getIntent().getIntExtra("id_User",0);
+        jobId = getIntent().getIntExtra("job_id", 0);
+        int bestId = getIntent().getIntExtra("best_id", 0);
+        companyId = getIntent().getIntExtra("company_id", 0);
+        if (jobId != -1){
+            getJobs(jobId);
+            getJobDetails(jobId);
+        }
+        else if(bestId != -1){
+            getJobs(bestId);
+            getJobDetails(bestId);
+        }
+        header_title.setVisibility(View.GONE);
+        isImageVisible = true;
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if (isViewVisible(company_logo)) {
+                if (!isImageVisible) {
+                    Log.d("ButtonVisibility", "Button is visible again!");
+                    header_title.setVisibility(View.GONE);
+                    isImageVisible = true;
+                }
+            } else {
+                if (isImageVisible) {
+                    Log.d("ButtonVisibility", "Button is out of screen!");
+                    header_title.setVisibility(View.VISIBLE);
+                    isImageVisible = false;
+                }
+            }
+        });
     }
 
     private void getJobs(int jobId) {
@@ -242,9 +232,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         );
     }
 
-
     private void bindJobDetailDataToViews(JobDetail jobDetail) {
-        // Gán các trường dữ liệu vào TextView
         working_time.setText(jobDetail.getWorkingTime());
         interesting.setText(jobDetail.getBenefit());
         conditions.setText(jobDetail.getSkillRequire());
@@ -256,26 +244,21 @@ public class CompanyInformationsActivity extends AppCompatActivity {
     }
 
     private void bindJobDataToViews(Job job) {
-        // Lấy chuỗi hình ảnh từ API
-        String imageId = job.getImageId(); // giả sử đây là chuỗi "R.drawable.viettel_ic"
+        String imageId = job.getImageId();
         if (imageId != null && !imageId.isEmpty()) {
-            // Tách tên tài nguyên
-            String resourceName = imageId.split("\\.")[2]; // lấy phần sau dấu '.' thứ hai
+
+            String resourceName = imageId.split("\\.")[2];
             int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
 
-            // Kiểm tra nếu resourceId hợp lệ
             if (resourceId != 0) {
                 company_logo.setImageResource(resourceId);
             } else {
-                // Gán hình ảnh mặc định nếu không tìm thấy
                 company_logo.setImageResource(R.drawable.viettel_ic);
             }
         } else {
-            // Gán hình ảnh mặc định nếu imageId là null hoặc rỗng
             company_logo.setImageResource(R.drawable.facebook_ic);
         }
 
-        // Gán các trường dữ liệu vào TextView
         job_name.setText(job.getJobName());
         company_name.setText(job.getCompanyName());
         experience.setText(job.getExperience());
@@ -283,31 +266,25 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         salary.setText(String.valueOf(job.getSalary()));
         location.setText(job.getLocation());
         experience_detail.setText(job.getExperience());
-        // Chuyển đổi chuỗi ngày
-        String applicationDateStr = job.getApplicationDate(); // Giả sử đây là chuỗi ngày
-        LocalDate applicationDate = LocalDate.parse(applicationDateStr.substring(0, 10)); // Lấy phần ngày từ chuỗi
-        LocalDate deadlineDate = applicationDate.plusDays(30); // Cộng thêm 30 ngày
+        String applicationDateStr = job.getApplicationDate();
+        LocalDate applicationDate = LocalDate.parse(applicationDateStr.substring(0, 10));
+        LocalDate deadlineDate = applicationDate.plusDays(30);
 
-        // Định dạng để hiển thị
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        deadline.setText(formatter.format(deadlineDate)); // Hiển thị ngày hạn nộp
+        deadline.setText(formatter.format(deadlineDate));
 
-        // Tính số ngày còn lại
         LocalDate today = LocalDate.now();
         Period period = Period.between(today, deadlineDate);
         String remainingDays = String.valueOf(period.getDays());
-        // Hiển thị số ngày còn lại
         deadline.setText(remainingDays + " days remaining");
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        compositeDisposable.clear(); // Giải phóng tài nguyên
+        compositeDisposable.clear();
     }
 
-    // Phương thức kiểm tra xem view có nằm trong vùng nhìn thấy không
     private boolean isViewVisible(View view) {
         Rect rect = new Rect();
         view.getGlobalVisibleRect(rect);

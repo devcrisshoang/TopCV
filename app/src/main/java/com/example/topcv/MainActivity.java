@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -18,7 +17,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.example.topcv.fragment.AccountFragment;
 import com.example.topcv.fragment.MessengerFragment;
 import com.example.topcv.fragment.NewsFeedFragment;
@@ -51,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView Account_Textview;
 
     private String applicantName;
-    private int id_User;
-
     private String phoneNumber;
+
+    private int id_User;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

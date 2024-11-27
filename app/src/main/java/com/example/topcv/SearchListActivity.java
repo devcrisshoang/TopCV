@@ -1,8 +1,7 @@
 package com.example.topcv;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,68 +21,74 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchListActivity extends AppCompatActivity {
     private RecyclerView recyclerViewJobs;
+
     private EditText search_edit_text;
+
     private TextView tvSearchCount;
+
     private WorkAdapter workAdapter;
+
     private ImageButton back_button;
+
+    private String search_query;
+    private String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-
-        // Áp dụng Edge-to-Edge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Ánh xạ các view
+        setWidget();
+
+        setClick();
+
+    }
+
+    private void setClick(){
+        back_button.setOnClickListener(view -> finish());
+    }
+
+    private void setWidget(){
         recyclerViewJobs = findViewById(R.id.recyclerViewJobs);
         search_edit_text = findViewById(R.id.search_edit_text);
         tvSearchCount = findViewById(R.id.tvSearchCount);
         back_button = findViewById(R.id.back_button);
-
-        // Thiết lập RecyclerView
         workAdapter = new WorkAdapter();
         recyclerViewJobs.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewJobs.setAdapter(workAdapter);
-
-        // Lấy từ khóa tìm kiếm từ Intent
-        String search_query = getIntent().getStringExtra("search_query");
+        search_query = getIntent().getStringExtra("search_query");
         if (search_query != null) {
             search_edit_text.setText(search_query);
             searchJobs(search_query);
         }
-
-        String keyword = getIntent().getStringExtra("keyword");
+        keyword = getIntent().getStringExtra("keyword");
         if (keyword != null) {
-            // Tách chuỗi để chỉ lấy phần trước dấu "-"
             String keywordTrimmed = keyword.split(" - ")[0];
             search_edit_text.setText(keywordTrimmed);
             searchJobs(keywordTrimmed);
         }
-
-        back_button.setOnClickListener(view -> finish());
     }
 
-
+    @SuppressLint("CheckResult")
     private void searchJobs(String query) {
         ApiJobService.ApiJobService.getAllJobs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(jobs -> filterJobs(jobs, query))
                 .subscribe(jobs -> {
-                    workAdapter.setData(jobs); // Cập nhật danh sách công việc tìm thấy
+                    workAdapter.setData(jobs);
                     if(jobs.size() == 1){
-                        tvSearchCount.setText(jobs.size() + " Result"); // Hiển thị số lượng kết quả
+                        tvSearchCount.setText(jobs.size() + " Result");
                     }
                     else {
-                        tvSearchCount.setText(jobs.size() + " Results"); // Hiển thị số lượng kết quả
+                        tvSearchCount.setText(jobs.size() + " Results");
                     }
                 }, throwable -> {
-                    // Xử lý lỗi
                     tvSearchCount.setText("Lỗi khi tải dữ liệu.");
                 });
     }
