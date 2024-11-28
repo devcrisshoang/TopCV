@@ -6,40 +6,40 @@ public class Resume {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("applicant_Name") // Ánh xạ trường JSON
+    @SerializedName("applicant_Name")
     private String applicant_name;
 
-    @SerializedName("email") // Ánh xạ trường JSON
+    @SerializedName("email")
     private String email;
 
-    @SerializedName("phone_Number") // Ánh xạ trường JSON
+    @SerializedName("phone_Number")
     private String phone_number;
 
-    @SerializedName("education") // Ánh xạ trường JSON
+    @SerializedName("education")
     private String education;
 
-    @SerializedName("skills") // Ánh xạ trường JSON
+    @SerializedName("skills")
     private String skills;
 
-    @SerializedName("certificate") // Ánh xạ trường JSON
+    @SerializedName("certificate")
     private String certificate;
 
-    @SerializedName("job_Applying") // Ánh xạ trường JSON
+    @SerializedName("job_Applying")
     private String job_applying;
 
-    @SerializedName("introduction") // Ánh xạ trường JSON
+    @SerializedName("introduction")
     private String introduction;
 
-    @SerializedName("image") // Ánh xạ trường JSON
+    @SerializedName("image")
     private String image;
 
-    @SerializedName("experience") // Ánh xạ trường JSON
+    @SerializedName("experience")
     private String experience;
 
-    @SerializedName("iD_Applicant") // Ánh xạ trường JSON
+    @SerializedName("iD_Applicant")
     private int id_applicant;
 
-    @SerializedName("file_Path") // Ánh xạ trường JSON
+    @SerializedName("file_Path")
     private String file_path;
 
     public String getFile_path() {
@@ -56,7 +56,7 @@ public class Resume {
         this.file_path = file_path;
     }
 
-    public Resume(){
+    public Resume() {
 
     }
 
@@ -75,7 +75,6 @@ public class Resume {
         this.id_applicant = id_applicant;
     }
 
-    // Getter and Setter methods
     public int getId() {
         return id;
     }

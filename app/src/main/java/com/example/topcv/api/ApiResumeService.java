@@ -1,10 +1,8 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.Resume;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
@@ -21,10 +19,8 @@ import retrofit2.http.Path;
 
 public interface ApiResumeService {
 
-    // Logging interceptor to track request and response
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    // Using OkHttpClient to safely bypass SSL (if necessary)
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .newBuilder()
             .addInterceptor(loggingInterceptor)
@@ -33,7 +29,6 @@ public interface ApiResumeService {
             .retryOnConnectionFailure(true)
             .build();
 
-    // Using Retrofit to create API service
     ApiResumeService apiResumeService = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")  // Server URL
             .client(okHttpClient)
@@ -42,11 +37,9 @@ public interface ApiResumeService {
             .build()
             .create(ApiResumeService.class);
 
-    // POST method to create a new user
     @POST("api/Resume")
     Observable<Resume> createResume(@Body Resume resume);
 
-    // GET method to fetch resumes by applicant ID
     @GET("api/Resume/GetResumeBy/{applicantId}")
     Observable<List<Resume>> getResumesByApplicantId(@Path("applicantId") int applicantId);
 
@@ -58,6 +51,5 @@ public interface ApiResumeService {
 
     @DELETE("api/Resume/{id}")
     Completable deleteResumeById(@Path("id") int id);
-
 
 }

@@ -1,29 +1,27 @@
 package com.example.topcv.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.R;
 import com.example.topcv.model.Job;
-
 import java.util.List;
 
 public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_LOADING = 2;
+
     private List<Job> mListWork;
+
     private boolean isLoadingAdd;
+
     private WorkAdapter.OnItemClickListener onItemClickListener;
-    public interface OnItemClickListener {
-        void onItemClick(Job job);
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -36,6 +34,7 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setOnItemClickListener(WorkAdapter.OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Job> list){
         this.mListWork = list;
         notifyDataSetChanged();
@@ -70,17 +69,16 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 try {
                     workViewHolder.company_logo.setImageResource(Integer.parseInt(imageId));
                 } catch (NumberFormatException e) {
-                    // Xử lý nếu imageId không phải là số nguyên hợp lệ
-                    workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic); // Gán một ảnh mặc định
+
+                    workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
                 }
             } else {
-                // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
                 workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
             }
             workViewHolder.position_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.working_place.setText(job.getLocation());
-            workViewHolder.salary.setText(job.getSalary());
+            workViewHolder.salary.setText(String.valueOf(job.getSalary()));
         }
     }
 
@@ -92,12 +90,12 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return 0;
     }
 
-    public class TheBestJobViewHolder extends RecyclerView.ViewHolder{
-        private ImageView company_logo;
-        private TextView position_name;
-        private TextView company_name;
-        private TextView working_place;
-        private TextView salary;
+    public static class TheBestJobViewHolder extends RecyclerView.ViewHolder{
+        private final ImageView company_logo;
+        private final TextView position_name;
+        private final TextView company_name;
+        private final TextView working_place;
+        private final TextView salary;
         public TheBestJobViewHolder(@NonNull View itemView) {
             super(itemView);
             company_logo = itemView.findViewById(R.id.company_logo);
@@ -108,12 +106,11 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar progressBar;
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
-            progressBar = itemView.findViewById(R.id.progress_bar);
+            ProgressBar progressBar = itemView.findViewById(R.id.progress_bar);
         }
     }
 

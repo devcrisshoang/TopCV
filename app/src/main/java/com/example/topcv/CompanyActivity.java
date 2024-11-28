@@ -2,23 +2,17 @@ package com.example.topcv;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.example.topcv.api.ApiCompanyService;
 import com.example.topcv.model.Company;
-
-import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observer;
@@ -26,11 +20,17 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CompanyActivity extends AppCompatActivity {
+
     private ImageView image;
+
     private TextView name;
     private TextView content;
     private TextView hotline;
+
     private ImageButton back_button;
+
+    private int id_Company;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +41,14 @@ public class CompanyActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         setWidget();
-        int id_Company = getIntent().getIntExtra("company_id",-1);
-        getCompanyByID(id_Company);
-        back_button.setOnClickListener(view -> {
-            finish();
-        });
+
+        setClick();
+    }
+
+    private void setClick(){
+        back_button.setOnClickListener(view -> finish());
     }
 
     private void getCompanyByID(int ID) {
@@ -78,11 +80,15 @@ public class CompanyActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void setWidget(){
         image = findViewById(R.id.image);
         name = findViewById(R.id.name);
         content = findViewById(R.id.content);
         hotline = findViewById(R.id.hotline);
         back_button = findViewById(R.id.back_button);
+        id_Company = getIntent().getIntExtra("company_id",0);
+
+        getCompanyByID(id_Company);
     }
 }

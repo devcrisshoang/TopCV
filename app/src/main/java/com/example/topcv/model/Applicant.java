@@ -47,7 +47,6 @@ public class Applicant {
         this.iD_User = iD_User;
     }
 
-    // Constructor có tham số
     public Applicant(int id, String applicantName, String phoneNumber, String email, String jobDesire, String workingLocationDesire, String workingExperience, boolean is_Registered) {
         this.id = id;
         this.applicantName = applicantName;
@@ -59,10 +58,9 @@ public class Applicant {
         this.is_Registered = is_Registered;
     }
 
-    // Default constructor
-    public Applicant() {}
+    public Applicant() {
+    }
 
-    // Getters và Setters
     public int getId() {
         return id;
     }

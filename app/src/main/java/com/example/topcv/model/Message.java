@@ -30,23 +30,52 @@ public class Message {
         this.send_Time = send_Time;
     }
 
-    // Getters and setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public int getSender_ID() { return sender_ID; }
-    public void setSender_ID(int sender_ID) { this.sender_ID = sender_ID; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public int getReceiver_ID() { return receiver_ID; }
-    public void setReceiver_ID(int receiver_ID) { this.receiver_ID = receiver_ID; }
+    public int getSender_ID() {
+        return sender_ID;
+    }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public void setSender_ID(int sender_ID) {
+        this.sender_ID = sender_ID;
+    }
 
-    public Boolean getStatus() { return status; }
-    public void setStatus(Boolean status) { this.status = status; }
+    public int getReceiver_ID() {
+        return receiver_ID;
+    }
 
-    public String getSend_Time() { return send_Time; }
-    public void setSend_Time(String send_Time) { this.send_Time = send_Time; }
+    public void setReceiver_ID(int receiver_ID) {
+        this.receiver_ID = receiver_ID;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getSend_Time() {
+        return send_Time;
+    }
+
+    public void setSend_Time(String send_Time) {
+        this.send_Time = send_Time;
+    }
 
 }

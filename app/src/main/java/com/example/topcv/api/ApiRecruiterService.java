@@ -1,7 +1,6 @@
 package com.example.topcv.api;
 
-import com.example.topcv.model.Company;
-import java.util.List;
+import com.example.topcv.model.Recruiter;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
@@ -12,10 +11,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface ApiCompanyService {
+public interface ApiRecruiterService {
 
     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-
 
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
             .newBuilder()
@@ -25,18 +23,16 @@ public interface ApiCompanyService {
             .retryOnConnectionFailure(true)
             .build();
 
-    ApiCompanyService ApiCompanyService = new Retrofit.Builder()
+    ApiRecruiterService ApiRecruiterService = new Retrofit.Builder()
             .baseUrl("https://10.0.2.2:7200/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-            .create(ApiCompanyService.class);
+            .create(ApiRecruiterService.class);
 
-    @GET("api/Company")
-    Observable<List<Company>> getAllCompany();
-
-    @GET("api/Company/{ID}")
-    Observable <Company> getCompanyByID(@Path("ID") int ID);
+    @GET("api/Recruiter/{id}")
+    Observable <Recruiter> getRecruiterByUserId(@Path("id") int id);
 
 }
+

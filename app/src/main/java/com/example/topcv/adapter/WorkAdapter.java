@@ -1,28 +1,30 @@
 package com.example.topcv.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.R;
 import com.example.topcv.model.Job;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_LOADING = 2;
+
     private List<Job> mListWork;
+
     private boolean isLoadingAdd;
+
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -41,6 +43,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.onItemClickListener = listener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Job> list) {
         this.mListWork = list;
         notifyDataSetChanged();
@@ -73,7 +76,6 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-            // Set image
             String imageId = job.getImageId();
             if (imageId != null && !imageId.isEmpty()) {
                 try {
@@ -85,7 +87,6 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic); // Default image
             }
 
-            // Calculate time remaining for application
             String applicationDateStr = job.getApplicationDate();
             if (applicationDateStr != null && applicationDateStr.length() >= 10) {
                 LocalDate applicationDate = LocalDate.parse(applicationDateStr.substring(0, 10));
@@ -96,18 +97,18 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Period period = Period.between(today, deadlineDate);
                 int daysRemaining = period.getDays();
                 if (daysRemaining < 0) {
-                    workViewHolder.time_remaining.setText("Đã quá hạn nộp");
+                    workViewHolder.time_remaining.setText("Overdue");
                 } else {
-                    workViewHolder.time_remaining.setText("Còn " + daysRemaining + " ngày để nộp");
+                    workViewHolder.time_remaining.setText("Remaining " + daysRemaining + " days");
                 }
             } else {
-                workViewHolder.time_remaining.setText("Ngày nộp không hợp lệ");
+                workViewHolder.time_remaining.setText("Invalid submission date");
             }
 
             workViewHolder.job_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.company_location.setText(job.getLocation());
-            workViewHolder.salary.setText(job.getSalary());
+            workViewHolder.salary.setText(String.valueOf(job.getSalary()));
             workViewHolder.job_experience.setText(job.getExperience());
         }
     }
@@ -120,7 +121,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return 0;
     }
 
-    public class WorkViewHolder extends RecyclerView.ViewHolder {
+    public static class WorkViewHolder extends RecyclerView.ViewHolder {
         public ImageView company_logo;
         public TextView job_name, company_name, company_location, salary, job_experience, time_remaining;
 
@@ -136,12 +137,11 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar progressBar;
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
-            progressBar = itemView.findViewById(R.id.progress_bar);
+            ProgressBar progressBar = itemView.findViewById(R.id.progress_bar);
         }
     }
 

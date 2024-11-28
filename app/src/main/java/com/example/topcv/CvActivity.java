@@ -1,5 +1,6 @@
 package com.example.topcv;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,37 +15,48 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Resume;
 
 public class CvActivity extends AppCompatActivity {
-    private ImageButton back_button, shareButton;
+
+    private int resumeId;
+
+    private ImageButton back_button;
+    private ImageButton shareButton;
+
     private Button exportPdfButton;
+
     private ActivityResultLauncher<Intent> createPdfLauncher;
+
     private Uri savedPdfUri;
 
     private ImageView cv_logo;
-    private TextView name, job_applying, introduction, experience, email, phone_number, education, skill, certification;
+
+    private TextView name;
+    private TextView job_applying;
+    private TextView introduction;
+    private TextView experience;
+    private TextView email;
+    private TextView phone_number;
+    private TextView education;
+    private TextView skill;
+    private TextView certification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cv);
-
-        // Xử lý sự kiện hiển thị hệ thống padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -53,47 +65,24 @@ public class CvActivity extends AppCompatActivity {
 
         setWidget();
 
-        // Nhận resume_id từ Intent
-        int resumeId = getIntent().getIntExtra("resume_id", -1); // Giá trị mặc định là -1 nếu không tìm thấy
+        setClick();
 
-        if (resumeId != -1) {
-            // Gọi API để lấy dữ liệu Resume theo resumeId
-            fetchResumeData(resumeId);
-        } else {
-            Log.d("CvActivity", "Resume ID not found.");
-        }
+    }
 
-        // Gọi API để lấy dữ liệu Resume với ID mặc định là 21
-        fetchResumeData(resumeId);
-
-        // Nút quay lại
+    private void setClick(){
         back_button.setOnClickListener(view -> finish());
 
-        // Đăng ký launcher để mở file picker
-        createPdfLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == RESULT_OK) {
-                Uri uri = result.getData().getData();
-                if (uri != null) {
-                    exportToPdf(uri); // Tiến hành lưu PDF vào nơi người dùng chọn
-                    savedPdfUri = uri;  // Lưu URI của file đã được lưu
-                }
-            }
-        });
-
-        // Nút xuất PDF
         exportPdfButton.setOnClickListener(v -> openFilePicker());
 
-        // Nút chia sẻ
         shareButton.setOnClickListener(v -> {
             if (savedPdfUri != null) {
-                sharePdf(savedPdfUri);  // Chia sẻ PDF đã lưu
+                sharePdf(savedPdfUri);
             } else {
                 Toast.makeText(this, "Please export the PDF first", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // Thiết lập các widget trên layout
     private void setWidget() {
         back_button = findViewById(R.id.back_button);
         exportPdfButton = findViewById(R.id.export_pdf_button);
@@ -108,28 +97,44 @@ public class CvActivity extends AppCompatActivity {
         education = findViewById(R.id.education);
         skill = findViewById(R.id.skill);
         certification = findViewById(R.id.certification);
+        resumeId = getIntent().getIntExtra("resume_id", 0);
+        createPdfLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                assert result.getData() != null;
+                Uri uri = result.getData().getData();
+                if (uri != null) {
+                    exportToPdf(uri);
+                    savedPdfUri = uri;
+                }
+            }
+        });
+
+        if (resumeId != 0) {
+            fetchResumeData(resumeId);
+        } else {
+            Log.d("CvActivity", "Resume ID not found.");
+        }
+        fetchResumeData(resumeId);
     }
 
-    // Gọi API để lấy dữ liệu Resume theo resumeId
+    @SuppressLint("CheckResult")
     private void fetchResumeData(int resumeId) {
         ApiResumeService.apiResumeService.getResumeById(resumeId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resume -> {
                     if (resume != null) {
-                        populateResumeData(resume);  // Gán dữ liệu vào view
+                        populateResumeData(resume);
                     } else {
                         Log.e("CvActivity", "No resume found with this resumeId.");
                         Toast.makeText(this, "No resume found", Toast.LENGTH_SHORT).show();
                     }
                 }, throwable -> {
                     Log.e("CvActivity", "Error fetching resume data: " + throwable.getMessage());
-                    throwable.printStackTrace(); // Để ghi chi tiết lỗi
+                    throwable.printStackTrace();
                     Toast.makeText(this, "Error fetching resume data", Toast.LENGTH_SHORT).show();
                 });
     }
-
-
 
     private void populateResumeData(Resume resume) {
         if (resume != null) {
@@ -163,16 +168,14 @@ public class CvActivity extends AppCompatActivity {
         }
     }
 
-    // Mở bộ chọn file để lưu file PDF
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.setType("application/pdf");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.putExtra(Intent.EXTRA_TITLE, "cv_output.pdf");  // Tên file mặc định
+        intent.putExtra(Intent.EXTRA_TITLE, "cv_output.pdf");
         createPdfLauncher.launch(intent);
     }
 
-    // Xuất nội dung Layout thành PDF và lưu vào vị trí người dùng chọn
     private void exportToPdf(Uri uri) {
         LinearLayout contentLayout = findViewById(R.id.information_content);
         int width = contentLayout.getWidth();
@@ -200,7 +203,6 @@ public class CvActivity extends AppCompatActivity {
         pdfDocument.close();
     }
 
-    // Chia sẻ PDF
     private void sharePdf(Uri uri) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("application/pdf");

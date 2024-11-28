@@ -1,5 +1,6 @@
 package com.example.topcv.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,14 +8,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.topcv.R;
 import com.example.topcv.model.Resume;
-
 import java.util.List;
 
 public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -23,7 +21,7 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<Resume> mListResume;
     private boolean isLoadingAdd;
     private OnItemClickListener onItemClickListener;
-    private int selectedPosition = -1; // Lưu trữ vị trí của RadioButton được chọn
+    private int selectedPosition = -1;
 
     public interface OnItemClickListener {
         void onItemClick(Resume resume);
@@ -37,13 +35,23 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
         return TYPE_ITEM;
     }
 
+    public Resume getSelectedItem() {
+        if (selectedPosition != -1 && mListResume != null && selectedPosition < mListResume.size()) {
+            return mListResume.get(selectedPosition);
+        }
+        return null;
+    }
+
+
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Resume> list) {
         this.mListResume = list;
-        selectedPosition = 0; // Set item đầu tiên được chọn
+        selectedPosition = 0;
         notifyDataSetChanged();
     }
 
@@ -59,6 +67,7 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder.getItemViewType() == TYPE_ITEM) {
@@ -76,25 +85,20 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             String image = resume.getImage();
 
-            // Sử dụng Glide để tải ảnh từ URI
             Glide.with(workViewHolder.profile_avatar.getContext())
-                    .load(image)  // image là URI của ảnh
+                    .load(image)
                     .into(workViewHolder.profile_avatar);
             workViewHolder.position.setText(resume.getJob_applying());
             workViewHolder.name.setText(resume.getApplicant_name());
 
-            // Thiết lập trạng thái của RadioButton
+
             workViewHolder.radio_button.setChecked(holder.getAdapterPosition() == selectedPosition);
 
-            // Xử lý khi người dùng chọn một RadioButton
             workViewHolder.radio_button.setOnClickListener(v -> {
                 int adapterPosition = holder.getAdapterPosition(); // Get current position dynamically
 
-                // Cập nhật vị trí của RadioButton được chọn
                 if (selectedPosition != adapterPosition) {
                     selectedPosition = adapterPosition;
-
-                    // Gọi notifyDataSetChanged() để cập nhật tất cả các item, giúp hủy chọn các RadioButton khác
                     notifyDataSetChanged();
                 }
             });
@@ -109,7 +113,7 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
         return 0;
     }
 
-    public class WorkViewHolder extends RecyclerView.ViewHolder {
+    public static class WorkViewHolder extends RecyclerView.ViewHolder {
         public ImageView profile_avatar;
         public TextView position, name;
         public RadioButton radio_button;
@@ -123,12 +127,11 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar progressBar;
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
-            progressBar = itemView.findViewById(R.id.progress_bar);
+            ProgressBar progressBar = itemView.findViewById(R.id.progress_bar);
         }
     }
 
@@ -140,12 +143,11 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void removeFooterLoading() {
         isLoadingAdd = false;
 
-        if (mListResume != null && mListResume.size() > 0) {
+        if (mListResume != null && !mListResume.isEmpty()) {
             int position = mListResume.size() - 1;
 
             Resume resume = mListResume.get(position);
-            // Kiểm tra nếu phần tử cuối là loading footer, có thể dựa vào các thuộc tính của Resume
-            if (resume != null && resume.getId() == 0) {  // Ví dụ sử dụng `id == 0` để đánh dấu footer
+            if (resume != null && resume.getId() == 0) {
                 mListResume.remove(position);
                 notifyItemRemoved(position);
             }

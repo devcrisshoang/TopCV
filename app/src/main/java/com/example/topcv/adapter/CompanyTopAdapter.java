@@ -1,19 +1,16 @@
 package com.example.topcv.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.R;
 import com.example.topcv.model.Company;
-import com.example.topcv.model.Job;
-
 import java.util.List;
 
 public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -32,6 +29,7 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.onItemClickListener = listener;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<Company> list){
         this.mListCompany = list;
         notifyDataSetChanged();
@@ -69,11 +67,9 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 try {
                     companyViewHolder.company_logo.setImageResource(Integer.parseInt(imageId));
                 } catch (NumberFormatException e) {
-                    // Xử lý khi imageId không phải là một số nguyên hợp lệ
-                    companyViewHolder.company_logo.setImageResource(R.drawable.fpt_ic); // Gán một ảnh mặc định
+                    companyViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
                 }
             } else {
-                // Gán một ảnh mặc định nếu imageId là null hoặc rỗng
                 companyViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
             }
             companyViewHolder.company_name.setText(company.getName());
@@ -94,10 +90,10 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return 0;
     }
 
-    public class CompanyViewHolder extends RecyclerView.ViewHolder{
-        private ImageView company_logo;
-        private TextView company_field;
-        private TextView company_name;
+    public static class CompanyViewHolder extends RecyclerView.ViewHolder{
+        private final ImageView company_logo;
+        private final TextView company_field;
+        private final TextView company_name;
         public CompanyViewHolder(@NonNull View itemView) {
             super(itemView);
             company_logo = itemView.findViewById(R.id.company_logo);
@@ -106,12 +102,11 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public class LoadingViewHolder extends RecyclerView.ViewHolder {
-        private ProgressBar progressBar;
+    public static class LoadingViewHolder extends RecyclerView.ViewHolder {
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
-            progressBar = itemView.findViewById(R.id.progress_bar);
+            ProgressBar progressBar = itemView.findViewById(R.id.progress_bar);
         }
     }
 

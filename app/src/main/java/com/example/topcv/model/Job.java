@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Job{
+public class Job {
     @SerializedName("id")
     private int id;
 

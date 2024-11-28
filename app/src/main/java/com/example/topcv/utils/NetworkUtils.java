@@ -5,9 +5,9 @@ import android.os.Build;
 public class NetworkUtils {
     public static String getBaseUrl() {
         if (isEmulator()) {
-            return "https://10.0.2.2:7200/"; // Địa chỉ cho máy ảo
+            return "https://10.0.2.2:7200/";
         } else {
-            return "http://localhost:7200/"; // Địa chỉ cho máy thật
+            return "http://localhost:7200/";
         }
     }
 

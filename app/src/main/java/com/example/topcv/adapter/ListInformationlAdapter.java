@@ -1,11 +1,9 @@
-// HorizontalAdapter.java
 package com.example.topcv.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.R;
@@ -13,7 +11,7 @@ import com.example.topcv.R;
 import java.util.List;
 
 public class ListInformationlAdapter extends RecyclerView.Adapter<ListInformationlAdapter.ViewHolder> {
-    private List<String> data;
+    private final List<String> data;
 
     public ListInformationlAdapter(List<String> data) {
         this.data = data;
@@ -37,7 +35,7 @@ public class ListInformationlAdapter extends RecyclerView.Adapter<ListInformatio
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private Button information_button;
+        private final Button information_button;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
