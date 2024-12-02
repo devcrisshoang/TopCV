@@ -39,4 +39,7 @@ public interface ApiCompanyService {
     @GET("api/Company/{ID}")
     Observable <Company> getCompanyByID(@Path("ID") int ID);
 
+    @GET("api/Company/recruiter/{recruiterId}")
+    Observable <Company> getCompanyByRecruiterId(@Path("recruiterId") int id);
+
 }

@@ -29,7 +29,7 @@ public interface ApiUserService {
             .retryOnConnectionFailure(true)
             .build();
 
-    String BASE_URL = NetworkUtils.getBaseUrl();
+    String BASE_URL = NetworkUtils.getBaseUrl();  // Đảm bảo rằng URL sử dụng đúng
 
     ApiUserService apiUserService = new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -38,7 +38,6 @@ public interface ApiUserService {
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(ApiUserService.class);
-
 
     @POST("api/User")
     Observable<User> createUser(@Body User user);

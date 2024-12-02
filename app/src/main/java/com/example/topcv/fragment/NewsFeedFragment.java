@@ -255,18 +255,17 @@ public class NewsFeedFragment extends Fragment {
                                 workAdapter.notifyDataSetChanged();
                                 theBestJobAdapter.notifyDataSetChanged();
                             } else {
-                                Log.e("applicants", "applicants is null, cannot filter jobs");
+                                Log.e("NewsFeedFragment", "applicants is null, cannot filter jobs");
                             }
                         } else {
-                            Log.d("MessageActivity", "Received jobs list is empty");
+                            Log.d("NewsFeedFragment", "Received jobs list is empty");
                         }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        // Thông báo lỗi nếu có
-                        Log.e("API Error", "Error fetching jobs: " + e.getMessage());
+                        Log.e("NewsFeedFragment", "Error fetching jobs: " + e.getMessage());
                     }
 
                     @Override

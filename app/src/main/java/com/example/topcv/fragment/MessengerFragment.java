@@ -65,10 +65,7 @@ public class MessengerFragment extends Fragment {
                                 messageAdapter.notifyDataSetChanged();
                             }
                         },
-                        throwable -> {
-                            Log.e("MessengerFragment", "Error fetching chat partners: " + throwable.getMessage());
-                            Toast.makeText(getContext(), "Failed to load chat partners", Toast.LENGTH_SHORT).show();
-                        }
+                        throwable -> Log.e("MessengerFragment", "Error fetching chat partners: " + throwable.getMessage())
                 );
     }
 }

@@ -12,29 +12,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/see_all_background"
+        android:background="@drawable/white_ic"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/back_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            android:background="@null"
             android:layout_gravity="center"
             android:layout_margin="20dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
             android:src="@drawable/back_ic"
-            app:tint="@color/white" />
+            />
 
         <TextView
             android:id="@+id/content_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Suggest Jobs"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_gravity="center" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

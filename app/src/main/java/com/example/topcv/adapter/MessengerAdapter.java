@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -65,7 +66,6 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
             intent.putExtra("recruiterName",recruiterName);
             intent.putExtra("userIdRecruiter",userIdRecruiter);
 
-
             context.startActivity(intent);
         });
     }
@@ -82,6 +82,7 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
                                 holder.sender_name.setText(recruiter.getRecruiterName());
                                 recruiterName = recruiter.getRecruiterName();
                                 userIdRecruiter = recruiter.getIdUser();
+                                holder.company_logo.setImageResource(R.drawable.recruiter_ic);
                                 Log.d("MessengerAdapter", "Fetched applicant name: " + recruiter.getRecruiterName());
                             }
                         },
@@ -122,15 +123,17 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
     }
 
     public static class MessengerViewHolder extends RecyclerView.ViewHolder {
-        public TextView sender_name;
-        public TextView message;
-        public TextView send_time;
+        private TextView sender_name;
+        private TextView message;
+        private TextView send_time;
+        private ImageView company_logo;
 
         public MessengerViewHolder(View itemView) {
             super(itemView);
             message = itemView.findViewById(R.id.message);
             sender_name = itemView.findViewById(R.id.sender_name);
             send_time = itemView.findViewById(R.id.send_time);
+            company_logo = itemView.findViewById(R.id.company_logo);
         }
     }
 }

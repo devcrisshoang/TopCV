@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -364,7 +363,6 @@ public class SeeAllActivity extends AppCompatActivity {
     }
 
     private List<Job> getListUser() {
-        Toast.makeText(this, "Load data page" + currentPage, Toast.LENGTH_SHORT).show();
         List<Job> list = new ArrayList<>();
 
         int start = (currentPage - 1) * 10; // Tính chỉ số bắt đầu
@@ -377,7 +375,6 @@ public class SeeAllActivity extends AppCompatActivity {
     }
 
     private List<Company> getListCompany() {
-        Toast.makeText(this, "Load data page" + currentPage, Toast.LENGTH_SHORT).show();
         List<Company> list = new ArrayList<>();
 
         int start = (currentPage - 1) * 10; // Tính chỉ số bắt đầu
@@ -390,7 +387,6 @@ public class SeeAllActivity extends AppCompatActivity {
     }
 
     private List<Article> getListArticle() {
-        Toast.makeText(this, "Load data page" + currentPage, Toast.LENGTH_SHORT).show();
         List<Article> list = new ArrayList<>();
 
         int start = (currentPage - 1) * 10; // Tính chỉ số bắt đầu
@@ -430,12 +426,12 @@ public class SeeAllActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu thành công", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -468,12 +464,12 @@ public class SeeAllActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu thành công", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -505,12 +501,12 @@ public class SeeAllActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API công ty: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API công ty: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu công ty thành công", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu công ty thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -542,12 +538,12 @@ public class SeeAllActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API bài viết: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lỗi khi gọi API bài viết: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
-                        Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu bài viết thành công", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SeeAllActivity.this, "Lấy dữ liệu bài viết thành công", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
