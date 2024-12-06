@@ -1,6 +1,5 @@
 package com.example.topcv;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;

@@ -10,16 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.bumptech.glide.Glide;
 import com.example.topcv.api.ApiArticleService;
 import com.example.topcv.model.Article;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -30,9 +26,6 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ImageView image;
     private ImageButton back_button;
-
-    private static final String PREF_NAME = "ArticlePref";
-    private static final String ARTICLE_KEY = "ArticleData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +39,7 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         setWidget();
+
         setClick();
     }
 
@@ -59,10 +53,8 @@ public class ArticleActivity extends AppCompatActivity {
         content = findViewById(R.id.content);
         image = findViewById(R.id.image);
         back_button = findViewById(R.id.back_button);
+        getArticleById(articleId);
 
-        if (!loadArticleFromPreferences()) {
-            getArticleById(articleId);
-        }
     }
 
     private void getArticleById(int id) {
@@ -81,8 +73,6 @@ public class ArticleActivity extends AppCompatActivity {
                         name.setText(article.getName());
                         content.setText(article.getContent());
                         image.setImageResource(R.drawable.copywriting_ic);
-
-                        saveArticleToPreferences(article);
                     }
 
                     @Override
@@ -94,41 +84,6 @@ public class ArticleActivity extends AppCompatActivity {
                     public void onComplete() {
                     }
                 });
-    }
-
-    private void saveArticleToPreferences(Article article) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", article.getName());
-            jsonObject.put("content", article.getContent());
-            jsonObject.put("image", article.getImage());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                .edit()
-                .putString(ARTICLE_KEY, jsonObject.toString())
-                .apply();
-    }
-
-    private boolean loadArticleFromPreferences() {
-        String articleData = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                .getString(ARTICLE_KEY, null);
-
-        if (articleData != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(articleData);
-                name.setText(jsonObject.getString("name"));
-                content.setText(jsonObject.getString("content"));
-                image.setImageResource(R.drawable.copywriting_ic);
-
-                return true;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
     }
 
     @Override
