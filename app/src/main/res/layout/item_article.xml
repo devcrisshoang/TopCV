@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="230dp"
         android:orientation="vertical"
         android:background="@drawable/card_background">>
 
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="5dp"
-            android:src="@drawable/fpt_ic"
+            android:src="@drawable/copywriting_ic"
             android:scaleType="fitCenter">
 
         </ImageView>

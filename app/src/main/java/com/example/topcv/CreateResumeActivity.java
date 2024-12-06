@@ -21,12 +21,14 @@ import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Notification;
 import com.example.topcv.model.Resume;
+import com.example.topcv.utils.DateTimeUtils;
+import com.example.topcv.utils.NotificationUtils;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import java.time.LocalDateTime;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CreateCvActivity extends AppCompatActivity {
+public class CreateResumeActivity extends AppCompatActivity {
 
     private Button add_new_cv_button;
 
@@ -146,25 +148,26 @@ public class CreateCvActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> Toast.makeText(CreateCvActivity.this, "CV created successfully!", Toast.LENGTH_SHORT).show(),
-                        throwable -> Toast.makeText(CreateCvActivity.this, "An error occurred: " + throwable.getMessage(), Toast.LENGTH_SHORT).show()
+                        response -> Toast.makeText(CreateResumeActivity.this, "CV created successfully!", Toast.LENGTH_SHORT).show(),
+                        throwable -> Toast.makeText(CreateResumeActivity.this, "An error occurred: " + throwable.getMessage(), Toast.LENGTH_SHORT).show()
                 );
         String content = "You just created a " + resumeJobApplication +" job resume.";
-        LocalDateTime currentTime = LocalDateTime.now();
+        String time = DateTimeUtils.getCurrentTime();
 
         Notification notification = new Notification(
                 0,
                 content,
-                currentTime.toString(),
+                time,
                 id_User
         );
         ApiNotificationService.ApiNotificationService.createNotification(notification)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> Toast.makeText(CreateCvActivity.this, "Notification created successfully!", Toast.LENGTH_SHORT).show(),
-                        throwable -> Toast.makeText(CreateCvActivity.this, "An error occurred: " + throwable.getMessage(), Toast.LENGTH_SHORT).show()
+                        response -> Toast.makeText(CreateResumeActivity.this, "Notification created successfully!", Toast.LENGTH_SHORT).show(),
+                        throwable -> Toast.makeText(CreateResumeActivity.this, "An error occurred: " + throwable.getMessage(), Toast.LENGTH_SHORT).show()
                 );
+        NotificationUtils.showNotification(this, "You have just created a resume !");
         finish();
     }
 

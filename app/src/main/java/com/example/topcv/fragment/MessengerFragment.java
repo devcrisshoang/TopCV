@@ -6,22 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.R;
 import com.example.topcv.adapter.MessengerAdapter;
 import com.example.topcv.api.ApiMessageService;
 import com.example.topcv.model.User;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -65,10 +60,7 @@ public class MessengerFragment extends Fragment {
                                 messageAdapter.notifyDataSetChanged();
                             }
                         },
-                        throwable -> {
-                            Log.e("MessengerFragment", "Error fetching chat partners: " + throwable.getMessage());
-                            Toast.makeText(getContext(), "Failed to load chat partners", Toast.LENGTH_SHORT).show();
-                        }
+                        throwable -> Log.e("MessengerFragment", "Error fetching chat partners: " + throwable.getMessage())
                 );
     }
 }

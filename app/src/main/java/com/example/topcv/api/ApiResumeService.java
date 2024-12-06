@@ -30,7 +30,7 @@ public interface ApiResumeService {
             .build();
 
     ApiResumeService apiResumeService = new Retrofit.Builder()
-            .baseUrl("https://10.0.2.2:7200/")  // Server URL
+            .baseUrl("https://10.0.2.2:7200/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

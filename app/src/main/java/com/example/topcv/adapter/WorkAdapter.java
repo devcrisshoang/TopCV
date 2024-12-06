@@ -1,20 +1,29 @@
 package com.example.topcv.adapter;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.R;
+import com.example.topcv.api.ApiCompanyService;
+import com.example.topcv.api.ApiRecruiterService;
 import com.example.topcv.model.Job;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -61,6 +70,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder.getItemViewType() == TYPE_ITEM) {
@@ -76,23 +86,10 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             });
 
-            String imageId = job.getImageId();
-            if (imageId != null && !imageId.isEmpty()) {
-                try {
-                    workViewHolder.company_logo.setImageResource(Integer.parseInt(imageId));
-                } catch (NumberFormatException e) {
-                    workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic); // Default image
-                }
-            } else {
-                workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic); // Default image
-            }
-
             String applicationDateStr = job.getApplicationDate();
             if (applicationDateStr != null && applicationDateStr.length() >= 10) {
                 LocalDate applicationDate = LocalDate.parse(applicationDateStr.substring(0, 10));
-                LocalDate deadlineDate = applicationDate.plusDays(30); // 30-day deadline
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate deadlineDate = applicationDate.plusDays(30);
                 LocalDate today = LocalDate.now();
                 Period period = Period.between(today, deadlineDate);
                 int daysRemaining = period.getDays();
@@ -104,6 +101,26 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             } else {
                 workViewHolder.time_remaining.setText("Invalid submission date");
             }
+
+            ApiRecruiterService.ApiRecruiterService.getRecruiterById(job.getRecruiterId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            recruiter -> {
+                                if (recruiter != null) {
+                                    ApiCompanyService.ApiCompanyService.getCompanyByRecruiterId(recruiter.getId())
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(response -> {
+                                                if (!response.isChecked()){
+                                                    workViewHolder.checked.setVisibility(View.GONE);
+                                                }
+
+                                            }, throwable -> Log.e("API Error", "Error fetching applicant: " + throwable.getMessage()));
+                                }
+                            },
+                            throwable -> Log.e("AccountFragment", "Error fetching recruiter: " + throwable.getMessage())
+                    );
 
             workViewHolder.job_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
@@ -122,7 +139,9 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class WorkViewHolder extends RecyclerView.ViewHolder {
+
         public ImageView company_logo;
+        private final ImageView checked;
         public TextView job_name, company_name, company_location, salary, job_experience, time_remaining;
 
         public WorkViewHolder(@NonNull View itemView) {
@@ -134,6 +153,7 @@ public class WorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             salary = itemView.findViewById(R.id.salary);
             job_experience = itemView.findViewById(R.id.job_experience);
             time_remaining = itemView.findViewById(R.id.time_remaining);
+            checked = itemView.findViewById(R.id.checked);
         }
     }
 

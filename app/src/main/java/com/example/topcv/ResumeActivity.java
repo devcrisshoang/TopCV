@@ -28,7 +28,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.Resume;
 
-public class CvActivity extends AppCompatActivity {
+public class ResumeActivity extends AppCompatActivity {
 
     private int resumeId;
 

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.ArticleActivity;
 import com.example.topcv.CompanyActivity;
-import com.example.topcv.CompanyInformationsActivity;
+import com.example.topcv.JobActivity;
 import com.example.topcv.R;
 import com.example.topcv.SeeAllActivity;
 import com.example.topcv.adapter.ArticleAdapter;
@@ -156,14 +156,14 @@ public class NewsFeedFragment extends Fragment {
         });
 
         workAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            Intent intent = new Intent(getContext(), JobActivity.class);
             intent.putExtra("job_id", job.getId());
             intent.putExtra("id_User", id_User);
             startActivity(intent);
         });
 
         theBestJobAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(getContext(), CompanyInformationsActivity.class);
+            Intent intent = new Intent(getContext(), JobActivity.class);
             intent.putExtra("best_id", job.getId());
             intent.putExtra("id_User", id_User);
             startActivity(intent);
@@ -255,18 +255,17 @@ public class NewsFeedFragment extends Fragment {
                                 workAdapter.notifyDataSetChanged();
                                 theBestJobAdapter.notifyDataSetChanged();
                             } else {
-                                Log.e("applicants", "applicants is null, cannot filter jobs");
+                                Log.e("NewsFeedFragment", "applicants is null, cannot filter jobs");
                             }
                         } else {
-                            Log.d("MessageActivity", "Received jobs list is empty");
+                            Log.d("NewsFeedFragment", "Received jobs list is empty");
                         }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         e.printStackTrace();
-                        // Thông báo lỗi nếu có
-                        Log.e("API Error", "Error fetching jobs: " + e.getMessage());
+                        Log.e("NewsFeedFragment", "Error fetching jobs: " + e.getMessage());
                     }
 
                     @Override

@@ -1,6 +1,7 @@
 package com.example.topcv.adapter;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,16 +63,9 @@ public class CompanyTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if(company == null){
                 return;
             }
-            String imageId = company.getImage();
-            if (imageId != null && !imageId.isEmpty()) {
-                try {
-                    companyViewHolder.company_logo.setImageResource(Integer.parseInt(imageId));
-                } catch (NumberFormatException e) {
-                    companyViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
-                }
-            } else {
-                companyViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
-            }
+
+            companyViewHolder.company_logo.setImageResource(R.drawable.workplace_ic);
+
             companyViewHolder.company_name.setText(company.getName());
             companyViewHolder.company_field.setText(company.getField());
             holder.itemView.setOnClickListener(v -> {

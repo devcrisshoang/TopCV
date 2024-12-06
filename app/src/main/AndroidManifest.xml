@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,10 +14,10 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/candidate"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/candidate"
         android:supportsRtl="true"
         android:theme="@style/Theme.TopCV"
         android:usesCleartextTraffic="false"
@@ -24,7 +26,7 @@
             android:name=".CompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".EditCvActivity"
+            android:name=".EditResumeActivity"
             android:exported="false" />
         <activity
             android:name=".ChangePasswordActivity"
@@ -39,16 +41,16 @@
             android:name=".InformationActivity"
             android:exported="false" />
         <activity
-            android:name=".SelectCvToApplyJobActivity"
+            android:name=".ApplyActivity"
             android:exported="false" />
         <activity
-            android:name=".AboutActicity"
+            android:name=".AboutActivity"
             android:exported="false" />
         <activity
             android:name=".PrivatePolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".TermOfServiceActivity"
+            android:name=".ServiceActivity"
             android:exported="false" />
         <activity
             android:name=".PolicyActivity"
@@ -63,13 +65,13 @@
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".CvActivity"
+            android:name=".ResumeActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateCvActivity"
+            android:name=".CreateResumeActivity"
             android:exported="false" />
         <activity
-            android:name=".CompanyInformationsActivity"
+            android:name=".JobActivity"
             android:exported="false" />
         <activity
             android:name=".SeeAllActivity"
@@ -100,7 +102,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">

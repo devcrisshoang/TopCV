@@ -20,7 +20,7 @@
                 android:id="@+id/company_logo"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/fpt_ic"
+                android:src="@drawable/workplace_ic"
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"

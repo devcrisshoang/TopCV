@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.topcv.CvActivity;
-import com.example.topcv.EditCvActivity;
+import com.example.topcv.ResumeActivity;
+import com.example.topcv.EditResumeActivity;
 import com.example.topcv.R;
 import com.example.topcv.model.Resume;
 import java.util.List;
@@ -76,12 +76,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, CvActivity.class);
+            Intent intent = new Intent(mContext, ResumeActivity.class);
             intent.putExtra("resume_id", resume.getId());
             mContext.startActivity(intent);
         });
         holder.edit_cv.setOnClickListener(view -> {
-            Intent intent = new Intent(mContext, EditCvActivity.class);
+            Intent intent = new Intent(mContext, EditResumeActivity.class);
             intent.putExtra("resume_edit", resume.getId());
             intent.putExtra("id_User",id_User);
             mContext.startActivity(intent);

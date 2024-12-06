@@ -1,6 +1,7 @@
 package com.example.topcv.adapter;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,17 +65,9 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     onItemClickListener.onItemClick(job);
                 }
             });
-            String imageId = job.getImageId();
-            if (imageId != null && !imageId.isEmpty()) {
-                try {
-                    workViewHolder.company_logo.setImageResource(Integer.parseInt(imageId));
-                } catch (NumberFormatException e) {
 
-                    workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
-                }
-            } else {
-                workViewHolder.company_logo.setImageResource(R.drawable.fpt_ic);
-            }
+            workViewHolder.company_logo.setImageResource(R.drawable.workplace_ic);
+
             workViewHolder.position_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.working_place.setText(job.getLocation());

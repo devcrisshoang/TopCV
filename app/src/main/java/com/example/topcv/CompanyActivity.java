@@ -66,7 +66,7 @@ public class CompanyActivity extends AppCompatActivity {
                         name.setText(company.getName());
                         content.setText(company.getField());
                         hotline.setText(company.getHotline());
-                        image.setImageURI(Uri.parse(company.getImage()));
+                        image.setImageResource(R.drawable.workplace_ic);
                     }
 
                     @Override

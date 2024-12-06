@@ -34,5 +34,8 @@ public interface ApiRecruiterService {
     @GET("api/Recruiter/{id}")
     Observable <Recruiter> getRecruiterByUserId(@Path("id") int id);
 
+    @GET("api/Recruiter/{id}")
+    Observable<Recruiter> getRecruiterById(@Path("id") int id);
+
 }
 

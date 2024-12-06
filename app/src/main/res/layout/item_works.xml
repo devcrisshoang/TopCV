@@ -31,7 +31,7 @@
                 android:layout_margin="10sp"
                 android:background="@drawable/icon_rounded_corner"
                 android:padding="10sp"
-                android:src="@drawable/google_ic" />
+                android:src="@drawable/workplace_ic" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.topcv.adapter;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,22 +66,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (article == null) {
                 return;
             }
-
-            String imageId = article.getImage();
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) holder;
-            if (imageId != null && !imageId.isEmpty()) {
-                try {
-                    articleViewHolder.article_image.setImageResource(Integer.parseInt(imageId));
-                } catch (NumberFormatException e) {
-                    Glide.with(holder.itemView.getContext())
-                            .load(imageId)
-                            .placeholder(R.drawable.fpt_ic)
-                            .error(R.drawable.fpt_ic)
-                            .into(articleViewHolder.article_image);
-                }
-            } else {
-                articleViewHolder.article_image.setImageResource(R.drawable.fpt_ic);
-            }
+
+            articleViewHolder.article_image.setImageResource(R.drawable.copywriting_ic);
+
 
             articleViewHolder.article_content.setText(article.getContent());
             articleViewHolder.article_name.setText(article.getName());

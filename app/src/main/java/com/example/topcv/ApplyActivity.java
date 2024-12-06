@@ -28,16 +28,15 @@ import com.example.topcv.api.ApiApplicantJobService;
 import com.example.topcv.api.ApiResumeService;
 import com.example.topcv.model.ApplicantJob;
 import com.example.topcv.model.Resume;
+import com.example.topcv.utils.DateTimeUtils;
 import com.example.topcv.utils.PaginationScrollListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SelectCvToApplyJobActivity extends AppCompatActivity {
+public class ApplyActivity extends AppCompatActivity {
+
     private static final int PICK_FILE_REQUEST = 1;
 
     private RecyclerView select_cv_recyclerview;
@@ -130,32 +129,49 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
         });
 
         Apply_Button.setOnClickListener(view -> sendApplicantJobData());
+
     }
 
     @SuppressLint("CheckResult")
     private void sendApplicantJobData() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String formattedTime = sdf.format(calendar.getTime());
-
-        Resume selectedResume = appliedResumeAdapter.getSelectedItem();
-
-        ApplicantJob applicantJob = new ApplicantJob(jobId, applicant_id, selectedResume.getId(), false, false, formattedTime);
-
-        ApiApplicantJobService.ApiApplicantJobService.createApplicantJob(applicantJob)
+        ApiApplicantJobService.ApiApplicantJobService.getAllApplicantJob()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> {
-                            Log.e("SelectCvToApply", "Successfully");
-                            Toast.makeText(this, "Apply Successfully", Toast.LENGTH_SHORT).show();
+                        applicantJobs -> {
+                            boolean isAlreadyApplied = false;
+                            for (ApplicantJob job : applicantJobs) {
+                                if (job.getJobId() == jobId && job.getApplicantId() == applicant_id) {
+                                    isAlreadyApplied = true;
+                                    break;
+                                }
+                            }
+
+                            if (isAlreadyApplied) {
+                                Toast.makeText(this, "You have already applied for this job", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Resume selectedResume = appliedResumeAdapter.getSelectedItem();
+                                String time = DateTimeUtils.getCurrentTime();
+
+                                ApplicantJob applicantJob = new ApplicantJob(jobId, applicant_id, selectedResume.getId(), false, false, time);
+
+                                ApiApplicantJobService.ApiApplicantJobService.createApplicantJob(applicantJob)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(
+                                                response -> {
+                                                    Log.e("SelectCvToApply", "Successfully");
+                                                    Toast.makeText(this, "Apply Successfully", Toast.LENGTH_SHORT).show();
+                                                },
+                                                throwable -> Log.e("SelectCvToApply", "Error: " + throwable.getMessage())
+                                        );
+                                finish();
+                            }
                         },
-                        throwable -> {
-                            Log.e("SelectCvToApply", "Error: " + throwable.getMessage());
-                        }
+                        throwable -> Log.e("SelectCvToApply", "Error fetching applicant jobs: " + throwable.getMessage())
                 );
-        finish();
     }
+
 
     private void getTotalPageResume(){
         if(resume_data.size() <= 10){
@@ -218,7 +234,7 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resumes -> {
                     if (resumes.isEmpty()) {
-                        Toast.makeText(this, "Không có dữ liệu hồ sơ.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No profile data available.", Toast.LENGTH_SHORT).show();
                     } else {
                         // Clear the existing list and add new data
                         resume_data.clear();
@@ -272,7 +288,7 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
     private void openFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, "Chọn file"), PICK_FILE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select file"), PICK_FILE_REQUEST);
     }
 
     @Override
@@ -318,7 +334,7 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
             warning.setVisibility(View.GONE);
         } else {
             warning.setVisibility(View.VISIBLE);
-            warning.setText("File không hợp lệ. Vui lòng chọn file .doc, .docx, hoặc .pdf.");
+            warning.setText("Invalid file. Please select a .doc, .docx, or .pdf file.");
         }
 
         file_layout.setVisibility(View.VISIBLE);

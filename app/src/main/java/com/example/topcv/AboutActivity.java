@@ -8,15 +8,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TermOfServiceActivity extends AppCompatActivity {
+public class AboutActivity extends AppCompatActivity {
 
-    private ImageButton service_back_button;
+    private ImageButton about_back_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_term_of_service);
+        setContentView(R.layout.activity_about);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -28,12 +28,11 @@ public class TermOfServiceActivity extends AppCompatActivity {
         setClick();
 
     }
-
     private void setWidget(){
-        service_back_button = findViewById(R.id.service_back_button);
+        about_back_button = findViewById(R.id.about_back_button);
     }
 
     private void setClick(){
-        service_back_button.setOnClickListener(view -> finish());
+        about_back_button.setOnClickListener(view -> finish());
     }
 }
