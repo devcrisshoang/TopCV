@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.MessageActivity;
 import com.example.topcv.R;
+import com.example.topcv.api.ApiCompanyService;
 import com.example.topcv.api.ApiMessageService;
 import com.example.topcv.api.ApiRecruiterService;
 import com.example.topcv.model.Message;
@@ -71,25 +72,26 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
     }
 
 
-    @SuppressLint("CheckResult")
+    @SuppressLint({"CheckResult", "SetTextI18n"})
     private void getRecruiterInformation(int userId, MessengerViewHolder holder) {
         ApiRecruiterService.ApiRecruiterService.getRecruiterByUserId(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         recruiter -> {
-                            if (recruiter != null) {
-                                holder.sender_name.setText(recruiter.getRecruiterName());
-                                recruiterName = recruiter.getRecruiterName();
                                 userIdRecruiter = recruiter.getIdUser();
                                 holder.company_logo.setImageResource(R.drawable.recruiter_ic);
-                                Log.d("MessengerAdapter", "Fetched applicant name: " + recruiter.getRecruiterName());
-                            }
+                            ApiCompanyService.ApiCompanyService.getCompanyByRecruiterId(recruiter.getId())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(response -> {
+                                            holder.sender_name.setText(recruiter.getRecruiterName()+" - "+response.getName());
+                                        recruiterName = recruiter.getRecruiterName()+" - "+response.getName();
+                                    }, throwable -> Log.e("API Error", "Error fetching applicant: " + throwable.getMessage()));
                         },
-                        throwable -> {
-                            Log.e("MessengerAdapter", "Error fetching applicant name: " + throwable.getMessage());
-                        }
+                        throwable -> Log.e("MessengerAdapter", "Error fetching recruiter name: " + throwable.getMessage())
                 );
+
     }
 
     @SuppressLint("CheckResult")
@@ -110,10 +112,7 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
                                 }
                             }
                         },
-                        throwable -> {
-                            Log.e("MessengerAdapter", "Error fetching messages: " + throwable.getMessage());
-                            Toast.makeText(context, "Failed to load messages", Toast.LENGTH_SHORT).show();
-                        }
+                        throwable -> Log.e("MessengerAdapter", "Error fetching messages: " + throwable.getMessage())
                 );
     }
 
