@@ -64,7 +64,7 @@ public class MessengerAdapter extends RecyclerView.Adapter<MessengerAdapter.Mess
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("userIdApplicant",userIdApplicant);
             intent.putExtra("recruiterName",recruiterName);
-            intent.putExtra("userIdRecruiter",userIdRecruiter);
+            intent.putExtra("userIdRecruiter",userId);
 
             context.startActivity(intent);
         });

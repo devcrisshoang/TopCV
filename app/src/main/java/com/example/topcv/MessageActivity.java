@@ -73,6 +73,9 @@ public class MessageActivity extends AppCompatActivity {
         String recruiterName = getIntent().getStringExtra("recruiterName");
         userIdRecruiter = getIntent().getIntExtra("userIdRecruiter", 0);
 
+        Log.e("MessageActivity","userIdApplicant: "+userIdApplicant);
+        Log.e("MessageActivity","userIdRecruiter: "+userIdRecruiter);
+
         friend_name.setText(recruiterName);
 
         if (userIdApplicant != 0) {
