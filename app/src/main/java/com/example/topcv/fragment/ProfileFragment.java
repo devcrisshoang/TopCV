@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.topcv.CreateCvActivity;
+import com.example.topcv.CreateResumeActivity;
 import com.example.topcv.R;
 import com.example.topcv.adapter.ProfileAdapter;
 import com.example.topcv.api.ApiApplicantService;
@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
                     .setPositiveButton("OK", (dialog, which) -> dialog.dismiss()) // Nút OK để đóng dialog
                     .show();
         } else {
-            Intent intent = new Intent(getContext(), CreateCvActivity.class);
+            Intent intent = new Intent(getContext(), CreateResumeActivity.class);
             intent.putExtra("id_User",id_User);
             startActivity(intent);
         }
