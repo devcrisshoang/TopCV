@@ -1,6 +1,8 @@
 package com.example.topcv.api;
 
 import com.example.topcv.model.ApplicantJob;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
@@ -9,6 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiApplicantJobService {
@@ -32,6 +35,9 @@ public interface ApiApplicantJobService {
 
     @POST("api/ApplicantJob")
     Observable<ApplicantJob> createApplicantJob(@Body ApplicantJob applicantJob);
+
+    @GET("api/ApplicantJob")
+    Observable<List<ApplicantJob>> getAllApplicantJob();
 
 }
 

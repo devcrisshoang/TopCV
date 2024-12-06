@@ -8,7 +8,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TermOfServiceActivity extends AppCompatActivity {
+public class ServiceActivity extends AppCompatActivity {
 
     private ImageButton service_back_button;
 

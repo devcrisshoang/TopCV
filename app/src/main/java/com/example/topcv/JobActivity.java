@@ -32,7 +32,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CompanyInformationsActivity extends AppCompatActivity {
+public class JobActivity extends AppCompatActivity {
 
     private ScrollView scrollView;
 
@@ -97,7 +97,7 @@ public class CompanyInformationsActivity extends AppCompatActivity {
                 .subscribe(
                         applicant -> {
                             if (applicant != null) {
-                                Intent intent = new Intent(this, SelectCvToApplyJobActivity.class);
+                                Intent intent = new Intent(this, ApplyActivity.class);
                                 intent.putExtra("applicant_id",applicant.getId());
                                 intent.putExtra("jobId",jobId);
                                 startActivity(intent);
@@ -190,13 +190,13 @@ public class CompanyInformationsActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                                Toast.makeText(CompanyInformationsActivity.this, "Failed to load job details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(JobActivity.this, "Failed to load job details", Toast.LENGTH_SHORT).show();
                                 Log.e("API Error", e.getMessage());
                             }
 
                             @Override
                             public void onComplete() {
-                                // Có thể thực hiện thêm các tác vụ khi hoàn thành
+
                             }
                         })
         );
@@ -210,23 +210,22 @@ public class CompanyInformationsActivity extends AppCompatActivity {
                         .subscribeWith(new DisposableObserver<List<JobDetail>>() {
                             @Override
                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull List<JobDetail> jobDetails) {
-                                // Giả sử chỉ có một JobDetail, lấy phần tử đầu tiên
                                 if (!jobDetails.isEmpty()) {
                                     bindJobDetailDataToViews(jobDetails.get(0));
                                 } else {
-                                    Toast.makeText(CompanyInformationsActivity.this, "No job details found", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(JobActivity.this, "No job details found", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                                Toast.makeText(CompanyInformationsActivity.this, "Failed to load job details", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(JobActivity.this, "Failed to load job details", Toast.LENGTH_SHORT).show();
                                 Log.e("API Error", e.getMessage());
                             }
 
                             @Override
                             public void onComplete() {
-                                // Có thể thực hiện thêm các tác vụ khi hoàn thành
+
                             }
                         })
         );
@@ -239,26 +238,12 @@ public class CompanyInformationsActivity extends AppCompatActivity {
         description.setText(jobDetail.getJobDescription());
         position.setText(jobDetail.getWorkingPosition());
         gender.setText(jobDetail.getGenderRequire());
-        number_of_people.setText(jobDetail.getNumberOfPeople()); // Nếu số người là số nguyên
+        number_of_people.setText(jobDetail.getNumberOfPeople());
         work_method.setText(jobDetail.getWorkingMethod());
     }
 
     private void bindJobDataToViews(Job job) {
-        String imageId = job.getImageId();
-        if (imageId != null && !imageId.isEmpty()) {
-
-            String resourceName = imageId.split("\\.")[2];
-            int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
-
-            if (resourceId != 0) {
-                company_logo.setImageResource(resourceId);
-            } else {
-                company_logo.setImageResource(R.drawable.viettel_ic);
-            }
-        } else {
-            company_logo.setImageResource(R.drawable.facebook_ic);
-        }
-
+        company_logo.setImageResource(R.drawable.workplace_ic);
         job_name.setText(job.getJobName());
         company_name.setText(job.getCompanyName());
         experience.setText(job.getExperience());

@@ -18,6 +18,9 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class ArticleActivity extends AppCompatActivity {
 
     private TextView name;
@@ -27,6 +30,9 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ImageView image;
     private ImageButton back_button;
+
+    private static final String PREF_NAME = "ArticlePref";
+    private static final String ARTICLE_KEY = "ArticleData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +46,23 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         setWidget();
-
         setClick();
-
     }
 
-    private void setClick(){
+    private void setClick() {
         back_button.setOnClickListener(view -> finish());
     }
 
-    private void setWidget(){
+    private void setWidget() {
         int articleId = getIntent().getIntExtra("article_id", -1);
         name = findViewById(R.id.name);
         content = findViewById(R.id.content);
         image = findViewById(R.id.image);
         back_button = findViewById(R.id.back_button);
-        getArticleById(articleId);
+
+        if (!loadArticleFromPreferences()) {
+            getArticleById(articleId);
+        }
     }
 
     private void getArticleById(int id) {
@@ -70,21 +77,13 @@ public class ArticleActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull Article article) {
+
                         name.setText(article.getName());
                         content.setText(article.getContent());
+                        image.setImageResource(R.drawable.copywriting_ic);
 
-                        String imageUrl = article.getImage();
-                        if (imageUrl != null && !imageUrl.isEmpty()) {
-                            Glide.with(ArticleActivity.this)
-                                    .load(imageUrl)
-                                    .placeholder(R.drawable.fpt_ic)
-                                    .error(R.drawable.fpt_ic)
-                                    .into(image);
-                        } else {
-                            image.setImageResource(R.drawable.fpt_ic);
-                        }
+                        saveArticleToPreferences(article);
                     }
-
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
@@ -95,6 +94,41 @@ public class ArticleActivity extends AppCompatActivity {
                     public void onComplete() {
                     }
                 });
+    }
+
+    private void saveArticleToPreferences(Article article) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", article.getName());
+            jsonObject.put("content", article.getContent());
+            jsonObject.put("image", article.getImage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                .edit()
+                .putString(ARTICLE_KEY, jsonObject.toString())
+                .apply();
+    }
+
+    private boolean loadArticleFromPreferences() {
+        String articleData = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                .getString(ARTICLE_KEY, null);
+
+        if (articleData != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(articleData);
+                name.setText(jsonObject.getString("name"));
+                content.setText(jsonObject.getString("content"));
+                image.setImageResource(R.drawable.copywriting_ic);
+
+                return true;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override

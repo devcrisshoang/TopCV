@@ -35,7 +35,7 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SelectCvToApplyJobActivity extends AppCompatActivity {
+public class ApplyActivity extends AppCompatActivity {
 
     private static final int PICK_FILE_REQUEST = 1;
 
@@ -134,26 +134,44 @@ public class SelectCvToApplyJobActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void sendApplicantJobData() {
-
-        Resume selectedResume = appliedResumeAdapter.getSelectedItem();
-        String time = DateTimeUtils.getCurrentTime();
-
-        ApplicantJob applicantJob = new ApplicantJob(jobId, applicant_id, selectedResume.getId(), false, false, time);
-
-        ApiApplicantJobService.ApiApplicantJobService.createApplicantJob(applicantJob)
+        ApiApplicantJobService.ApiApplicantJobService.getAllApplicantJob()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        response -> {
-                            Log.e("SelectCvToApply", "Successfully");
-                            Toast.makeText(this, "Apply Successfully", Toast.LENGTH_SHORT).show();
+                        applicantJobs -> {
+                            boolean isAlreadyApplied = false;
+                            for (ApplicantJob job : applicantJobs) {
+                                if (job.getJobId() == jobId && job.getApplicantId() == applicant_id) {
+                                    isAlreadyApplied = true;
+                                    break;
+                                }
+                            }
+
+                            if (isAlreadyApplied) {
+                                Toast.makeText(this, "You have already applied for this job", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Resume selectedResume = appliedResumeAdapter.getSelectedItem();
+                                String time = DateTimeUtils.getCurrentTime();
+
+                                ApplicantJob applicantJob = new ApplicantJob(jobId, applicant_id, selectedResume.getId(), false, false, time);
+
+                                ApiApplicantJobService.ApiApplicantJobService.createApplicantJob(applicantJob)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(
+                                                response -> {
+                                                    Log.e("SelectCvToApply", "Successfully");
+                                                    Toast.makeText(this, "Apply Successfully", Toast.LENGTH_SHORT).show();
+                                                },
+                                                throwable -> Log.e("SelectCvToApply", "Error: " + throwable.getMessage())
+                                        );
+                                finish();
+                            }
                         },
-                        throwable -> {
-                            Log.e("SelectCvToApply", "Error: " + throwable.getMessage());
-                        }
+                        throwable -> Log.e("SelectCvToApply", "Error fetching applicant jobs: " + throwable.getMessage())
                 );
-        finish();
     }
+
 
     private void getTotalPageResume(){
         if(resume_data.size() <= 10){

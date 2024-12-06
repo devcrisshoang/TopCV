@@ -28,7 +28,7 @@ import com.example.topcv.ChangePasswordActivity;
 import com.example.topcv.LoginActivity;
 import com.example.topcv.PrivatePolicyActivity;
 import com.example.topcv.R;
-import com.example.topcv.TermOfServiceActivity;
+import com.example.topcv.ServiceActivity;
 import com.example.topcv.api.ApiApplicantService;
 import com.example.topcv.api.ApiUserService;
 import com.example.topcv.model.Applicant;
@@ -183,7 +183,7 @@ public class AccountFragment extends Fragment {
     private void initListeners() {
         about_application_button.setOnClickListener(view -> startActivity(new Intent(getContext(), AboutActivity.class)));
         privacy_policy_button.setOnClickListener(view -> startActivity(new Intent(getContext(), PrivatePolicyActivity.class)));
-        term_of_services_button.setOnClickListener(view -> startActivity(new Intent(getContext(), TermOfServiceActivity.class)));
+        term_of_services_button.setOnClickListener(view -> startActivity(new Intent(getContext(), ServiceActivity.class)));
 
         sign_out_button.setOnClickListener(view -> new AlertDialog.Builder(getContext())
                 .setTitle("Confirm logout")

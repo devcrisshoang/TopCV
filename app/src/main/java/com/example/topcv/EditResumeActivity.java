@@ -23,7 +23,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class EditCvActivity extends AppCompatActivity {
+public class EditResumeActivity extends AppCompatActivity {
 
     private Button edit_cv_button;
 
@@ -94,11 +94,11 @@ public class EditCvActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     Log.d("EditCvActivity", "Resume deleted successfully.");
-                    Toast.makeText(EditCvActivity.this, "CV deleted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditResumeActivity.this, "CV deleted successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }, throwable -> {
                     Log.e("EditCvActivity", "Error deleting resume: " + throwable.getMessage());
-                    Toast.makeText(EditCvActivity.this, "Failed to delete CV", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditResumeActivity.this, "Failed to delete CV", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -192,11 +192,11 @@ public class EditCvActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     Log.d("EditCvActivity", "Resume updated successfully with 204 No Content.");
-                    Toast.makeText(EditCvActivity.this, "CV updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditResumeActivity.this, "CV updated successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }, throwable -> {
                     Log.e("EditCvActivity", "Error updating resume: " + throwable.getMessage());
-                    Toast.makeText(EditCvActivity.this, "Failed to update CV", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditResumeActivity.this, "Failed to update CV", Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -95,12 +95,12 @@ public class SeeAllActivity extends AppCompatActivity {
             startActivity(intent);
         });
         workAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            Intent intent = new Intent(this, JobActivity.class);
             intent.putExtra("job_id", job.getId());
             startActivity(intent);
         });
         theBestJobAdapter.setOnItemClickListener(job -> {
-            Intent intent = new Intent(this, CompanyInformationsActivity.class);
+            Intent intent = new Intent(this, JobActivity.class);
             intent.putExtra("best_id", job.getId());
             startActivity(intent);
         });

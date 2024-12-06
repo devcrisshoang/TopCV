@@ -26,7 +26,7 @@
             android:name=".CompanyActivity"
             android:exported="false" />
         <activity
-            android:name=".EditCvActivity"
+            android:name=".EditResumeActivity"
             android:exported="false" />
         <activity
             android:name=".ChangePasswordActivity"
@@ -41,7 +41,7 @@
             android:name=".InformationActivity"
             android:exported="false" />
         <activity
-            android:name=".SelectCvToApplyJobActivity"
+            android:name=".ApplyActivity"
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
@@ -50,7 +50,7 @@
             android:name=".PrivatePolicyActivity"
             android:exported="false" />
         <activity
-            android:name=".TermOfServiceActivity"
+            android:name=".ServiceActivity"
             android:exported="false" />
         <activity
             android:name=".PolicyActivity"
@@ -65,13 +65,13 @@
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".CvActivity"
+            android:name=".ResumeActivity"
             android:exported="false" />
         <activity
             android:name=".CreateCvActivity"
             android:exported="false" />
         <activity
-            android:name=".CompanyInformationsActivity"
+            android:name=".JobActivity"
             android:exported="false" />
         <activity
             android:name=".SeeAllActivity"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".CompanyInformationsActivity">
+    tools:context=".JobActivity">
     <LinearLayout
         android:id="@+id/header_title"
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                         android:background="@drawable/icon_rounded_corner"
                         android:padding="10dp"
                         android:textAlignment="center"
-                        android:src="@drawable/google_ic" />
+                        android:src="@drawable/workplace_ic" />
 
                     <TextView
                         android:id="@+id/job_name"

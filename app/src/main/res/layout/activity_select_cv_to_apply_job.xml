@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context=".CompanyInformationsActivity">
+    tools:context=".JobActivity">
     <LinearLayout
         android:id="@+id/header_title"
         android:layout_width="match_parent"
@@ -195,12 +195,11 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Letter of Recommendation Section -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="Letter of recommendation:"
+                    android:text="Letter of recommendation(optional):"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
