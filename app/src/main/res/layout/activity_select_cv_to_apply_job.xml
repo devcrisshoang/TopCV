@@ -22,6 +22,7 @@
             android:layout_marginTop="5dp"
             android:src="@drawable/back_ic" />
         <TextView
+            android:id="@+id/job_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

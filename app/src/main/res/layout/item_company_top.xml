@@ -42,6 +42,8 @@
             android:textSize="16dp"
             android:padding="6dp"
             android:textColor="@color/black"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="Production">
 
         </TextView>

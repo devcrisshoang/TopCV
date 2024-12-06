@@ -62,18 +62,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         String applicantName = resume.getApplicant_name();
         String jobApplying = resume.getJob_applying();
 
-        Log.d("ProfileAdapter", "Applicant Name: " + applicantName);
-        Log.d("ProfileAdapter", "Job Applying: " + jobApplying);
-
         holder.name.setText(applicantName != null && !applicantName.isEmpty() ? applicantName : "Error");
         holder.position.setText(jobApplying != null && !jobApplying.isEmpty() ? jobApplying : "Error");
 
-        String imageUri = resume.getImage();
-        if (imageUri != null && !imageUri.isEmpty()) {
-            holder.profile_avatar.setImageURI(Uri.parse(imageUri));
-        } else {
-            holder.profile_avatar.setImageResource(R.drawable.account_ic);
-        }
+        holder.profile_avatar.setImageResource(R.drawable.account_ic);
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(mContext, ResumeActivity.class);

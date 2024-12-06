@@ -51,6 +51,7 @@ public class ApplyActivity extends AppCompatActivity {
     private Button Apply_Button;
 
     private TextView file_name, size_of_file, warning;
+    private TextView job_name;
 
     private ImageButton close_ic;
     private ImageButton back_button;
@@ -73,6 +74,7 @@ public class ApplyActivity extends AppCompatActivity {
     private RecyclerView.ItemDecoration itemDecoration;
 
     private String filePath;
+    private String job_name_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +143,7 @@ public class ApplyActivity extends AppCompatActivity {
                         applicantJobs -> {
                             boolean isAlreadyApplied = false;
                             for (ApplicantJob job : applicantJobs) {
-                                if (job.getJobId() == jobId && job.getApplicantId() == applicant_id) {
+                                if (job.getJobId() == jobId) {
                                     isAlreadyApplied = true;
                                     break;
                                 }
@@ -217,7 +219,6 @@ public class ApplyActivity extends AppCompatActivity {
     }
 
     private List<Resume> getListResume() {
-        Toast.makeText(this, "Load data page" + currentPage, Toast.LENGTH_SHORT).show();
         List<Resume> list = new ArrayList<>();
         int start = (currentPage - 1) * 5;
         int end = Math.min(start + 5, resume_data.size());
@@ -283,6 +284,9 @@ public class ApplyActivity extends AppCompatActivity {
         jobId = getIntent().getIntExtra("jobId",0);
         fetchResumesByApplicantId(applicant_id);
         upload_layout.setVisibility(View.GONE);
+        job_name_intent = getIntent().getStringExtra("job_name");
+        job_name = findViewById(R.id.job_name);
+        job_name.setText(job_name_intent);
     }
 
     private void openFileChooser() {
