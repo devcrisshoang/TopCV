@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:padding="6dp"
             android:text="FPT Corppration"
-            android:textColor="@color/black"
+            android:textColor="@color/green_color"
             android:textSize="16dp">
 
         </TextView>
@@ -41,7 +41,9 @@
             android:layout_gravity="center"
             android:textSize="16dp"
             android:padding="6dp"
-            android:textColor="@color/black"
+            android:textColor="@color/red"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="Production">
 
         </TextView>

@@ -31,7 +31,7 @@
                 android:layout_margin="10sp"
                 android:background="@drawable/icon_rounded_corner"
                 android:padding="10sp"
-                android:src="@drawable/workplace_ic" />
+                android:src="@drawable/job_ic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,6 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Data science"
+                        android:textColor="@color/green_color"
                         android:textSize="25sp"
                         android:textStyle="bold" />
                     <ImageView
@@ -81,6 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="America"
+                        android:textColor="@color/red"
                         android:textSize="15sp" />
 
                     <TextView
@@ -88,6 +90,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/red"
                         android:text="EXP 3 Year"
                         android:textSize="15sp" />
                 </LinearLayout>

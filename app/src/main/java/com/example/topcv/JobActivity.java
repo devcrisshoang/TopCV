@@ -100,6 +100,7 @@ public class JobActivity extends AppCompatActivity {
                                 Intent intent = new Intent(this, ApplyActivity.class);
                                 intent.putExtra("applicant_id",applicant.getId());
                                 intent.putExtra("jobId",jobId);
+                                intent.putExtra("job_name",job_name.getText().toString());
                                 startActivity(intent);
                                 Log.e("ProfileFragment","ID: " + applicant.getId());
                             } else {
@@ -150,11 +151,11 @@ public class JobActivity extends AppCompatActivity {
         jobId = getIntent().getIntExtra("job_id", 0);
         int bestId = getIntent().getIntExtra("best_id", 0);
         companyId = getIntent().getIntExtra("company_id", 0);
-        if (jobId != -1){
+        if (jobId != 0){
             getJobs(jobId);
             getJobDetails(jobId);
         }
-        else if(bestId != -1){
+        else if(bestId != 0){
             getJobs(bestId);
             getJobDetails(bestId);
         }

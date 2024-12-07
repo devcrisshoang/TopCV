@@ -37,6 +37,7 @@
                     android:id="@+id/position_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/green_color"
                     android:text="Project Manager"
                     android:textSize="16dp"
                     android:textStyle="bold"
@@ -62,6 +63,7 @@
                         android:layout_marginRight="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/red"
                         android:text="$3000">
 
                     </TextView>
@@ -71,6 +73,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/red"
                         android:text="Thanh Hoa">
 
                     </TextView>
