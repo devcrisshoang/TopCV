@@ -74,6 +74,12 @@ public class NewsFeedFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchData();
+    }
+
     private void initViews(View view) {
         // Initialize views
         recyclerviewSuitableJob = view.findViewById(R.id.recyclerview_thesuitablejob);
@@ -262,5 +268,6 @@ public class NewsFeedFragment extends Fragment {
         intent.putExtra(extraKey, text);
         startActivity(intent);
     }
+
 }
 
