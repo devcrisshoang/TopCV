@@ -15,20 +15,16 @@ import com.example.topcv.R;
 import com.example.topcv.adapter.NotificationAdapter;
 import com.example.topcv.api.ApiNotificationService;
 import com.example.topcv.model.Notification;
-import java.util.ArrayList;
-import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.Stack;
 
 public class NotificationFragment extends Fragment {
 
     private NotificationAdapter notificationAdapter;
-
-    private List<Notification> notificationList;
-
+    private Stack<Notification> notificationStack;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     private int id_User;
 
     @Nullable
@@ -44,9 +40,9 @@ public class NotificationFragment extends Fragment {
         RecyclerView notificationRecyclerView = view.findViewById(R.id.NotificationRecyclerView);
         assert getArguments() != null;
         id_User = getArguments().getInt("user_id", -1);
-        notificationList = new ArrayList<>();
+        notificationStack = new Stack<>(); // Khởi tạo Stack
         notificationRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        notificationAdapter = new NotificationAdapter(notificationList, getContext());
+        notificationAdapter = new NotificationAdapter(notificationStack, getContext());
         notificationRecyclerView.setAdapter(notificationAdapter);
     }
 
@@ -56,8 +52,11 @@ public class NotificationFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(notifications -> {
-                    notificationList.clear();
-                    notificationList.addAll(notifications);
+                    // Đưa dữ liệu vào Stack, duyệt từ cuối về đầu để giữ thứ tự ngược
+                    notificationStack.clear();
+                    for (int i = notifications.size() - 1; i >= 0; i--) {
+                        notificationStack.push(notifications.get(i));
+                    }
                     notificationAdapter.notifyDataSetChanged();
                 }, throwable -> Log.e("NotificationFragment","Null"));
     }

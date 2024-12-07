@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.topcv.R;
 import com.example.topcv.model.Notification;
 import com.example.topcv.utils.DateTimeUtils;
-
 import java.util.List;
+import java.util.Stack;
 
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
 
-    private final List<Notification> notificationList;
+    private final List<Notification> notificationStack; // Sử dụng Stack, nhưng xử lý như List
     private Context context;
 
-    public NotificationAdapter(List<Notification> notificationList, Context context) {
-        this.notificationList = notificationList;
+    public NotificationAdapter(Stack<Notification> notificationStack, Context context) {
+        this.notificationStack = notificationStack;
         this.context = context;
     }
 
@@ -31,21 +31,19 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .inflate(R.layout.item_notification, parent, false);
         return new NotificationViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
-        Notification notification = notificationList.get(position);
-
+        Notification notification = notificationStack.get(position); // Truy cập phần tử từ Stack
         String timeString = notification.getTime();
-
         String formattedTime = (timeString != null) ? DateTimeUtils.formatTimeAgo(timeString) : "No time available";
-
         holder.textViewTime.setText(formattedTime);
         holder.textViewContent.setText(notification.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return notificationList.size();
+        return notificationStack.size();
     }
 
     public static class NotificationViewHolder extends RecyclerView.ViewHolder {
