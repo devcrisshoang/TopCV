@@ -66,12 +66,12 @@ public class TheBestJobAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
 
-            workViewHolder.company_logo.setImageResource(R.drawable.workplace_ic);
+            workViewHolder.company_logo.setImageResource(R.drawable.job_ic);
 
             workViewHolder.position_name.setText(job.getJobName());
             workViewHolder.company_name.setText(job.getCompanyName());
             workViewHolder.working_place.setText(job.getLocation());
-            workViewHolder.salary.setText(String.valueOf(job.getSalary()));
+            workViewHolder.salary.setText("$"+ job.getSalary());
         }
     }
 
