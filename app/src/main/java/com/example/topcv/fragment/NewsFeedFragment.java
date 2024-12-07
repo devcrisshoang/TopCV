@@ -1,6 +1,5 @@
 package com.example.topcv.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,14 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.topcv.ArticleActivity;
 import com.example.topcv.CompanyActivity;
 import com.example.topcv.JobActivity;
@@ -34,13 +31,9 @@ import com.example.topcv.model.Applicant;
 import com.example.topcv.model.Article;
 import com.example.topcv.model.Company;
 import com.example.topcv.model.Job;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NewsFeedFragment extends Fragment {
@@ -69,7 +62,9 @@ public class NewsFeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
         initViews(view);
+
         initAdapters();
+
         initRecyclerViews();
 
         fetchData();
