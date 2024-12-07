@@ -37,6 +37,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class NewsFeedFragment extends Fragment {
+
+    private final int FIVE_ITEM = 5;;
+    private final int TEN_ITEM = 10;
+    private final int FOUR_ITEM = 4;
+
     private ArticleAdapter articleAdapter;
     private CompanyTopAdapter companyTopAdapter;
     private TheBestJobAdapter theBestJobAdapter;
@@ -54,6 +59,7 @@ public class NewsFeedFragment extends Fragment {
     private List<Article> articleList = new ArrayList<>();
 
     private Applicant applicant = new Applicant();
+
     private int userId;
 
     @Nullable
@@ -178,21 +184,15 @@ public class NewsFeedFragment extends Fragment {
             String location = job.getLocation() != null ? job.getLocation().toLowerCase() : "";
             String experience = job.getExperience() != null ? job.getExperience().toLowerCase() : "";
 
-            int maxSizeSuitableJob = 5;
-
-            if (workList.size() <= maxSizeSuitableJob && jobName.contains(jobDesire) && location.contains(locationDesire) && experience.contains(experienceDesire)) {
+            if (workList.size() <= FIVE_ITEM && jobName.contains(jobDesire) && location.contains(locationDesire) && experience.contains(experienceDesire)) {
                 workList.add(job);
             }
 
-            int maxSizeBestJob = 10;
-
-            if (bestJobList.size() <= maxSizeBestJob && job.getSalary() > 1000 && jobName.contains(jobDesire)) {
+            if (bestJobList.size() <= TEN_ITEM && job.getSalary() > 1000 && jobName.contains(jobDesire)) {
                 bestJobList.add(job);
             }
 
-            int maxSizeInterestingJob = 5;
-
-            if(interestingList.size() <= maxSizeInterestingJob && job.getSalary() > 3000){
+            if(interestingList.size() <= FIVE_ITEM && job.getSalary() > 3000){
                 interestingList.add(job);
             }
         }
@@ -213,7 +213,7 @@ public class NewsFeedFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(companies -> {
-                    companyList = companies.size() > 4 ? companies.subList(0, 4) : companies;
+                    companyList = companies.size() > FOUR_ITEM ? companies.subList(0, FOUR_ITEM) : companies;
                     companyTopAdapter.setData(companyList);
                     companyTopAdapter.notifyDataSetChanged();
                 }, throwable -> Log.e("API Error", "Error fetching companies: " + throwable.getMessage()));
@@ -224,7 +224,7 @@ public class NewsFeedFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(articles -> {
-                    articleList = articles.size() > 10 ? articles.subList(0, 10) : articles;
+                    articleList = articles.size() > TEN_ITEM ? articles.subList(0, TEN_ITEM) : articles;
                     articleAdapter.setData(articleList);
                     articleAdapter.notifyDataSetChanged();
                 }, throwable -> Log.e("API Error", "Error fetching articles: " + throwable.getMessage()));
