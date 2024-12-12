@@ -83,14 +83,9 @@ public class AppliedResumeAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
 
-            String image = resume.getImage();
-
-            Glide.with(workViewHolder.profile_avatar.getContext())
-                    .load(image)
-                    .into(workViewHolder.profile_avatar);
             workViewHolder.position.setText(resume.getJob_applying());
             workViewHolder.name.setText(resume.getApplicant_name());
-
+            workViewHolder.profile_avatar.setImageResource(R.drawable.account_ic);
 
             workViewHolder.radio_button.setChecked(holder.getAdapterPosition() == selectedPosition);
 
